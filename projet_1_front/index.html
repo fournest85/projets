@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des utilisateurs et PRs</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="http://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Formulaire CRUD</h1>
+
+        <form id="userForm">
+            <input type="text" id="userId" placeholder="ID (pour modifier ou supprimer)">
+            <input type="text" id="name" placeholder="Nom">
+            <input type="email" id="email" placeholder="Email">
+            <input type="text" id="phone" placeholder="Téléphone">
+            <div class="buttons">
+                <button type="submit">Créer / Modifier</button>
+                <button type="button" onclick="deleteUser()">Supprimer</button>
+            </div>
+        </form>
+
+        <div class="lists-container">
+            <div class="list-block">
+
+                <h2><a href="http://localhost:3000/api/users" target="_blank">Liste des utilisateurs</a></h2>
+                <ul id="userList"></ul>
+                <div id="userPagination"></div>
+            </div>
+            <div class="list-block">
+                <label for="prDateFilter">Filtrer les PRs par date :</label>
+                <input type="date" id="prDateFilter">
+                <button onclick="loadPRsByDate()">Filtrer</button>
+                <h2><a href="http://localhost:3000/api/github/prs/list" target="_blank">Liste des Pull Requests
+                        GitHub</a></h2>
+                <ul id="prList"></ul>
+                <div id="prPagination"></div>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
