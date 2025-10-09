@@ -170,7 +170,7 @@ function displayPRs(page) {
             subLi.innerHTML = `#${pr.number} - ${login} (${pr.state})<br><em>Enregistrée le : ${dateText}</em>`;
             subLi.style.cursor = 'pointer';
             subLi.onclick = () => {
-                window.location.href = `/prs-details?number=${pr.number}`;
+                window.location.href = `/pr-details.html?number=${pr.number}`;
             };
             subList.appendChild(subLi);
         });
