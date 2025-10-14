@@ -1,11 +1,34 @@
 
-const API_URL = 'http://localhost:3000/api/users';
+let API_URL = '';
+let PR_API_URL = '';
 const USERS_PER_PAGE = 10;
 const PRS_PER_PAGE = 10;
 let currentUserPage = 1;
 let currentPRPage = 1;
 let allUsers = [];
 let allPRs = [];
+
+const BACKEND_PORT = 3000; // ou le port réel si dynamique
+const BACKEND_URL = `http://localhost:${BACKEND_PORT}`;
+
+
+
+async function fetchBackendConfig() {
+    try {
+        const res = await fetch(`${BACKEND_URL}/api/config`);
+        const config = await res.json();
+        API_URL = config.apiUrl;
+        PR_API_URL = API_URL.replace('/users', '/github/prs/list');
+
+        console.log("✅ API_URL récupérée du backend :", API_URL);
+
+        loadUsers();
+        loadPRs();
+    } catch (err) {
+        console.error("❌ Impossible de récupérer la config du backend :", err);
+    }
+}
+
 
 
 document.getElementById('userForm').addEventListener('submit', async (e) => {
@@ -102,17 +125,27 @@ function getYesterdayDateString() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('prDateFilter').value = getYesterdayDateString();
-    loadUsers();
-    loadPRs();
+    const dateInput = document.getElementById('prDateFilter');
+    const selectedDate = dateInput.value || getYesterdayDateString();
+    dateInput.value = selectedDate;
+
+    fetchBackendConfig();
+    console.log('📦 Appel à loadPRsByDate() ou loadPRs() selon la date sélectionnée');
+
+    if (selectedDate) {
+        loadPRsByDate();
+    } else {
+        loadPRs();
+    }
 });
 
 
 async function loadPRs() {
     const yesterday = getYesterdayDateString();
     try {
-        const res = await axios.get(`http://localhost:3000/api/github/prs/list?date=${yesterday}&sort=titleAndDate&page=${currentPRPage}&limit=${PRS_PER_PAGE}`);
+        const res = await axios.get(`${PR_API_URL}?date=${yesterday}&sort=titleAndDate&page=${currentPRPage}&limit=${PRS_PER_PAGE}`);
         allPRs = res.data.prs;
+        console.log('📦 PRs reçues :', res.data.prs);
         displayPRs(currentPRPage);
         renderPRPagination(res.data.totalPages);
     } catch (err) {
@@ -122,11 +155,17 @@ async function loadPRs() {
 
 async function loadPRsByDate() {
     const selectedDate = document.getElementById('prDateFilter').value;
-    if (!selectedDate) return;
+    console.log('📅 Date sélectionnée :', selectedDate); // Ajoute ce log
+
+    if (!selectedDate) {
+        console.warn('⚠️ Aucune date sélectionnée');
+        return;
+    }
 
     try {
-        const res = await axios.get(`http://localhost:3000/api/github/prs/list?date=${selectedDate}&page=${currentPRPage}&limit=${PRS_PER_PAGE}`);
-        allPRs = res.data.prs;
+        const res = await axios.get(`${PR_API_URL}?date=${selectedDate}&page=${currentPRPage}&limit=${PRS_PER_PAGE}`);
+        allPRs = Array.isArray(res.data?.prs) ? res.data.prs : [];
+        console.log('📦 PRs datées reçues :', allPRs);
         displayPRs(currentPRPage);
         renderPRPagination(res.data.totalPages);
     } catch (err) {
@@ -138,6 +177,10 @@ function displayPRs(page) {
     const list = document.getElementById('prList');
     list.innerHTML = '';
 
+    if (!Array.isArray(allPRs)) {
+        console.warn('⚠️ Impossible d’afficher les PRs : allPRs est invalide', allPRs);
+        return;
+    }
     // Regrouper les PRs par titre
     const groupedPRs = {};
     allPRs.forEach(pr => {
@@ -146,6 +189,7 @@ function displayPRs(page) {
         }
         groupedPRs[pr.title].push(pr);
     });
+
 
     // Trier les titres alphabétiquement
     const sortedTitles = Object.keys(groupedPRs).sort();
@@ -158,6 +202,7 @@ function displayPRs(page) {
 
         const subList = document.createElement('ul');
         group.forEach(pr => {
+            console.log('PR affichée :', pr);
             const dateText = pr.updated_at ? new Date(pr.updated_at).toLocaleDateString('fr-FR', {
                 weekday: 'long',
                 year: 'numeric',
