@@ -25,6 +25,9 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+projet_1_back/.env
+projet_1_front/.env
+
 
 # Build output
 dist/
