@@ -1,0 +1,3519 @@
+[
+  {
+    "_id": "68dfb9575b492148af804c08",
+    "number": 10,
+    "created_at": "2025-09-30T14:10:29.000Z",
+    "date": "2025-10-13T08:46:52.338Z",
+    "files": [
+      {
+        "filename": "controller/user.js",
+        "status": "modified",
+        "additions": 15,
+        "deletions": 7,
+        "changes": 22,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/5d6b613231aeb7501a5594890bc2793af19b3959/controller%2Fuser.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        let cursor = dbUser.bd().collection('users').find();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        let result = await cursor.toArray();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        if (result.length > 0) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            res.status(200).json(result);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        } else {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            res.status(204).json({ message: 'No Content' });"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        }"
+          },
+          {
+            "line": 36,
+            "type": "added",
+            "content": "        const page = parseInt(req.query.page) || 1;"
+          },
+          {
+            "line": 37,
+            "type": "added",
+            "content": "        const limit = parseInt(req.query.limit) || 10;"
+          },
+          {
+            "line": 38,
+            "type": "added",
+            "content": "        const skip = (page - 1) * limit;"
+          },
+          {
+            "line": 39,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 40,
+            "type": "added",
+            "content": "        const collection = dbUser.bd().collection('users');"
+          },
+          {
+            "line": 41,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 42,
+            "type": "added",
+            "content": "        const users = await collection.find().skip(skip).limit(limit).toArray();"
+          },
+          {
+            "line": 43,
+            "type": "added",
+            "content": "        const total = await collection.countDocuments();"
+          },
+          {
+            "line": 44,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 45,
+            "type": "added",
+            "content": "        res.status(200).json({"
+          },
+          {
+            "line": 46,
+            "type": "added",
+            "content": "            users,"
+          },
+          {
+            "line": 47,
+            "type": "added",
+            "content": "            total,"
+          },
+          {
+            "line": 48,
+            "type": "added",
+            "content": "            page,"
+          },
+          {
+            "line": 49,
+            "type": "added",
+            "content": "            totalPages: Math.ceil(total / limit)"
+          },
+          {
+            "line": 50,
+            "type": "added",
+            "content": "        });"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "fetchPRs.js",
+        "status": "modified",
+        "additions": 38,
+        "deletions": 11,
+        "changes": 49,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/5d6b613231aeb7501a5594890bc2793af19b3959/fetchPRs.js",
+        "modifiedLines": [
+          {
+            "line": 21,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "async function fetchFilesForPR(prNumber) {"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": "    const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/pulls/${prNumber}/files`;"
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "    const response = await axios.get(url, { headers });"
+          },
+          {
+            "line": 25,
+            "type": "added",
+            "content": "    return response.data.map(file => ({"
+          },
+          {
+            "line": 26,
+            "type": "added",
+            "content": "        filename: file.filename,"
+          },
+          {
+            "line": 27,
+            "type": "added",
+            "content": "        status: file.status,"
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "        additions: file.additions,"
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "        deletions: file.deletions,"
+          },
+          {
+            "line": 30,
+            "type": "added",
+            "content": "        changes: file.changes,"
+          },
+          {
+            "line": 31,
+            "type": "added",
+            "content": "        raw_url: file.raw_url"
+          },
+          {
+            "line": 32,
+            "type": "added",
+            "content": "    }));"
+          },
+          {
+            "line": 33,
+            "type": "added",
+            "content": "}"
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        // console.log('Token utilisé :', process.env.GITHUB_TOKEN);"
+          },
+          {
+            "line": 45,
+            "type": "added",
+            "content": "        const github_repo = process.env.GITHUB_REPO;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        await collection.deleteMany({});"
+          },
+          {
+            "line": 49,
+            "type": "added",
+            "content": "        // await collection.deleteMany({});"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const docs = prs.map(pr => ({"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            id: pr.id,"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            title: pr.title,"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            user: pr.user,"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            state: pr.state,"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            created_at: pr.created_at,"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            updated_at: pr.updated_at,"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            html_url: pr.html_url"
+          },
+          {
+            "line": 51,
+            "type": "added",
+            "content": "        const docs = [];"
+          },
+          {
+            "line": 52,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 53,
+            "type": "added",
+            "content": "        for (const pr of prs) {"
+          },
+          {
+            "line": 54,
+            "type": "added",
+            "content": "            const files = await fetchFilesForPR(pr.number);"
+          },
+          {
+            "line": 55,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 56,
+            "type": "added",
+            "content": "            docs.push({"
+          },
+          {
+            "line": 57,
+            "type": "added",
+            "content": "                id: pr.id,"
+          },
+          {
+            "line": 58,
+            "type": "added",
+            "content": "                number: pr.number,"
+          },
+          {
+            "line": 59,
+            "type": "added",
+            "content": "                title: pr.title,"
+          },
+          {
+            "line": 60,
+            "type": "added",
+            "content": "                user: pr.user,"
+          },
+          {
+            "line": 61,
+            "type": "added",
+            "content": "                state: pr.state,"
+          },
+          {
+            "line": 62,
+            "type": "added",
+            "content": "                created_at: pr.created_at,"
+          },
+          {
+            "line": 63,
+            "type": "added",
+            "content": "                updated_at: pr.updated_at,"
+          },
+          {
+            "line": 64,
+            "type": "added",
+            "content": "                repo: github_repo,"
+          },
+          {
+            "line": 65,
+            "type": "added",
+            "content": "                // html_url: pr.html_url,"
+          },
+          {
+            "line": 66,
+            "type": "added",
+            "content": "                files: files,"
+          },
+          {
+            "line": 67,
+            "type": "added",
+            "content": "                date: new Date()    "
+          },
+          {
+            "line": 68,
+            "type": "added",
+            "content": "            });"
+          },
+          {
+            "line": 69,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 70,
+            "type": "added",
+            "content": "            "
+          },
+          {
+            "line": 71,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        }));"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "jobs/githubCron.js",
+        "status": "added",
+        "additions": 15,
+        "deletions": 0,
+        "changes": 15,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/5d6b613231aeb7501a5594890bc2793af19b3959/jobs%2FgithubCron.js",
+        "modifiedLines": [
+          {
+            "line": 1,
+            "type": "added",
+            "content": "const cron = require('node-cron');"
+          },
+          {
+            "line": 2,
+            "type": "added",
+            "content": "const { fetchAndStorePRs } = require('../fetchPRs');"
+          },
+          {
+            "line": 3,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 4,
+            "type": "added",
+            "content": "// Planifie l'exécution tous les jours à 1h du matin"
+          },
+          {
+            "line": 5,
+            "type": "added",
+            "content": "cron.schedule('0 1 * * *', async () => {"
+          },
+          {
+            "line": 6,
+            "type": "added",
+            "content": "    console.log('⏰ Cron lancé pour récupérer les PRs modifiées...');"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "    await fetchAndStorePRs();"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "});"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 10,
+            "type": "added",
+            "content": "// Lancement immédiat au démarrage (optionnel)"
+          },
+          {
+            "line": 11,
+            "type": "added",
+            "content": "(async () => {"
+          },
+          {
+            "line": 12,
+            "type": "added",
+            "content": "    console.log('🚀 Lancement initial de la récupération des PRs...');"
+          },
+          {
+            "line": 13,
+            "type": "added",
+            "content": "    await fetchAndStorePRs();"
+          },
+          {
+            "line": 14,
+            "type": "added",
+            "content": "})"
+          },
+          {
+            "line": 15,
+            "type": "added",
+            "content": "    ();"
+          }
+        ]
+      },
+      {
+        "filename": "package-lock.json",
+        "status": "modified",
+        "additions": 10,
+        "deletions": 0,
+        "changes": 10,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/5d6b613231aeb7501a5594890bc2793af19b3959/package-lock.json",
+        "modifiedLines": [
+          {
+            "line": 16,
+            "type": "added",
+            "content": "        \"node-cron\": \"^4.2.1\","
+          },
+          {
+            "line": 1039,
+            "type": "added",
+            "content": "    \"node_modules/node-cron\": {"
+          },
+          {
+            "line": 1040,
+            "type": "added",
+            "content": "      \"version\": \"4.2.1\","
+          },
+          {
+            "line": 1041,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/node-cron/-/node-cron-4.2.1.tgz\","
+          },
+          {
+            "line": 1042,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-lgimEHPE/QDgFlywTd8yTR61ptugX3Qer29efeyWw2rv259HtGBNn1vZVmp8lB9uo9wC0t/AT4iGqXxia+CJFg==\","
+          },
+          {
+            "line": 1043,
+            "type": "added",
+            "content": "      \"license\": \"ISC\","
+          },
+          {
+            "line": 1044,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 1045,
+            "type": "added",
+            "content": "        \"node\": \">=6.0.0\""
+          },
+          {
+            "line": 1046,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 1047,
+            "type": "added",
+            "content": "    },"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "package.json",
+        "status": "modified",
+        "additions": 1,
+        "deletions": 0,
+        "changes": 1,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/5d6b613231aeb7501a5594890bc2793af19b3959/package.json",
+        "modifiedLines": [
+          {
+            "line": 16,
+            "type": "added",
+            "content": "    \"node-cron\": \"^4.2.1\","
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "public/index.html",
+        "status": "modified",
+        "additions": 119,
+        "deletions": 34,
+        "changes": 153,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/5d6b613231aeb7501a5594890bc2793af19b3959/public%2Findex.html",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            <input type=\"text\" id=\"name\" placeholder=\"Nom\" >"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            <input type=\"email\" id=\"email\" placeholder=\"Email\" >"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            <input type=\"text\" id=\"phone\" placeholder=\"Téléphone\" >"
+          },
+          {
+            "line": 17,
+            "type": "added",
+            "content": "            <input type=\"text\" id=\"name\" placeholder=\"Nom\">"
+          },
+          {
+            "line": 18,
+            "type": "added",
+            "content": "            <input type=\"email\" id=\"email\" placeholder=\"Email\">"
+          },
+          {
+            "line": 19,
+            "type": "added",
+            "content": "            <input type=\"text\" id=\"phone\" placeholder=\"Téléphone\">"
+          },
+          {
+            "line": 32,
+            "type": "added",
+            "content": "                <div id=\"userPagination\"></div>"
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": "                <label for=\"prDateFilter\">Filtrer les PRs par date :</label>"
+          },
+          {
+            "line": 36,
+            "type": "added",
+            "content": "                <input type=\"date\" id=\"prDateFilter\">"
+          },
+          {
+            "line": 37,
+            "type": "added",
+            "content": "                <button onclick=\"loadPRsByDate()\">Filtrer</button>"
+          },
+          {
+            "line": 41,
+            "type": "added",
+            "content": "                <div id=\"prPagination\"></div>"
+          },
+          {
+            "line": 49,
+            "type": "added",
+            "content": "        const USERS_PER_PAGE = 10;"
+          },
+          {
+            "line": 50,
+            "type": "added",
+            "content": "        const PRS_PER_PAGE = 10;"
+          },
+          {
+            "line": 51,
+            "type": "added",
+            "content": "        let currentUserPage = 1;"
+          },
+          {
+            "line": 52,
+            "type": "added",
+            "content": "        let currentPRPage = 1;"
+          },
+          {
+            "line": 53,
+            "type": "added",
+            "content": "        let allUsers = [];"
+          },
+          {
+            "line": 54,
+            "type": "added",
+            "content": "        let allPRs = [];"
+          },
+          {
+            "line": 55,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                const res = await axios.get(API_URL);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                const users = res.data;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                const list = document.getElementById('userList');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                list.innerHTML = '';"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                users.forEach(user => {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    const li = document.createElement('li');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    li.textContent = `${user.name} (${user.email}) (${user.phone}) - ID: ${user._id}`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    list.appendChild(li);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                });"
+          },
+          {
+            "line": 95,
+            "type": "added",
+            "content": "                const res = await axios.get(`${API_URL}?page=${currentUserPage}&limit=${USERS_PER_PAGE}`);"
+          },
+          {
+            "line": 96,
+            "type": "added",
+            "content": "                allUsers = res.data.users;"
+          },
+          {
+            "line": 97,
+            "type": "added",
+            "content": "                displayUsers(currentUserPage);"
+          },
+          {
+            "line": 98,
+            "type": "added",
+            "content": "                renderUserPagination(res.data.totalPages);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        async function loadPRs() {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            try {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                const res = await axios.get('http://localhost:3000/api/github/prs');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                const message = res.data.message;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                const prList = document.getElementById('prList');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                prList.innerHTML = '';"
+          },
+          {
+            "line": 105,
+            "type": "added",
+            "content": "        function displayUsers(page) {"
+          },
+          {
+            "line": 106,
+            "type": "added",
+            "content": "            const list = document.getElementById('userList');"
+          },
+          {
+            "line": 107,
+            "type": "added",
+            "content": "            list.innerHTML = '';"
+          },
+          {
+            "line": 108,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 109,
+            "type": "added",
+            "content": "            allUsers.forEach(user => {"
+          },
+          {
+            "line": 110,
+            "type": "added",
+            "content": "                const li = document.createElement('li');"
+          },
+          {
+            "line": 111,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 112,
+            "type": "added",
+            "content": "                const identity = user.githubUrl && user.name"
+          },
+          {
+            "line": 113,
+            "type": "added",
+            "content": "                    ? `<a href= \"${user.githubUrl}\" target=\"_blank\">${user.name}</a>`"
+          },
+          {
+            "line": 114,
+            "type": "added",
+            "content": "                    : `<strong>${user.name}</strong>`;"
+          },
+          {
+            "line": 115,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 116,
+            "type": "added",
+            "content": "                li.innerHTML = `${identity} [${user.email}] (${user.phone}) - ID: ${user._id}`;"
+          },
+          {
+            "line": 117,
+            "type": "added",
+            "content": "                list.appendChild(li);"
+          },
+          {
+            "line": 118,
+            "type": "added",
+            "content": "            });"
+          },
+          {
+            "line": 119,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 120,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 121,
+            "type": "added",
+            "content": "        function renderUserPagination(totalPages) {"
+          },
+          {
+            "line": 122,
+            "type": "added",
+            "content": "            const container = document.getElementById('userPagination');"
+          },
+          {
+            "line": 123,
+            "type": "added",
+            "content": "            container.innerHTML = '';"
+          },
+          {
+            "line": 124,
+            "type": "added",
+            "content": "            for (let i = 1; i <= totalPages; i++) {"
+          },
+          {
+            "line": 125,
+            "type": "added",
+            "content": "                const btn = document.createElement('button');"
+          },
+          {
+            "line": 126,
+            "type": "added",
+            "content": "                btn.textContent = i;"
+          },
+          {
+            "line": 127,
+            "type": "added",
+            "content": "                btn.onclick = () => {"
+          },
+          {
+            "line": 128,
+            "type": "added",
+            "content": "                    currentUserPage = i;"
+          },
+          {
+            "line": 129,
+            "type": "added",
+            "content": "                    loadUsers();"
+          },
+          {
+            "line": 130,
+            "type": "added",
+            "content": "                };"
+          },
+          {
+            "line": 131,
+            "type": "added",
+            "content": "                container.appendChild(btn);"
+          },
+          {
+            "line": 132,
+            "type": "added",
+            "content": "            }"
+          },
+          {
+            "line": 133,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                // Optionnel : tu peux aussi afficher les PR stockées dans MongoDB"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                const response = await axios.get('http://localhost:3000/api/github/prs/list'); // à créer si tu veux"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                const prs = response.data;"
+          },
+          {
+            "line": 136,
+            "type": "added",
+            "content": "        function getYesterdayDateString() {"
+          },
+          {
+            "line": 137,
+            "type": "added",
+            "content": "            const yesterday = new Date();"
+          },
+          {
+            "line": 138,
+            "type": "added",
+            "content": "            yesterday.setDate(yesterday.getDate() - 1);"
+          },
+          {
+            "line": 139,
+            "type": "added",
+            "content": "            const day = String(yesterday.getDate()).padStart(2, '0');"
+          },
+          {
+            "line": 140,
+            "type": "added",
+            "content": "            const month = String(yesterday.getMonth() + 1).padStart(2, '0');"
+          },
+          {
+            "line": 141,
+            "type": "added",
+            "content": "            const year = yesterday.getFullYear();"
+          },
+          {
+            "line": 142,
+            "type": "added",
+            "content": "            return `${year}-${month}-${day}`;"
+          },
+          {
+            "line": 143,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                prs.forEach(pr => {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    const li = document.createElement('li');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    if (pr.html_url) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                        const link = document.createElement('a');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                        link.href = pr.html_url;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                        link.textContent = `${pr.title} - ${pr.user.login} (${pr.state})`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                        link.target = \"_blank\";"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                        li.appendChild(link);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    } else {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                        li.textContent = `${pr.title} - ${pr.user.login} (${pr.state}) [lien manquant]`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    }"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    prList.appendChild(li);"
+          },
+          {
+            "line": 146,
+            "type": "added",
+            "content": "        document.addEventListener('DOMContentLoaded', () => {"
+          },
+          {
+            "line": 147,
+            "type": "added",
+            "content": "            document.getElementById('prDateFilter').value = getYesterdayDateString();"
+          },
+          {
+            "line": 148,
+            "type": "added",
+            "content": "            loadPRs();"
+          },
+          {
+            "line": 149,
+            "type": "added",
+            "content": "        });"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                });"
+          },
+          {
+            "line": 152,
+            "type": "added",
+            "content": "        async function loadPRs() {"
+          },
+          {
+            "line": 153,
+            "type": "added",
+            "content": "            const yesterday = getYesterdayDateString();"
+          },
+          {
+            "line": 154,
+            "type": "added",
+            "content": "            try {"
+          },
+          {
+            "line": 155,
+            "type": "added",
+            "content": "                const res = await axios.get(`http://localhost:3000/api/github/prs/list?date=${yesterday}&page=${currentPRPage}&limit=${PRS_PER_PAGE}`);"
+          },
+          {
+            "line": 156,
+            "type": "added",
+            "content": "                allPRs = res.data.prs;"
+          },
+          {
+            "line": 157,
+            "type": "added",
+            "content": "                displayPRs(currentPRPage);"
+          },
+          {
+            "line": 158,
+            "type": "added",
+            "content": "                renderPRPagination(res.data.totalPages);"
+          },
+          {
+            "line": 164,
+            "type": "added",
+            "content": "        async function loadPRsByDate() {"
+          },
+          {
+            "line": 165,
+            "type": "added",
+            "content": "            const selectedDate = document.getElementById('prDateFilter').value;"
+          },
+          {
+            "line": 166,
+            "type": "added",
+            "content": "            if (!selectedDate) return;"
+          },
+          {
+            "line": 167,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 168,
+            "type": "added",
+            "content": "            try {"
+          },
+          {
+            "line": 169,
+            "type": "added",
+            "content": "                const res = await axios.get(`http://localhost:3000/api/github/prs/list?date=${selectedDate}&page=${currentPRPage}&limit=${PRS_PER_PAGE}`);"
+          },
+          {
+            "line": 170,
+            "type": "added",
+            "content": "                allPRs = res.data.prs;"
+          },
+          {
+            "line": 171,
+            "type": "added",
+            "content": "                displayPRs(currentPRPage);"
+          },
+          {
+            "line": 172,
+            "type": "added",
+            "content": "                renderPRPagination(res.data.totalPages);"
+          },
+          {
+            "line": 173,
+            "type": "added",
+            "content": "            } catch (err) {"
+          },
+          {
+            "line": 174,
+            "type": "added",
+            "content": "                console.error('Erreur chargement des PR filtrées :', err);"
+          },
+          {
+            "line": 175,
+            "type": "added",
+            "content": "            }"
+          },
+          {
+            "line": 176,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 177,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 178,
+            "type": "added",
+            "content": "        function displayPRs(page) {"
+          },
+          {
+            "line": 179,
+            "type": "added",
+            "content": "            const list = document.getElementById('prList');"
+          },
+          {
+            "line": 180,
+            "type": "added",
+            "content": "            list.innerHTML = '';"
+          },
+          {
+            "line": 181,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 182,
+            "type": "added",
+            "content": "            allPRs.forEach(pr => {"
+          },
+          {
+            "line": 183,
+            "type": "added",
+            "content": "                const li = document.createElement('li');"
+          },
+          {
+            "line": 184,
+            "type": "added",
+            "content": "                const dateText = pr.date ? new Date(pr.date).toLocaleDateString('fr-FR', {"
+          },
+          {
+            "line": 185,
+            "type": "added",
+            "content": "                    weekday: 'long',"
+          },
+          {
+            "line": 186,
+            "type": "added",
+            "content": "                    year: 'numeric',"
+          },
+          {
+            "line": 187,
+            "type": "added",
+            "content": "                    month: 'long',"
+          },
+          {
+            "line": 188,
+            "type": "added",
+            "content": "                    day: 'numeric'"
+          },
+          {
+            "line": 189,
+            "type": "added",
+            "content": "                }) : 'Date inconnue';"
+          },
+          {
+            "line": 190,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 191,
+            "type": "added",
+            "content": "                const login = pr.user?.login || 'Utilisateur inconnu';"
+          },
+          {
+            "line": 192,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 193,
+            "type": "added",
+            "content": "                li.innerHTML = `<strong>${pr.title}</strong> - ${pr.user.login} (${pr.state})<br><em>Enregistrée le : ${dateText}</em>`;"
+          },
+          {
+            "line": 194,
+            "type": "added",
+            "content": "                li.style.cursor = 'pointer';"
+          },
+          {
+            "line": 195,
+            "type": "added",
+            "content": "                li.onclick = () => {"
+          },
+          {
+            "line": 196,
+            "type": "added",
+            "content": "                    window.location.href = `/prs-details?number=${pr.number}`;"
+          },
+          {
+            "line": 197,
+            "type": "added",
+            "content": "                };"
+          },
+          {
+            "line": 198,
+            "type": "added",
+            "content": "                list.appendChild(li);"
+          },
+          {
+            "line": 199,
+            "type": "added",
+            "content": "            });"
+          },
+          {
+            "line": 200,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 201,
+            "type": "added",
+            "content": "        function renderPRPagination(totalPages) {"
+          },
+          {
+            "line": 202,
+            "type": "added",
+            "content": "            const container = document.getElementById('prPagination');"
+          },
+          {
+            "line": 203,
+            "type": "added",
+            "content": "            container.innerHTML = '';"
+          },
+          {
+            "line": 204,
+            "type": "added",
+            "content": "            // const totalPages = Math.ceil(allPRs.length / PRS_PER_PAGE);"
+          },
+          {
+            "line": 205,
+            "type": "added",
+            "content": "            for (let i = 1; i <= totalPages; i++) {"
+          },
+          {
+            "line": 206,
+            "type": "added",
+            "content": "                const btn = document.createElement('button');"
+          },
+          {
+            "line": 207,
+            "type": "added",
+            "content": "                btn.textContent = i;"
+          },
+          {
+            "line": 208,
+            "type": "added",
+            "content": "                btn.onclick = () => {"
+          },
+          {
+            "line": 209,
+            "type": "added",
+            "content": "                    currentPRPage = i;"
+          },
+          {
+            "line": 210,
+            "type": "added",
+            "content": "                    loadPRs();"
+          },
+          {
+            "line": 211,
+            "type": "added",
+            "content": "                };"
+          },
+          {
+            "line": 212,
+            "type": "added",
+            "content": "                container.appendChild(btn);"
+          },
+          {
+            "line": 213,
+            "type": "added",
+            "content": "            }"
+          },
+          {
+            "line": 214,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 215,
+            "type": "added",
+            "content": ""
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "public/pr-details.html",
+        "status": "added",
+        "additions": 97,
+        "deletions": 0,
+        "changes": 97,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/5d6b613231aeb7501a5594890bc2793af19b3959/public%2Fpr-details.html",
+        "modifiedLines": [
+          {
+            "line": 1,
+            "type": "added",
+            "content": "<!-- public/pr-details.html -->"
+          },
+          {
+            "line": 2,
+            "type": "added",
+            "content": "<!DOCTYPE html>"
+          },
+          {
+            "line": 3,
+            "type": "added",
+            "content": "<html lang=\"fr\">"
+          },
+          {
+            "line": 4,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 5,
+            "type": "added",
+            "content": "<head>"
+          },
+          {
+            "line": 6,
+            "type": "added",
+            "content": "    <meta charset=\"UTF-8\">"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "    <title>Détails des Pull Requests</title>"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "    <link rel=\"stylesheet\" href=\"style.css\">"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "    <script src=\"http://cdn.jsdelivr.net/npm/axios/dist/axios.min.js\"></script>"
+          },
+          {
+            "line": 10,
+            "type": "added",
+            "content": "</head>"
+          },
+          {
+            "line": 11,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 12,
+            "type": "added",
+            "content": "<body>"
+          },
+          {
+            "line": 13,
+            "type": "added",
+            "content": "    <div class=\"container\">"
+          },
+          {
+            "line": 14,
+            "type": "added",
+            "content": "        <h1>Détails des Pull Requests GitHub</h1>"
+          },
+          {
+            "line": 15,
+            "type": "added",
+            "content": "        <ul id=\"prDetailsList\"></ul>"
+          },
+          {
+            "line": 16,
+            "type": "added",
+            "content": "        <button onclick=\"goBackToList()\">← Retour à la liste des PRs</button>"
+          },
+          {
+            "line": 17,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 18,
+            "type": "added",
+            "content": "    </div>"
+          },
+          {
+            "line": 19,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 20,
+            "type": "added",
+            "content": "    <script>"
+          },
+          {
+            "line": 21,
+            "type": "added",
+            "content": "        function goBackToList() {"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "            window.location.href = '/index.html';"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 25,
+            "type": "added",
+            "content": "        function getPRNumberFromURL() {"
+          },
+          {
+            "line": 26,
+            "type": "added",
+            "content": "            const params = new URLSearchParams(window.location.search);"
+          },
+          {
+            "line": 27,
+            "type": "added",
+            "content": "            return params.get('number');"
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 30,
+            "type": "added",
+            "content": "        async function loadPRDetails() {"
+          },
+          {
+            "line": 31,
+            "type": "added",
+            "content": "            try {"
+          },
+          {
+            "line": 32,
+            "type": "added",
+            "content": "                const prNumber = getPRNumberFromURL();"
+          },
+          {
+            "line": 33,
+            "type": "added",
+            "content": "                if (!prNumber) return;"
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": "                const res = await axios.get(`http://localhost:3000/api/github/prs/${prNumber}`);"
+          },
+          {
+            "line": 36,
+            "type": "added",
+            "content": "                const pr = res.data;"
+          },
+          {
+            "line": 37,
+            "type": "added",
+            "content": "                // const pr = prs.find(p => p.number == prNumber);"
+          },
+          {
+            "line": 38,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 39,
+            "type": "added",
+            "content": "                const list = document.getElementById('prDetailsList');"
+          },
+          {
+            "line": 40,
+            "type": "added",
+            "content": "                list.innerHTML = '';"
+          },
+          {
+            "line": 41,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 42,
+            "type": "added",
+            "content": "                if (!pr || !pr.number) {"
+          },
+          {
+            "line": 43,
+            "type": "added",
+            "content": "                    list.innerHTML = '<li>PR non trouvée.</li>';"
+          },
+          {
+            "line": 44,
+            "type": "added",
+            "content": "                    return;"
+          },
+          {
+            "line": 45,
+            "type": "added",
+            "content": "                }"
+          },
+          {
+            "line": 46,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 47,
+            "type": "added",
+            "content": "                const li = document.createElement('li');"
+          },
+          {
+            "line": 48,
+            "type": "added",
+            "content": "                li.style.cursor = 'pointer';"
+          },
+          {
+            "line": 49,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 50,
+            "type": "added",
+            "content": "                const title = document.createElement('h3');"
+          },
+          {
+            "line": 51,
+            "type": "added",
+            "content": "                title.textContent = `PR #${pr.number} - ${pr.title}`;"
+          },
+          {
+            "line": 52,
+            "type": "added",
+            "content": "                li.appendChild(title);"
+          },
+          {
+            "line": 53,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 54,
+            "type": "added",
+            "content": "                const user = document.createElement('p');"
+          },
+          {
+            "line": 55,
+            "type": "added",
+            "content": "                user.textContent = `Auteur : ${pr.user.login} | État : ${pr.state}`;"
+          },
+          {
+            "line": 56,
+            "type": "added",
+            "content": "                li.appendChild(user);"
+          },
+          {
+            "line": 57,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 58,
+            "type": "added",
+            "content": "                const date = document.createElement('p');"
+          },
+          {
+            "line": 59,
+            "type": "added",
+            "content": "                date.textContent = `Créée le : ${new Date(pr.created_at).toLocaleString()}`;"
+          },
+          {
+            "line": 60,
+            "type": "added",
+            "content": "               "
+          },
+          {
+            "line": 61,
+            "type": "added",
+            "content": "                li.appendChild(date);"
+          },
+          {
+            "line": 62,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 63,
+            "type": "added",
+            "content": "                const toggleBtn = document.createElement('button');"
+          },
+          {
+            "line": 64,
+            "type": "added",
+            "content": "                toggleBtn.textContent = 'Voir les fichiers modifiés';"
+          },
+          {
+            "line": 65,
+            "type": "added",
+            "content": "                toggleBtn.onclick = () => {"
+          },
+          {
+            "line": 66,
+            "type": "added",
+            "content": "                    let fileList = li.querySelector('ul');"
+          },
+          {
+            "line": 67,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 68,
+            "type": "added",
+            "content": "                    if (fileList) {"
+          },
+          {
+            "line": 69,
+            "type": "added",
+            "content": "                        fileList.style.display = fileList.style.display === 'none' ? 'block' : 'none';"
+          },
+          {
+            "line": 70,
+            "type": "added",
+            "content": "                    } else {"
+          },
+          {
+            "line": 71,
+            "type": "added",
+            "content": "                        fileList = document.createElement('ul');"
+          },
+          {
+            "line": 72,
+            "type": "added",
+            "content": "                        (pr.files || []).forEach(file => {"
+          },
+          {
+            "line": 73,
+            "type": "added",
+            "content": "                            const fileItem = document.createElement('li');"
+          },
+          {
+            "line": 74,
+            "type": "added",
+            "content": "                            const link = document.createElement('a');"
+          },
+          {
+            "line": 75,
+            "type": "added",
+            "content": "                            link.href = `https://github.com/${pr.user.login}/${pr.repo}/pull/${pr.number}/files`;"
+          },
+          {
+            "line": 76,
+            "type": "added",
+            "content": "                            link.textContent = `${file.filename} (${file.status}) [+${file.additions} / -${file.deletions}]`;"
+          },
+          {
+            "line": 77,
+            "type": "added",
+            "content": "                            link.target = '_blank';"
+          },
+          {
+            "line": 78,
+            "type": "added",
+            "content": "                            fileItem.appendChild(link);"
+          },
+          {
+            "line": 79,
+            "type": "added",
+            "content": "                            fileList.appendChild(fileItem)"
+          },
+          {
+            "line": 80,
+            "type": "added",
+            "content": "                        });"
+          },
+          {
+            "line": 81,
+            "type": "added",
+            "content": "                        li.appendChild(fileList);"
+          },
+          {
+            "line": 82,
+            "type": "added",
+            "content": "                    }"
+          },
+          {
+            "line": 83,
+            "type": "added",
+            "content": "                };"
+          },
+          {
+            "line": 84,
+            "type": "added",
+            "content": "                li.appendChild(toggleBtn);"
+          },
+          {
+            "line": 85,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 86,
+            "type": "added",
+            "content": "                list.appendChild(li);"
+          },
+          {
+            "line": 87,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 88,
+            "type": "added",
+            "content": "            } catch (error) {"
+          },
+          {
+            "line": 89,
+            "type": "added",
+            "content": "                console.error('Erreur lors du chargement des détails des PRs :', error);"
+          },
+          {
+            "line": 90,
+            "type": "added",
+            "content": "            }"
+          },
+          {
+            "line": 91,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 92,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 93,
+            "type": "added",
+            "content": "        loadPRDetails();"
+          },
+          {
+            "line": 94,
+            "type": "added",
+            "content": "    </script>"
+          },
+          {
+            "line": 95,
+            "type": "added",
+            "content": "</body>"
+          },
+          {
+            "line": 96,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 97,
+            "type": "added",
+            "content": "</html>"
+          }
+        ]
+      },
+      {
+        "filename": "server.js",
+        "status": "modified",
+        "additions": 68,
+        "deletions": 3,
+        "changes": 71,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/5d6b613231aeb7501a5594890bc2793af19b3959/server.js",
+        "modifiedLines": [
+          {
+            "line": 10,
+            "type": "added",
+            "content": "require('./jobs/githubCron');"
+          },
+          {
+            "line": 42,
+            "type": "added",
+            "content": "    const page = parseInt(req.query.page) || 1;"
+          },
+          {
+            "line": 43,
+            "type": "added",
+            "content": "    const limit = parseInt(req.query.limit) || 10;"
+          },
+          {
+            "line": 44,
+            "type": "added",
+            "content": "    const skip = (page - 1) * limit;"
+          },
+          {
+            "line": 45,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 46,
+            "type": "added",
+            "content": "    const today = new Date();"
+          },
+          {
+            "line": 47,
+            "type": "added",
+            "content": "    today.setHours(0, 0, 0, 0);"
+          },
+          {
+            "line": 48,
+            "type": "added",
+            "content": "    const yesterday = new Date(today);"
+          },
+          {
+            "line": 49,
+            "type": "added",
+            "content": "    yesterday.setDate(today.getDate() - 1);"
+          },
+          {
+            "line": 50,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        // const dbName = new URL(uri).pathname.substring(1);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const prs = await collection.find().toArray();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        res.status(200).json(prs);"
+          },
+          {
+            "line": 56,
+            "type": "added",
+            "content": "        let query = {};"
+          },
+          {
+            "line": 57,
+            "type": "added",
+            "content": "        const dateParam = req.query.date;"
+          },
+          {
+            "line": 58,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 59,
+            "type": "added",
+            "content": "        if (dateParam) {"
+          },
+          {
+            "line": 60,
+            "type": "added",
+            "content": "            const selectedDate = new Date(dateParam);"
+          },
+          {
+            "line": 61,
+            "type": "added",
+            "content": "            selectedDate.setHours(0, 0, 0, 0);"
+          },
+          {
+            "line": 62,
+            "type": "added",
+            "content": "            const nextDay = new Date(selectedDate);"
+          },
+          {
+            "line": 63,
+            "type": "added",
+            "content": "            nextDay.setDate(selectedDate.getDate() + 1);"
+          },
+          {
+            "line": 64,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 65,
+            "type": "added",
+            "content": "            query.date = {"
+          },
+          {
+            "line": 66,
+            "type": "added",
+            "content": "                $gte: selectedDate,"
+          },
+          {
+            "line": 67,
+            "type": "added",
+            "content": "                $lt: nextDay"
+          },
+          {
+            "line": 68,
+            "type": "added",
+            "content": "            };"
+          },
+          {
+            "line": 69,
+            "type": "added",
+            "content": "        } else {"
+          },
+          {
+            "line": 70,
+            "type": "added",
+            "content": "            query.date = {"
+          },
+          {
+            "line": 71,
+            "type": "added",
+            "content": "                $gte: yesterday,"
+          },
+          {
+            "line": 72,
+            "type": "added",
+            "content": "                $lt: today"
+          },
+          {
+            "line": 73,
+            "type": "added",
+            "content": "            };"
+          },
+          {
+            "line": 74,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 75,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 76,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 77,
+            "type": "added",
+            "content": "        const prs = await collection.find(query).skip(skip).limit(limit).toArray();"
+          },
+          {
+            "line": 78,
+            "type": "added",
+            "content": "        const total = await collection.countDocuments(query);"
+          },
+          {
+            "line": 79,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 80,
+            "type": "added",
+            "content": "        res.status(200).json({"
+          },
+          {
+            "line": 81,
+            "type": "added",
+            "content": "            prs,"
+          },
+          {
+            "line": 82,
+            "type": "added",
+            "content": "            total,"
+          },
+          {
+            "line": 83,
+            "type": "added",
+            "content": "            page,"
+          },
+          {
+            "line": 84,
+            "type": "added",
+            "content": "            totalPages: Math.ceil(total / limit)"
+          },
+          {
+            "line": 85,
+            "type": "added",
+            "content": "        });"
+          },
+          {
+            "line": 93,
+            "type": "added",
+            "content": "app.get('/prs-details', (req, res) => {"
+          },
+          {
+            "line": 94,
+            "type": "added",
+            "content": "    res.sendFile(path.resolve(__dirname, 'public', 'pr-details.html'));"
+          },
+          {
+            "line": 95,
+            "type": "added",
+            "content": "});"
+          },
+          {
+            "line": 96,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 97,
+            "type": "added",
+            "content": "app.get('/api/github/prs/:number', async (req, res) => {"
+          },
+          {
+            "line": 98,
+            "type": "added",
+            "content": "    const client = new MongoClient(uri);"
+          },
+          {
+            "line": 99,
+            "type": "added",
+            "content": "    const prNumber = parseInt(req.params.number);"
+          },
+          {
+            "line": 100,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 101,
+            "type": "added",
+            "content": "    try {"
+          },
+          {
+            "line": 102,
+            "type": "added",
+            "content": "        await client.connect();"
+          },
+          {
+            "line": 103,
+            "type": "added",
+            "content": "        const db = client.db(DB_NAME);"
+          },
+          {
+            "line": 104,
+            "type": "added",
+            "content": "        const collection = db.collection('pr_merge');"
+          },
+          {
+            "line": 105,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 106,
+            "type": "added",
+            "content": "        const pr = await collection.findOne({ number: prNumber });"
+          },
+          {
+            "line": 107,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 108,
+            "type": "added",
+            "content": "        if (!pr) {"
+          },
+          {
+            "line": 109,
+            "type": "added",
+            "content": "            return res.status(404).json({ error: 'PR non trouvée.' });"
+          },
+          {
+            "line": 110,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 111,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 112,
+            "type": "added",
+            "content": "        res.status(200).json(pr);"
+          },
+          {
+            "line": 113,
+            "type": "added",
+            "content": "    } catch (error) {"
+          },
+          {
+            "line": 114,
+            "type": "added",
+            "content": "        res.status(500).json({ error: 'Erreur lors de la récupération de la PR.' });"
+          },
+          {
+            "line": 115,
+            "type": "added",
+            "content": "    } finally {"
+          },
+          {
+            "line": 116,
+            "type": "added",
+            "content": "        await client.close();"
+          },
+          {
+            "line": 117,
+            "type": "added",
+            "content": "    }"
+          },
+          {
+            "line": 118,
+            "type": "added",
+            "content": "});"
+          },
+          {
+            "line": 119,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 120,
+            "type": "added",
+            "content": ""
+          }
+        ],
+        "diff": []
+      }
+    ],
+    "id": 2874768908,
+    "repo": "projet_1_back",
+    "state": "closed",
+    "title": "mise en place du githubCron",
+    "updated_at": "2025-09-30T14:10:44.000Z",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false
+    }
+  },
+  {
+    "_id": "68dfb95c5b492148af804c09",
+    "number": 9,
+    "created_at": "2025-09-30T13:18:39.000Z",
+    "date": "2025-10-13T08:46:57.740Z",
+    "files": [
+      {
+        "filename": "bd/connect.js",
+        "status": "modified",
+        "additions": 2,
+        "deletions": 2,
+        "changes": 4,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/2df480e7171df6f163c7b81b3eceeba11ad0ff92/bd%2Fconnect.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "// require('dotenv').config();"
+          },
+          {
+            "line": 1,
+            "type": "added",
+            "content": "require('dotenv').config();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                const dbName = \"sebastienfournest_db_user\";"
+          },
+          {
+            "line": 12,
+            "type": "added",
+            "content": "                const dbName = process.env.DB_NAME || \"sebastienfournest_db_user\";"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "controller/user.js",
+        "status": "modified",
+        "additions": 14,
+        "deletions": 7,
+        "changes": 21,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/2df480e7171df6f163c7b81b3eceeba11ad0ff92/controller%2Fuser.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        if (!name || !email || !phone) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            return res.status(400).json({ error: 'Name and email are required' });"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        }"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const existingUser = await dbUser.bd().collection('users').findOne({ email: email, _id: { $ne: id } });"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        if (existingUser) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            return res.status(409).json({ error: 'Email already used by another user' });"
+          },
+          {
+            "line": 70,
+            "type": "added",
+            "content": "        const updateFields = {};"
+          },
+          {
+            "line": 71,
+            "type": "added",
+            "content": "        if (name) updateFields.name = name;"
+          },
+          {
+            "line": 72,
+            "type": "added",
+            "content": "        if (email) updateFields.email = email;"
+          },
+          {
+            "line": 73,
+            "type": "added",
+            "content": "        if (phone) updateFields.phone = phone;"
+          },
+          {
+            "line": 74,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 75,
+            "type": "added",
+            "content": "        if (Object.keys(updateFields).length === 0) {"
+          },
+          {
+            "line": 76,
+            "type": "added",
+            "content": "            return res.status(400).json({ error: 'Aucun champ à mettre à jour' });"
+          },
+          {
+            "line": 78,
+            "type": "added",
+            "content": "        if (email) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const result = await dbUser.bd().collection('users').updateOne({ _id: id }, { $set: { name: name, email: email, phone: phone } });"
+          },
+          {
+            "line": 80,
+            "type": "added",
+            "content": "            const existingUser = await dbUser.bd().collection('users').findOne({ email: email, _id: { $ne: id } });"
+          },
+          {
+            "line": 81,
+            "type": "added",
+            "content": "            if (existingUser) {"
+          },
+          {
+            "line": 82,
+            "type": "added",
+            "content": "                return res.status(409).json({ error: 'Email already used by another user' });"
+          },
+          {
+            "line": 83,
+            "type": "added",
+            "content": "            }"
+          },
+          {
+            "line": 84,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 85,
+            "type": "added",
+            "content": "        const result = await dbUser.bd().collection('users').updateOne({ _id: id }, { $set: updateFields });"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "fetchPRs.js",
+        "status": "modified",
+        "additions": 24,
+        "deletions": 27,
+        "changes": 51,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/2df480e7171df6f163c7b81b3eceeba11ad0ff92/fetchPRs.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "// require('dotenv').config();"
+          },
+          {
+            "line": 1,
+            "type": "added",
+            "content": "require('dotenv').config();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const GITHUB_TOKEN = \"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\";"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const MONGODB_URI = \"mongodb+srv://sebastienfournest_db_user:R%40oulsky85@sebastien.xv9iiw3.mongodb.net/sebastienfournest_db_user?retryWrites=true&w=majority&appName=sebastien\";"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const GITHUB_OWNER = \"fournest85\";"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const GITHUB_REPO = \"projet_1\";"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const DB_NAME = \"sebastienfournest_db_user\";"
+          },
+          {
+            "line": 5,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 6,
+            "type": "added",
+            "content": "const GITHUB_TOKEN = process.env.GITHUB_TOKEN;"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "const MONGODB_URI = process.env.MONGODB_URI;"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "const GITHUB_OWNER = process.env.GITHUB_OWNER;"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "const GITHUB_REPO = process.env.GITHUB_REPO;"
+          },
+          {
+            "line": 10,
+            "type": "added",
+            "content": "const DB_NAME = process.env.DB_NAME;"
+          },
+          {
+            "line": 11,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    Authorization: `token ${GITHUB_TOKEN}`,"
+          },
+          {
+            "line": 15,
+            "type": "added",
+            "content": "    Authorization: `Bearer ${GITHUB_TOKEN}`,"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": ""
+          },
+          {
+            "line": 30,
+            "type": "added",
+            "content": "        // console.log('Token utilisé :', process.env.GITHUB_TOKEN);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const operations = prs.map(pr => ({"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            updateOne: {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                filter: { id: pr.id },"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                update: {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    $set: {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                        id: pr.id,"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                        title: pr.title,"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                        user: pr.user,"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                        state: pr.state,"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                        created_at: pr.created_at,"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                        updated_at: pr.updated_at,"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                        url: pr.html_url"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    }"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                },"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                upsert: true"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            }"
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": "        await collection.deleteMany({});"
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 36,
+            "type": "added",
+            "content": "        const docs = prs.map(pr => ({"
+          },
+          {
+            "line": 37,
+            "type": "added",
+            "content": "            id: pr.id,"
+          },
+          {
+            "line": 38,
+            "type": "added",
+            "content": "            title: pr.title,"
+          },
+          {
+            "line": 39,
+            "type": "added",
+            "content": "            user: pr.user,"
+          },
+          {
+            "line": 40,
+            "type": "added",
+            "content": "            state: pr.state,"
+          },
+          {
+            "line": 41,
+            "type": "added",
+            "content": "            created_at: pr.created_at,"
+          },
+          {
+            "line": 42,
+            "type": "added",
+            "content": "            updated_at: pr.updated_at,"
+          },
+          {
+            "line": 43,
+            "type": "added",
+            "content": "            html_url: pr.html_url"
+          },
+          {
+            "line": 44,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        if (operations.length > 0) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            const result = await collection.bulkWrite(operations);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            console.log(`✅ ${result.upsertedCount + result.modifiedCount} PRs enregistrées.`);"
+          },
+          {
+            "line": 47,
+            "type": "added",
+            "content": "        if (docs.length > 0) {"
+          },
+          {
+            "line": 48,
+            "type": "added",
+            "content": "            await collection.insertMany(docs);"
+          },
+          {
+            "line": 49,
+            "type": "added",
+            "content": "            console.log(`✅ ${docs.length} PRs enregistrées.`);"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "model/user.js",
+        "status": "modified",
+        "additions": 6,
+        "deletions": 3,
+        "changes": 9,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/2df480e7171df6f163c7b81b3eceeba11ad0ff92/model%2Fuser.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "class User  {   "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    constructor(name, email, phone) {"
+          },
+          {
+            "line": 1,
+            "type": "added",
+            "content": "class User {"
+          },
+          {
+            "line": 2,
+            "type": "added",
+            "content": "    constructor(name, email, phone, githubId=null, githubUrl=null) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        this.email = email; "
+          },
+          {
+            "line": 4,
+            "type": "added",
+            "content": "        this.email = email;"
+          },
+          {
+            "line": 6,
+            "type": "added",
+            "content": "        this.githubId = githubId;"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "        this.githubUrl = githubUrl;"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": ""
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "public/index.html",
+        "status": "modified",
+        "additions": 37,
+        "deletions": 12,
+        "changes": 49,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/2df480e7171df6f163c7b81b3eceeba11ad0ff92/public%2Findex.html",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            <input type=\"text\" id=\"name\" placeholder=\"Nom\" required>"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            <input type=\"email\" id=\"email\" placeholder=\"Email\" required>"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            <input type=\"text\" id=\"phone\" placeholder=\"Téléphone\" required>"
+          },
+          {
+            "line": 17,
+            "type": "added",
+            "content": "            <input type=\"text\" id=\"name\" placeholder=\"Nom\" >"
+          },
+          {
+            "line": 18,
+            "type": "added",
+            "content": "            <input type=\"email\" id=\"email\" placeholder=\"Email\" >"
+          },
+          {
+            "line": 19,
+            "type": "added",
+            "content": "            <input type=\"text\" id=\"phone\" placeholder=\"Téléphone\" >"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        <h2>Liste des utilisateurs</h2>"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        <ul id=\"userList\"></ul>"
+          },
+          {
+            "line": 26,
+            "type": "added",
+            "content": "        <div class=\"lists-container\">"
+          },
+          {
+            "line": 27,
+            "type": "added",
+            "content": "            <div class=\"list-block\">"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        <h2>Liste des Pull Requests GitHub</h2>"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        <ul id=\"prList\"></ul>"
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "                <h2><a href=\"http://localhost:3000/api/users\" target=\"_blank\">Liste des utilisateurs</a></h2>"
+          },
+          {
+            "line": 30,
+            "type": "added",
+            "content": "                <button onclick=\"syncGitHubUsers()\">Synchroniser les utilisateurs GitHub</button>"
+          },
+          {
+            "line": 31,
+            "type": "added",
+            "content": "                <ul id=\"userList\"></ul>"
+          },
+          {
+            "line": 32,
+            "type": "added",
+            "content": "            </div>"
+          },
+          {
+            "line": 33,
+            "type": "added",
+            "content": "            <div class=\"list-block\">"
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": "                <h2><a href=\"http://localhost:3000/api/github/prs/list\" target=\"_blank\">Liste des Pull Requests"
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": "                        GitHub</a></h2>"
+          },
+          {
+            "line": 36,
+            "type": "added",
+            "content": "                <ul id=\"prList\"></ul>"
+          },
+          {
+            "line": 37,
+            "type": "added",
+            "content": "            </div>"
+          },
+          {
+            "line": 38,
+            "type": "added",
+            "content": "        </div>"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    const link = document.createElement('a');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    link.href = pr.html_url; // lien vers la PR sur GitHub"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    link.textContent = `${pr.title} - ${pr.user.login} (${pr.state})`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    link.target = \"_blank\"; // ouvre dans un nouvel onglet"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    li.appendChild(link);"
+          },
+          {
+            "line": 112,
+            "type": "added",
+            "content": "                    if (pr.html_url) {"
+          },
+          {
+            "line": 113,
+            "type": "added",
+            "content": "                        const link = document.createElement('a');"
+          },
+          {
+            "line": 114,
+            "type": "added",
+            "content": "                        link.href = pr.html_url;"
+          },
+          {
+            "line": 115,
+            "type": "added",
+            "content": "                        link.textContent = `${pr.title} - ${pr.user.login} (${pr.state})`;"
+          },
+          {
+            "line": 116,
+            "type": "added",
+            "content": "                        link.target = \"_blank\";"
+          },
+          {
+            "line": 117,
+            "type": "added",
+            "content": "                        li.appendChild(link);"
+          },
+          {
+            "line": 118,
+            "type": "added",
+            "content": "                    } else {"
+          },
+          {
+            "line": 119,
+            "type": "added",
+            "content": "                        li.textContent = `${pr.title} - ${pr.user.login} (${pr.state}) [lien manquant]`;"
+          },
+          {
+            "line": 120,
+            "type": "added",
+            "content": "                    }"
+          },
+          {
+            "line": 121,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 131,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 132,
+            "type": "added",
+            "content": "        async function syncGitHubUsers() {"
+          },
+          {
+            "line": 133,
+            "type": "added",
+            "content": "            try {"
+          },
+          {
+            "line": 134,
+            "type": "added",
+            "content": "                const res = await axios.get('http://localhost:3000/api/prs/sync-users');"
+          },
+          {
+            "line": 135,
+            "type": "added",
+            "content": "                alert(res.data.message);"
+          },
+          {
+            "line": 136,
+            "type": "added",
+            "content": "                loadUsers(); // recharge la liste des utilisateurs"
+          },
+          {
+            "line": 137,
+            "type": "added",
+            "content": "            } catch (err) {"
+          },
+          {
+            "line": 138,
+            "type": "added",
+            "content": "                alert('Erreur : ' + (err.response?.data?.error || err.message));"
+          },
+          {
+            "line": 139,
+            "type": "added",
+            "content": "            }"
+          },
+          {
+            "line": 140,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 141,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 142,
+            "type": "added",
+            "content": ""
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "public/style.css",
+        "status": "modified",
+        "additions": 20,
+        "deletions": 2,
+        "changes": 22,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/2df480e7171df6f163c7b81b3eceeba11ad0ff92/public%2Fstyle.css",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    max-width: 500px;"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "    max-width: 1000px; /* élargi pour accueillir les deux colonnes */"
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "    margin-bottom: 20px;"
+          },
+          {
+            "line": 43,
+            "type": "added",
+            "content": ".lists-container {"
+          },
+          {
+            "line": 44,
+            "type": "added",
+            "content": "    display: flex;"
+          },
+          {
+            "line": 45,
+            "type": "added",
+            "content": "    gap: 40px;"
+          },
+          {
+            "line": 46,
+            "type": "added",
+            "content": "    justify-content: space-between;"
+          },
+          {
+            "line": 47,
+            "type": "added",
+            "content": "    align-items: flex-start;"
+          },
+          {
+            "line": 48,
+            "type": "added",
+            "content": "    flex-wrap: wrap; /* pour que ça reste responsive */"
+          },
+          {
+            "line": 49,
+            "type": "added",
+            "content": "}"
+          },
+          {
+            "line": 50,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 51,
+            "type": "added",
+            "content": ".list-block {"
+          },
+          {
+            "line": 52,
+            "type": "added",
+            "content": "    flex: 1;"
+          },
+          {
+            "line": 53,
+            "type": "added",
+            "content": "    min-width: 300px;"
+          },
+          {
+            "line": 54,
+            "type": "added",
+            "content": "}"
+          },
+          {
+            "line": 55,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "li {"
+          },
+          {
+            "line": 61,
+            "type": "added",
+            "content": "ul li {"
+          },
+          {
+            "line": 67,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 68,
+            "type": "added",
+            "content": "ul li:nth-child(odd) {"
+          },
+          {
+            "line": 69,
+            "type": "added",
+            "content": "    background-color: #f9f9f9;"
+          },
+          {
+            "line": 70,
+            "type": "added",
+            "content": "}"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "route/pr.js",
+        "status": "modified",
+        "additions": 6,
+        "deletions": 2,
+        "changes": 8,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/2df480e7171df6f163c7b81b3eceeba11ad0ff92/route%2Fpr.js",
+        "modifiedLines": [
+          {
+            "line": 1,
+            "type": "added",
+            "content": "require('dotenv').config();"
+          },
+          {
+            "line": 2,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const MONGODB_URI = \"mongodb+srv://sebastienfournest_db_user:R%40oulsky85@sebastien.xv9iiw3.mongodb.net/sebastienfournest_db_user?retryWrites=true&w=majority&appName=sebastien\";"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const DB_NAME = \"sebastienfournest_db_user\";"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "const MONGODB_URI = process.env.MONGODB_URI;"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "const DB_NAME = process.env.DB_NAME;"
+          },
+          {
+            "line": 10,
+            "type": "added",
+            "content": ""
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "route/user.js",
+        "status": "modified",
+        "additions": 59,
+        "deletions": 1,
+        "changes": 60,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/2df480e7171df6f163c7b81b3eceeba11ad0ff92/route%2Fuser.js",
+        "modifiedLines": [
+          {
+            "line": 1,
+            "type": "added",
+            "content": "require('dotenv').config();"
+          },
+          {
+            "line": 2,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const { createUser, getAllUsers, getUser,updateUser, deleteUser } = require('../controller/user');"
+          },
+          {
+            "line": 4,
+            "type": "added",
+            "content": "const { createUser, getAllUsers, getUser, updateUser, deleteUser } = require('../controller/user');"
+          },
+          {
+            "line": 5,
+            "type": "added",
+            "content": "const { User } = require('../model/user');"
+          },
+          {
+            "line": 6,
+            "type": "added",
+            "content": "const dbUser = require('../bd/connect');"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "const GITHUB_TOKEN = process.env.GITHUB_TOKEN;"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 18,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 19,
+            "type": "added",
+            "content": "router.get('/prs/sync-users', async (req, res) => {"
+          },
+          {
+            "line": 20,
+            "type": "added",
+            "content": "    try {"
+          },
+          {
+            "line": 21,
+            "type": "added",
+            "content": "        const prCollection = dbUser.bd().collection('pr_merge');"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "        const userCollection = dbUser.bd().collection('users');"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "        const prs = await prCollection.find().toArray();"
+          },
+          {
+            "line": 25,
+            "type": "added",
+            "content": "        let insertedCount = 0;"
+          },
+          {
+            "line": 26,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 27,
+            "type": "added",
+            "content": "        for (const pr of prs) {"
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "            const githubUser = pr.user;"
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 30,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 31,
+            "type": "added",
+            "content": "            const exists = await userCollection.findOne({ githubId: githubUser.id });"
+          },
+          {
+            "line": 32,
+            "type": "added",
+            "content": "            if (!exists) {"
+          },
+          {
+            "line": 33,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": "                const headers = {"
+          },
+          {
+            "line": 36,
+            "type": "added",
+            "content": "                    Authorization: `Bearer ${GITHUB_TOKEN}`,"
+          },
+          {
+            "line": 37,
+            "type": "added",
+            "content": "                    Accept: 'application/vnd.github.v3+json'"
+          },
+          {
+            "line": 38,
+            "type": "added",
+            "content": "                };"
+          },
+          {
+            "line": 39,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 40,
+            "type": "added",
+            "content": "                let email = '';"
+          },
+          {
+            "line": 41,
+            "type": "added",
+            "content": "                try {"
+          },
+          {
+            "line": 42,
+            "type": "added",
+            "content": "                    const userDetails = await axios.get(`https://api.github.com/users/${githubUser.login}`, { headers });"
+          },
+          {
+            "line": 43,
+            "type": "added",
+            "content": "                    email = userDetails.data.email || ''; // peut être null"
+          },
+          {
+            "line": 44,
+            "type": "added",
+            "content": "                } catch (err) {"
+          },
+          {
+            "line": 45,
+            "type": "added",
+            "content": "                    console.warn(`Impossible de récupérer l'email pour ${githubUser.login}`);"
+          },
+          {
+            "line": 46,
+            "type": "added",
+            "content": "                }"
+          },
+          {
+            "line": 47,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 48,
+            "type": "added",
+            "content": "                const newUser = new User("
+          },
+          {
+            "line": 49,
+            "type": "added",
+            "content": "                    githubUser.login,"
+          },
+          {
+            "line": 50,
+            "type": "added",
+            "content": "                    '', // email non fourni"
+          },
+          {
+            "line": 51,
+            "type": "added",
+            "content": "                    '',"
+          },
+          {
+            "line": 52,
+            "type": "added",
+            "content": "                    githubUser.id,"
+          },
+          {
+            "line": 53,
+            "type": "added",
+            "content": "                    githubUser.html_url"
+          },
+          {
+            "line": 54,
+            "type": "added",
+            "content": "                );"
+          },
+          {
+            "line": 55,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 56,
+            "type": "added",
+            "content": "                await userCollection.insertOne(newUser);"
+          },
+          {
+            "line": 57,
+            "type": "added",
+            "content": "                insertedCount++;"
+          },
+          {
+            "line": 58,
+            "type": "added",
+            "content": "            }"
+          },
+          {
+            "line": 59,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 60,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 61,
+            "type": "added",
+            "content": "        res.status(200).json({ message: `${insertedCount} utilisateur(s) GitHub ajouté(s).` });"
+          },
+          {
+            "line": 62,
+            "type": "added",
+            "content": "    } catch (err) {"
+          },
+          {
+            "line": 63,
+            "type": "added",
+            "content": "        console.error('Erreur sync-users :', err);"
+          },
+          {
+            "line": 64,
+            "type": "added",
+            "content": "        res.status(500).json({ error: 'Erreur lors de la synchronisation des utilisateurs GitHub.' });"
+          },
+          {
+            "line": 65,
+            "type": "added",
+            "content": "    }"
+          },
+          {
+            "line": 66,
+            "type": "added",
+            "content": "});"
+          },
+          {
+            "line": 67,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 68,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 69,
+            "type": "added",
+            "content": ""
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "server.js",
+        "status": "modified",
+        "additions": 7,
+        "deletions": 5,
+        "changes": 12,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/2df480e7171df6f163c7b81b3eceeba11ad0ff92/server.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "// require('dotenv').config();"
+          },
+          {
+            "line": 1,
+            "type": "added",
+            "content": "require('dotenv').config();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const API_URL = 'http://localhost:3000/api/users';"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const port = 3000"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const uri = \"mongodb+srv://sebastienfournest_db_user:R%40oulsky85@sebastien.xv9iiw3.mongodb.net/sebastienfournest_db_user?retryWrites=true&w=majority&appName=sebastien\";"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const DB_NAME = \"sebastienfournest_db_user\";"
+          },
+          {
+            "line": 13,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 14,
+            "type": "added",
+            "content": "const API_URL = process.env.API_URL;"
+          },
+          {
+            "line": 15,
+            "type": "added",
+            "content": "const port = process.env.PORT || 3000;"
+          },
+          {
+            "line": 16,
+            "type": "added",
+            "content": "const uri = process.env.MONGODB_URI;"
+          },
+          {
+            "line": 17,
+            "type": "added",
+            "content": "const DB_NAME = process.env.DB_NAME;"
+          },
+          {
+            "line": 18,
+            "type": "added",
+            "content": ""
+          }
+        ],
+        "diff": []
+      }
+    ],
+    "id": 2874539433,
+    "repo": "projet_1_back",
+    "state": "closed",
+    "title": "mise à jour de la branche master",
+    "updated_at": "2025-09-30T13:18:56.000Z",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false
+    }
+  },
+  {
+    "_id": "68e62f88695e0252abb68802",
+    "number": 11,
+    "created_at": "2025-09-30T14:14:20.000Z",
+    "date": "2025-10-13T08:46:48.245Z",
+    "files": [],
+    "id": 2874787446,
+    "repo": "projet_1_back",
+    "state": "closed",
+    "title": "recupération du retard.",
+    "updated_at": "2025-09-30T14:14:29.000Z",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false
+    }
+  }
+]

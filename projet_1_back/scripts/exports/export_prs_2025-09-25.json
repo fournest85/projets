@@ -1,0 +1,227 @@
+[
+  {
+    "_id": "68dfb9695b492148af804c11",
+    "number": 1,
+    "created_at": "2025-09-25T09:18:30.000Z",
+    "date": "2025-10-09T12:41:33.891Z",
+    "files": [
+      {
+        "filename": "controller/user.js",
+        "status": "modified",
+        "additions": 6,
+        "deletions": 6,
+        "changes": 12,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/2ee2966ff06b8351cc490aca660b013ec72ff129/controller%2Fuser.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        if (!req.body.name || !req.body.email) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            return res.status(400).json({ error: 'Name and email are required' });"
+          },
+          {
+            "line": 10,
+            "type": "added",
+            "content": "        if (!req.body.name || !req.body.email || !req.body.phone) {"
+          },
+          {
+            "line": 11,
+            "type": "added",
+            "content": "            return res.status(400).json({ error: 'Name, email and phone are required' });"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        let user = new User(req.body.name, req.body.email);"
+          },
+          {
+            "line": 19,
+            "type": "added",
+            "content": "        let user = new User(req.body.name, req.body.email, req.body.phone);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const { name, email } = req.body;"
+          },
+          {
+            "line": 67,
+            "type": "added",
+            "content": "        const { name, email, phone } = req.body;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        if (!name || !email) {"
+          },
+          {
+            "line": 69,
+            "type": "added",
+            "content": "        if (!name || !email || !phone) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const result = await dbUser.bd().collection('users').updateOne({ _id: id }, { $set: { name: name, email: email } });"
+          },
+          {
+            "line": 78,
+            "type": "added",
+            "content": "        const result = await dbUser.bd().collection('users').updateOne({ _id: id }, { $set: { name: name, email: email, phone: phone } });"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "model/user.js",
+        "status": "modified",
+        "additions": 2,
+        "deletions": 1,
+        "changes": 3,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/2ee2966ff06b8351cc490aca660b013ec72ff129/model%2Fuser.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    constructor(name, email) {"
+          },
+          {
+            "line": 2,
+            "type": "added",
+            "content": "    constructor(name, email, phone) {"
+          },
+          {
+            "line": 5,
+            "type": "added",
+            "content": "        this.phone = phone;"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "public/index.html",
+        "status": "modified",
+        "additions": 4,
+        "deletions": 2,
+        "changes": 6,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/2ee2966ff06b8351cc490aca660b013ec72ff129/public%2Findex.html",
+        "modifiedLines": [
+          {
+            "line": 17,
+            "type": "added",
+            "content": "            <input type=\"text\" id=\"phone\" placeholder=\"Téléphone\" required>"
+          },
+          {
+            "line": 36,
+            "type": "added",
+            "content": "            const phone = document.getElementById('phone').value;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            const user = { name, email };"
+          },
+          {
+            "line": 38,
+            "type": "added",
+            "content": "            const user = { name, email, phone };"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    li.textContent = `${user.name} (${user.email}) - ID: ${user._id}`;"
+          },
+          {
+            "line": 75,
+            "type": "added",
+            "content": "                    li.textContent = `${user.name} (${user.email}) (${user.phone}) - ID: ${user._id}`;"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "server.js",
+        "status": "modified",
+        "additions": 10,
+        "deletions": 1,
+        "changes": 11,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/2ee2966ff06b8351cc490aca660b013ec72ff129/server.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const { connecter } = require(\"./bd/connect\");"
+          },
+          {
+            "line": 3,
+            "type": "added",
+            "content": "const { connecter, bd } = require(\"./bd/connect\");"
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "        // Mise à jour des utilisateurs : ajout du champ 'phone' si absent"
+          },
+          {
+            "line": 30,
+            "type": "added",
+            "content": "        // bd().collection('users').updateMany("
+          },
+          {
+            "line": 31,
+            "type": "added",
+            "content": "        //     { phone: { $exists: false } }, // uniquement ceux qui n'ont pas le champ"
+          },
+          {
+            "line": 32,
+            "type": "added",
+            "content": "        //     { $set: { phone: null } }      // ajoute le champ avec valeur null"
+          },
+          {
+            "line": 33,
+            "type": "added",
+            "content": "        // ).then(result => {"
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": "        //     console.log(`${result.modifiedCount} utilisateurs mis à jour avec le champ 'phone'.`);"
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": "        // }).catch(error => {"
+          },
+          {
+            "line": 36,
+            "type": "added",
+            "content": "        //     console.error('Erreur lors de la mise à jour des utilisateurs :', error);"
+          },
+          {
+            "line": 37,
+            "type": "added",
+            "content": "        // });"
+          }
+        ],
+        "diff": []
+      }
+    ],
+    "id": 2859885300,
+    "repo": "projet_1_back",
+    "state": "closed",
+    "title": "creation du formulaire et creation du champ phone",
+    "updated_at": "2025-09-25T09:20:33.000Z",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false
+    }
+  }
+]
