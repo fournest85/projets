@@ -1,0 +1,2524 @@
+[
+  {
+    "_id": "68dfb95e5b492148af804c0c",
+    "number": 6,
+    "created_at": "2025-09-26T11:40:43.000Z",
+    "date": "2025-10-09T12:47:25.745Z",
+    "files": [
+      {
+        "filename": "public/index.html",
+        "status": "modified",
+        "additions": 21,
+        "deletions": 15,
+        "changes": 36,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/33ec03d2e29cf9e32139c422e4e00771288ae3dc/public%2Findex.html",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        "
+          },
+          {
+            "line": 89,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                "
+          },
+          {
+            "line": 96,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                "
+          },
+          {
+            "line": 100,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 101,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            const li = document.createElement('li');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            li.textContent = `${pr.title} - ${pr.user.login} (${pr.state})`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            prList.appendChild(li);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        });"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    } catch (err) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        console.error('Erreur chargement des PR :', err);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    }"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "}"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "loadUsers();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "loadPRs();"
+          },
+          {
+            "line": 103,
+            "type": "added",
+            "content": "                    const li = document.createElement('li');"
+          },
+          {
+            "line": 104,
+            "type": "added",
+            "content": "                    const link = document.createElement('a');"
+          },
+          {
+            "line": 105,
+            "type": "added",
+            "content": "                    link.href = pr.html_url; // lien vers la PR sur GitHub"
+          },
+          {
+            "line": 106,
+            "type": "added",
+            "content": "                    link.textContent = `${pr.title} - ${pr.user.login} (${pr.state})`;"
+          },
+          {
+            "line": 107,
+            "type": "added",
+            "content": "                    link.target = \"_blank\"; // ouvre dans un nouvel onglet"
+          },
+          {
+            "line": 108,
+            "type": "added",
+            "content": "                    li.appendChild(link);"
+          },
+          {
+            "line": 109,
+            "type": "added",
+            "content": "                    prList.appendChild(li);"
+          },
+          {
+            "line": 110,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 111,
+            "type": "added",
+            "content": "                });"
+          },
+          {
+            "line": 112,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 113,
+            "type": "added",
+            "content": "            } catch (err) {"
+          },
+          {
+            "line": 114,
+            "type": "added",
+            "content": "                console.error('Erreur chargement des PR :', err);"
+          },
+          {
+            "line": 115,
+            "type": "added",
+            "content": "            }"
+          },
+          {
+            "line": 116,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 117,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 118,
+            "type": "added",
+            "content": "        loadUsers();"
+          },
+          {
+            "line": 119,
+            "type": "added",
+            "content": "        loadPRs();"
+          }
+        ],
+        "diff": []
+      }
+    ],
+    "id": 2863791462,
+    "repo": "projet_1_back",
+    "state": "closed",
+    "title": "essai de lien pour afficher les pr",
+    "updated_at": "2025-09-26T11:41:51.000Z",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false
+    }
+  },
+  {
+    "_id": "68dfb9625b492148af804c0d",
+    "number": 5,
+    "created_at": "2025-09-26T09:42:46.000Z",
+    "date": "2025-10-09T12:47:30.905Z",
+    "files": [
+      {
+        "filename": "bd/connect.js",
+        "status": "modified",
+        "additions": 5,
+        "deletions": 5,
+        "changes": 10,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/3c7a1aa2e577c853a514b9e8bdc0c03660a4a7ea/bd%2Fconnect.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "require('dotenv').config();"
+          },
+          {
+            "line": 1,
+            "type": "added",
+            "content": "// require('dotenv').config();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                const dbName = process.env.DB_NAME || new URL(uri).pathname.substring(1);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                if (!process.env.DB_NAME) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                    console.warn('⚠️ DB_NAME non défini dans .env, utilisation du nom extrait de l\\'URI :', dbName);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                }"
+          },
+          {
+            "line": 12,
+            "type": "added",
+            "content": "                const dbName = \"sebastienfournest_db_user\";"
+          },
+          {
+            "line": 13,
+            "type": "added",
+            "content": "                // if (!process.env.DB_NAME) {"
+          },
+          {
+            "line": 14,
+            "type": "added",
+            "content": "                //     console.warn('⚠️ DB_NAME non défini dans .env, utilisation du nom extrait de l\\'URI :', dbName);"
+          },
+          {
+            "line": 15,
+            "type": "added",
+            "content": "                // }"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "fetchPRs.js",
+        "status": "modified",
+        "additions": 10,
+        "deletions": 5,
+        "changes": 15,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/3c7a1aa2e577c853a514b9e8bdc0c03660a4a7ea/fetchPRs.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "require('dotenv').config();"
+          },
+          {
+            "line": 1,
+            "type": "added",
+            "content": "// require('dotenv').config();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const { GITHUB_TOKEN, MONGODB_URI, GITHUB_OWNER, GITHUB_REPO } = process.env;"
+          },
+          {
+            "line": 5,
+            "type": "added",
+            "content": "const GITHUB_TOKEN = \"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\";"
+          },
+          {
+            "line": 6,
+            "type": "added",
+            "content": "const MONGODB_URI = \"mongodb+srv://sebastienfournest_db_user:R%40oulsky85@sebastien.xv9iiw3.mongodb.net/sebastienfournest_db_user?retryWrites=true&w=majority&appName=sebastien\";"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "const GITHUB_OWNER = \"fournest85\";"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "const GITHUB_REPO = \"projet_1\";"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "const DB_NAME = \"sebastienfournest_db_user\";"
+          },
+          {
+            "line": 10,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const githubApiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/pulls`;"
+          },
+          {
+            "line": 17,
+            "type": "added",
+            "content": "const githubApiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/pulls?state=all`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const dbName = new URL(MONGODB_URI).pathname.substring(1); "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const db = client.db(dbName);"
+          },
+          {
+            "line": 25,
+            "type": "added",
+            "content": "        // const dbName = new URL(MONGODB_URI).pathname.substring(1); "
+          },
+          {
+            "line": 26,
+            "type": "added",
+            "content": "        const db = client.db(DB_NAME);"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "package-lock.json",
+        "status": "modified",
+        "additions": 150,
+        "deletions": 1,
+        "changes": 151,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/3c7a1aa2e577c853a514b9e8bdc0c03660a4a7ea/package-lock.json",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        \"nodemon\": \"^3.1.10\""
+          },
+          {
+            "line": 16,
+            "type": "added",
+            "content": "        \"nodemon\": \"^3.1.10\","
+          },
+          {
+            "line": 17,
+            "type": "added",
+            "content": "        \"open\": \"^10.2.0\""
+          },
+          {
+            "line": 156,
+            "type": "added",
+            "content": "    \"node_modules/bundle-name\": {"
+          },
+          {
+            "line": 157,
+            "type": "added",
+            "content": "      \"version\": \"4.1.0\","
+          },
+          {
+            "line": 158,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/bundle-name/-/bundle-name-4.1.0.tgz\","
+          },
+          {
+            "line": 159,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-tjwM5exMg6BGRI+kNmTntNsvdZS1X8BFYS6tnJ2hdH0kVxM6/eVZ2xy+FqStSWvYmtfFMDLIxurorHwDKfDz5Q==\","
+          },
+          {
+            "line": 160,
+            "type": "added",
+            "content": "      \"license\": \"MIT\","
+          },
+          {
+            "line": 161,
+            "type": "added",
+            "content": "      \"dependencies\": {"
+          },
+          {
+            "line": 162,
+            "type": "added",
+            "content": "        \"run-applescript\": \"^7.0.0\""
+          },
+          {
+            "line": 163,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 164,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 165,
+            "type": "added",
+            "content": "        \"node\": \">=18\""
+          },
+          {
+            "line": 166,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 167,
+            "type": "added",
+            "content": "      \"funding\": {"
+          },
+          {
+            "line": 168,
+            "type": "added",
+            "content": "        \"url\": \"https://github.com/sponsors/sindresorhus\""
+          },
+          {
+            "line": 169,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 170,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 307,
+            "type": "added",
+            "content": "    \"node_modules/default-browser\": {"
+          },
+          {
+            "line": 308,
+            "type": "added",
+            "content": "      \"version\": \"5.2.1\","
+          },
+          {
+            "line": 309,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/default-browser/-/default-browser-5.2.1.tgz\","
+          },
+          {
+            "line": 310,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-WY/3TUME0x3KPYdRRxEJJvXRHV4PyPoUsxtZa78lwItwRQRHhd2U9xOscaT/YTf8uCXIAjeJOFBVEh/7FtD8Xg==\","
+          },
+          {
+            "line": 311,
+            "type": "added",
+            "content": "      \"license\": \"MIT\","
+          },
+          {
+            "line": 312,
+            "type": "added",
+            "content": "      \"dependencies\": {"
+          },
+          {
+            "line": 313,
+            "type": "added",
+            "content": "        \"bundle-name\": \"^4.1.0\","
+          },
+          {
+            "line": 314,
+            "type": "added",
+            "content": "        \"default-browser-id\": \"^5.0.0\""
+          },
+          {
+            "line": 315,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 316,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 317,
+            "type": "added",
+            "content": "        \"node\": \">=18\""
+          },
+          {
+            "line": 318,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 319,
+            "type": "added",
+            "content": "      \"funding\": {"
+          },
+          {
+            "line": 320,
+            "type": "added",
+            "content": "        \"url\": \"https://github.com/sponsors/sindresorhus\""
+          },
+          {
+            "line": 321,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 322,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 323,
+            "type": "added",
+            "content": "    \"node_modules/default-browser-id\": {"
+          },
+          {
+            "line": 324,
+            "type": "added",
+            "content": "      \"version\": \"5.0.0\","
+          },
+          {
+            "line": 325,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/default-browser-id/-/default-browser-id-5.0.0.tgz\","
+          },
+          {
+            "line": 326,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-A6p/pu/6fyBcA1TRz/GqWYPViplrftcW2gZC9q79ngNCKAeR/X3gcEdXQHl4KNXV+3wgIJ1CPkJQ3IHM6lcsyA==\","
+          },
+          {
+            "line": 327,
+            "type": "added",
+            "content": "      \"license\": \"MIT\","
+          },
+          {
+            "line": 328,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 329,
+            "type": "added",
+            "content": "        \"node\": \">=18\""
+          },
+          {
+            "line": 330,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 331,
+            "type": "added",
+            "content": "      \"funding\": {"
+          },
+          {
+            "line": 332,
+            "type": "added",
+            "content": "        \"url\": \"https://github.com/sponsors/sindresorhus\""
+          },
+          {
+            "line": 333,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 334,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 335,
+            "type": "added",
+            "content": "    \"node_modules/define-lazy-prop\": {"
+          },
+          {
+            "line": 336,
+            "type": "added",
+            "content": "      \"version\": \"3.0.0\","
+          },
+          {
+            "line": 337,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/define-lazy-prop/-/define-lazy-prop-3.0.0.tgz\","
+          },
+          {
+            "line": 338,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-N+MeXYoqr3pOgn8xfyRPREN7gHakLYjhsHhWGT3fWAiL4IkAt0iDw14QiiEm2bE30c5XX5q0FtAA3CK5f9/BUg==\","
+          },
+          {
+            "line": 339,
+            "type": "added",
+            "content": "      \"license\": \"MIT\","
+          },
+          {
+            "line": 340,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 341,
+            "type": "added",
+            "content": "        \"node\": \">=12\""
+          },
+          {
+            "line": 342,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 343,
+            "type": "added",
+            "content": "      \"funding\": {"
+          },
+          {
+            "line": 344,
+            "type": "added",
+            "content": "        \"url\": \"https://github.com/sponsors/sindresorhus\""
+          },
+          {
+            "line": 345,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 346,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 814,
+            "type": "added",
+            "content": "    \"node_modules/is-docker\": {"
+          },
+          {
+            "line": 815,
+            "type": "added",
+            "content": "      \"version\": \"3.0.0\","
+          },
+          {
+            "line": 816,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/is-docker/-/is-docker-3.0.0.tgz\","
+          },
+          {
+            "line": 817,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-eljcgEDlEns/7AXFosB5K/2nCM4P7FQPkGc/DWLy5rmFEWvZayGrik1d9/QIY5nJ4f9YsVvBkA6kJpHn9rISdQ==\","
+          },
+          {
+            "line": 818,
+            "type": "added",
+            "content": "      \"license\": \"MIT\","
+          },
+          {
+            "line": 819,
+            "type": "added",
+            "content": "      \"bin\": {"
+          },
+          {
+            "line": 820,
+            "type": "added",
+            "content": "        \"is-docker\": \"cli.js\""
+          },
+          {
+            "line": 821,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 822,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 823,
+            "type": "added",
+            "content": "        \"node\": \"^12.20.0 || ^14.13.1 || >=16.0.0\""
+          },
+          {
+            "line": 824,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 825,
+            "type": "added",
+            "content": "      \"funding\": {"
+          },
+          {
+            "line": 826,
+            "type": "added",
+            "content": "        \"url\": \"https://github.com/sponsors/sindresorhus\""
+          },
+          {
+            "line": 827,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 828,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 850,
+            "type": "added",
+            "content": "    \"node_modules/is-inside-container\": {"
+          },
+          {
+            "line": 851,
+            "type": "added",
+            "content": "      \"version\": \"1.0.0\","
+          },
+          {
+            "line": 852,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/is-inside-container/-/is-inside-container-1.0.0.tgz\","
+          },
+          {
+            "line": 853,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-KIYLCCJghfHZxqjYBE7rEy0OBuTd5xCHS7tHVgvCLkx7StIoaxwNW3hCALgEUjFfeRk+MG/Qxmp/vtETEF3tRA==\","
+          },
+          {
+            "line": 854,
+            "type": "added",
+            "content": "      \"license\": \"MIT\","
+          },
+          {
+            "line": 855,
+            "type": "added",
+            "content": "      \"dependencies\": {"
+          },
+          {
+            "line": 856,
+            "type": "added",
+            "content": "        \"is-docker\": \"^3.0.0\""
+          },
+          {
+            "line": 857,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 858,
+            "type": "added",
+            "content": "      \"bin\": {"
+          },
+          {
+            "line": 859,
+            "type": "added",
+            "content": "        \"is-inside-container\": \"cli.js\""
+          },
+          {
+            "line": 860,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 861,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 862,
+            "type": "added",
+            "content": "        \"node\": \">=14.16\""
+          },
+          {
+            "line": 863,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 864,
+            "type": "added",
+            "content": "      \"funding\": {"
+          },
+          {
+            "line": 865,
+            "type": "added",
+            "content": "        \"url\": \"https://github.com/sponsors/sindresorhus\""
+          },
+          {
+            "line": 866,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 867,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 883,
+            "type": "added",
+            "content": "    \"node_modules/is-wsl\": {"
+          },
+          {
+            "line": 884,
+            "type": "added",
+            "content": "      \"version\": \"3.1.0\","
+          },
+          {
+            "line": 885,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/is-wsl/-/is-wsl-3.1.0.tgz\","
+          },
+          {
+            "line": 886,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-UcVfVfaK4Sc4m7X3dUSoHoozQGBEFeDC+zVo06t98xe8CzHSZZBekNXH+tu0NalHolcJ/QAGqS46Hef7QXBIMw==\","
+          },
+          {
+            "line": 887,
+            "type": "added",
+            "content": "      \"license\": \"MIT\","
+          },
+          {
+            "line": 888,
+            "type": "added",
+            "content": "      \"dependencies\": {"
+          },
+          {
+            "line": 889,
+            "type": "added",
+            "content": "        \"is-inside-container\": \"^1.0.0\""
+          },
+          {
+            "line": 890,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 891,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 892,
+            "type": "added",
+            "content": "        \"node\": \">=16\""
+          },
+          {
+            "line": 893,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 894,
+            "type": "added",
+            "content": "      \"funding\": {"
+          },
+          {
+            "line": 895,
+            "type": "added",
+            "content": "        \"url\": \"https://github.com/sponsors/sindresorhus\""
+          },
+          {
+            "line": 896,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 897,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 1108,
+            "type": "added",
+            "content": "    \"node_modules/open\": {"
+          },
+          {
+            "line": 1109,
+            "type": "added",
+            "content": "      \"version\": \"10.2.0\","
+          },
+          {
+            "line": 1110,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/open/-/open-10.2.0.tgz\","
+          },
+          {
+            "line": 1111,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-YgBpdJHPyQ2UE5x+hlSXcnejzAvD0b22U2OuAP+8OnlJT+PjWPxtgmGqKKc+RgTM63U9gN0YzrYc71R2WT/hTA==\","
+          },
+          {
+            "line": 1112,
+            "type": "added",
+            "content": "      \"license\": \"MIT\","
+          },
+          {
+            "line": 1113,
+            "type": "added",
+            "content": "      \"dependencies\": {"
+          },
+          {
+            "line": 1114,
+            "type": "added",
+            "content": "        \"default-browser\": \"^5.2.1\","
+          },
+          {
+            "line": 1115,
+            "type": "added",
+            "content": "        \"define-lazy-prop\": \"^3.0.0\","
+          },
+          {
+            "line": 1116,
+            "type": "added",
+            "content": "        \"is-inside-container\": \"^1.0.0\","
+          },
+          {
+            "line": 1117,
+            "type": "added",
+            "content": "        \"wsl-utils\": \"^0.1.0\""
+          },
+          {
+            "line": 1118,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 1119,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 1120,
+            "type": "added",
+            "content": "        \"node\": \">=18\""
+          },
+          {
+            "line": 1121,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 1122,
+            "type": "added",
+            "content": "      \"funding\": {"
+          },
+          {
+            "line": 1123,
+            "type": "added",
+            "content": "        \"url\": \"https://github.com/sponsors/sindresorhus\""
+          },
+          {
+            "line": 1124,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 1125,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 1274,
+            "type": "added",
+            "content": "    \"node_modules/run-applescript\": {"
+          },
+          {
+            "line": 1275,
+            "type": "added",
+            "content": "      \"version\": \"7.1.0\","
+          },
+          {
+            "line": 1276,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/run-applescript/-/run-applescript-7.1.0.tgz\","
+          },
+          {
+            "line": 1277,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-DPe5pVFaAsinSaV6QjQ6gdiedWDcRCbUuiQfQa2wmWV7+xC9bGulGI8+TdRmoFkAPaBXk8CrAbnlY2ISniJ47Q==\","
+          },
+          {
+            "line": 1278,
+            "type": "added",
+            "content": "      \"license\": \"MIT\","
+          },
+          {
+            "line": 1279,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 1280,
+            "type": "added",
+            "content": "        \"node\": \">=18\""
+          },
+          {
+            "line": 1281,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 1282,
+            "type": "added",
+            "content": "      \"funding\": {"
+          },
+          {
+            "line": 1283,
+            "type": "added",
+            "content": "        \"url\": \"https://github.com/sponsors/sindresorhus\""
+          },
+          {
+            "line": 1284,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 1285,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 1588,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 1589,
+            "type": "added",
+            "content": "    \"node_modules/wsl-utils\": {"
+          },
+          {
+            "line": 1590,
+            "type": "added",
+            "content": "      \"version\": \"0.1.0\","
+          },
+          {
+            "line": 1591,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/wsl-utils/-/wsl-utils-0.1.0.tgz\","
+          },
+          {
+            "line": 1592,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-h3Fbisa2nKGPxCpm89Hk33lBLsnaGBvctQopaBSOW/uIs6FTe1ATyAnKFJrzVs9vpGdsTe73WF3V4lIsk4Gacw==\","
+          },
+          {
+            "line": 1593,
+            "type": "added",
+            "content": "      \"license\": \"MIT\","
+          },
+          {
+            "line": 1594,
+            "type": "added",
+            "content": "      \"dependencies\": {"
+          },
+          {
+            "line": 1595,
+            "type": "added",
+            "content": "        \"is-wsl\": \"^3.1.0\""
+          },
+          {
+            "line": 1596,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 1597,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 1598,
+            "type": "added",
+            "content": "        \"node\": \">=18\""
+          },
+          {
+            "line": 1599,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 1600,
+            "type": "added",
+            "content": "      \"funding\": {"
+          },
+          {
+            "line": 1601,
+            "type": "added",
+            "content": "        \"url\": \"https://github.com/sponsors/sindresorhus\""
+          },
+          {
+            "line": 1602,
+            "type": "added",
+            "content": "      }"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "package.json",
+        "status": "modified",
+        "additions": 2,
+        "deletions": 1,
+        "changes": 3,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/3c7a1aa2e577c853a514b9e8bdc0c03660a4a7ea/package.json",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    \"nodemon\": \"^3.1.10\""
+          },
+          {
+            "line": 16,
+            "type": "added",
+            "content": "    \"nodemon\": \"^3.1.10\","
+          },
+          {
+            "line": 17,
+            "type": "added",
+            "content": "    \"open\": \"^10.2.0\""
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "public/index.html",
+        "status": "modified",
+        "additions": 1,
+        "deletions": 1,
+        "changes": 2,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/3c7a1aa2e577c853a514b9e8bdc0c03660a4a7ea/public%2Findex.html",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    <title>Gestion des utilisateurs</title>"
+          },
+          {
+            "line": 6,
+            "type": "added",
+            "content": "    <title>Gestion des utilisateurs et PRs</title>"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "route/pr.js",
+        "status": "modified",
+        "additions": 4,
+        "deletions": 3,
+        "changes": 7,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/3c7a1aa2e577c853a514b9e8bdc0c03660a4a7ea/route%2Fpr.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const { MONGODB_URI } = process.env;"
+          },
+          {
+            "line": 5,
+            "type": "added",
+            "content": "const MONGODB_URI = \"mongodb+srv://sebastienfournest_db_user:R%40oulsky85@sebastien.xv9iiw3.mongodb.net/sebastienfournest_db_user?retryWrites=true&w=majority&appName=sebastien\";"
+          },
+          {
+            "line": 6,
+            "type": "added",
+            "content": "const DB_NAME = \"sebastienfournest_db_user\";"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const dbName = new URL(MONGODB_URI).pathname.substring(1);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const db = client.db(dbName);"
+          },
+          {
+            "line": 21,
+            "type": "added",
+            "content": "        // const dbName = new URL(MONGODB_URI).pathname.substring(1);"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "        const db = client.db(DB_NAME);"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "server.js",
+        "status": "modified",
+        "additions": 8,
+        "deletions": 6,
+        "changes": 14,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/3c7a1aa2e577c853a514b9e8bdc0c03660a4a7ea/server.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "require('dotenv').config();"
+          },
+          {
+            "line": 1,
+            "type": "added",
+            "content": "// require('dotenv').config();"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "const open = require('open').default;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const port = process.env.PORT || 3000"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const uri = process.env.MONGODB_URI;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": ""
+          },
+          {
+            "line": 14,
+            "type": "added",
+            "content": "const port = 3000"
+          },
+          {
+            "line": 15,
+            "type": "added",
+            "content": "const uri = \"mongodb+srv://sebastienfournest_db_user:R%40oulsky85@sebastien.xv9iiw3.mongodb.net/sebastienfournest_db_user?retryWrites=true&w=majority&appName=sebastien\";"
+          },
+          {
+            "line": 16,
+            "type": "added",
+            "content": "const DB_NAME = \"sebastienfournest_db_user\";"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const dbName = new URL(uri).pathname.substring(1);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const db = client.db(dbName);"
+          },
+          {
+            "line": 41,
+            "type": "added",
+            "content": "        // const dbName = new URL(uri).pathname.substring(1);"
+          },
+          {
+            "line": 42,
+            "type": "added",
+            "content": "        const db = client.db(DB_NAME);"
+          },
+          {
+            "line": 81,
+            "type": "added",
+            "content": "            open(`http://localhost:${port}`);"
+          }
+        ],
+        "diff": []
+      }
+    ],
+    "id": 2863355013,
+    "repo": "projet_1_back",
+    "state": "closed",
+    "title": "Test branche",
+    "updated_at": "2025-09-26T09:53:30.000Z",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false
+    }
+  },
+  {
+    "_id": "68dfb9635b492148af804c0e",
+    "number": 4,
+    "created_at": "2025-09-26T08:53:28.000Z",
+    "date": "2025-10-09T12:47:31.600Z",
+    "files": [],
+    "id": 2863150468,
+    "repo": "projet_1_back",
+    "state": "closed",
+    "title": "Merge pull request #3 from fournest85/master",
+    "updated_at": "2025-09-26T09:07:00.000Z",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false
+    }
+  },
+  {
+    "_id": "68dfb9635b492148af804c0f",
+    "number": 3,
+    "created_at": "2025-09-26T08:18:43.000Z",
+    "date": "2025-10-09T12:47:32.242Z",
+    "files": [],
+    "id": 2863029343,
+    "repo": "projet_1_back",
+    "state": "closed",
+    "title": "essai pr",
+    "updated_at": "2025-09-26T08:18:53.000Z",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false
+    }
+  },
+  {
+    "_id": "68dfb9665b492148af804c10",
+    "number": 2,
+    "created_at": "2025-09-26T07:40:08.000Z",
+    "date": "2025-10-09T12:47:36.579Z",
+    "files": [
+      {
+        "filename": ".gitignore",
+        "status": "modified",
+        "additions": 1,
+        "deletions": 0,
+        "changes": 1,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/c07ca76562e329bd94df542f5b7406cc7fd8dc71/.gitignore",
+        "modifiedLines": [
+          {
+            "line": 23,
+            "type": "added",
+            "content": ""
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "bd/connect.js",
+        "status": "modified",
+        "additions": 14,
+        "deletions": 10,
+        "changes": 24,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/c07ca76562e329bd94df542f5b7406cc7fd8dc71/bd%2Fconnect.js",
+        "modifiedLines": [
+          {
+            "line": 1,
+            "type": "added",
+            "content": "require('dotenv').config();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "let user = null;"
+          },
+          {
+            "line": 4,
+            "type": "added",
+            "content": "let client = null;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    if (!user) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        user = new MongoClient(uri);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        user.connect()"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "    if (!client) {"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "        client = new MongoClient(uri);"
+          },
+          {
+            "line": 10,
+            "type": "added",
+            "content": "        client.connect()"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                db = user.db(\"sebastienfournest_db_user\");"
+          },
+          {
+            "line": 12,
+            "type": "added",
+            "content": "                const dbName = process.env.DB_NAME || new URL(uri).pathname.substring(1);"
+          },
+          {
+            "line": 13,
+            "type": "added",
+            "content": "                if (!process.env.DB_NAME) {"
+          },
+          {
+            "line": 14,
+            "type": "added",
+            "content": "                    console.warn('⚠️ DB_NAME non défini dans .env, utilisation du nom extrait de l\\'URI :', dbName);"
+          },
+          {
+            "line": 15,
+            "type": "added",
+            "content": "                }"
+          },
+          {
+            "line": 16,
+            "type": "added",
+            "content": "                db = client.db(dbName);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                user = null;"
+          },
+          {
+            "line": 20,
+            "type": "added",
+            "content": "                client = null;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    if (user) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        user.close();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        user = null;"
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": "    if (client) {"
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": "        client.close();"
+          },
+          {
+            "line": 36,
+            "type": "added",
+            "content": "        client = null;"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "fetchPRs.js",
+        "status": "added",
+        "additions": 60,
+        "deletions": 0,
+        "changes": 60,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/c07ca76562e329bd94df542f5b7406cc7fd8dc71/fetchPRs.js",
+        "modifiedLines": [
+          {
+            "line": 1,
+            "type": "added",
+            "content": "require('dotenv').config();"
+          },
+          {
+            "line": 2,
+            "type": "added",
+            "content": "const axios = require('axios');"
+          },
+          {
+            "line": 3,
+            "type": "added",
+            "content": "const { MongoClient } = require('mongodb');"
+          },
+          {
+            "line": 4,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 5,
+            "type": "added",
+            "content": "const { GITHUB_TOKEN, MONGODB_URI, GITHUB_OWNER, GITHUB_REPO } = process.env;"
+          },
+          {
+            "line": 6,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "const headers = {"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "    Authorization: `token ${GITHUB_TOKEN}`,"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "    Accept: 'application/vnd.github.v3+json'"
+          },
+          {
+            "line": 10,
+            "type": "added",
+            "content": "};"
+          },
+          {
+            "line": 11,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 12,
+            "type": "added",
+            "content": "const githubApiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/pulls`;"
+          },
+          {
+            "line": 13,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 14,
+            "type": "added",
+            "content": "async function fetchAndStorePRs() {"
+          },
+          {
+            "line": 15,
+            "type": "added",
+            "content": "    const client = new MongoClient(MONGODB_URI);"
+          },
+          {
+            "line": 16,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 17,
+            "type": "added",
+            "content": "    try {"
+          },
+          {
+            "line": 18,
+            "type": "added",
+            "content": "        await client.connect();"
+          },
+          {
+            "line": 19,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 20,
+            "type": "added",
+            "content": "        const dbName = new URL(MONGODB_URI).pathname.substring(1); "
+          },
+          {
+            "line": 21,
+            "type": "added",
+            "content": "        const db = client.db(dbName);"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "        const collection = db.collection('pr_merge');"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "        const response = await axios.get(githubApiUrl, { headers });"
+          },
+          {
+            "line": 25,
+            "type": "added",
+            "content": "        const prs = response.data;"
+          },
+          {
+            "line": 26,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 27,
+            "type": "added",
+            "content": "        const operations = prs.map(pr => ({"
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "            updateOne: {"
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "                filter: { id: pr.id },"
+          },
+          {
+            "line": 30,
+            "type": "added",
+            "content": "                update: {"
+          },
+          {
+            "line": 31,
+            "type": "added",
+            "content": "                    $set: {"
+          },
+          {
+            "line": 32,
+            "type": "added",
+            "content": "                        id: pr.id,"
+          },
+          {
+            "line": 33,
+            "type": "added",
+            "content": "                        title: pr.title,"
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": "                        user: pr.user,"
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": "                        state: pr.state,"
+          },
+          {
+            "line": 36,
+            "type": "added",
+            "content": "                        created_at: pr.created_at,"
+          },
+          {
+            "line": 37,
+            "type": "added",
+            "content": "                        updated_at: pr.updated_at,"
+          },
+          {
+            "line": 38,
+            "type": "added",
+            "content": "                        url: pr.html_url"
+          },
+          {
+            "line": 39,
+            "type": "added",
+            "content": "                    }"
+          },
+          {
+            "line": 40,
+            "type": "added",
+            "content": "                },"
+          },
+          {
+            "line": 41,
+            "type": "added",
+            "content": "                upsert: true"
+          },
+          {
+            "line": 42,
+            "type": "added",
+            "content": "            }"
+          },
+          {
+            "line": 43,
+            "type": "added",
+            "content": "        }));"
+          },
+          {
+            "line": 44,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 45,
+            "type": "added",
+            "content": "        if (operations.length > 0) {"
+          },
+          {
+            "line": 46,
+            "type": "added",
+            "content": "            const result = await collection.bulkWrite(operations);"
+          },
+          {
+            "line": 47,
+            "type": "added",
+            "content": "            console.log(`✅ ${result.upsertedCount + result.modifiedCount} PRs enregistrées.`);"
+          },
+          {
+            "line": 48,
+            "type": "added",
+            "content": "        } else {"
+          },
+          {
+            "line": 49,
+            "type": "added",
+            "content": "            console.log('ℹ️ Aucune PR trouvée.');"
+          },
+          {
+            "line": 50,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 51,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 52,
+            "type": "added",
+            "content": "    } catch (error) {"
+          },
+          {
+            "line": 53,
+            "type": "added",
+            "content": "        console.error('❌ Erreur :', error.message);"
+          },
+          {
+            "line": 54,
+            "type": "added",
+            "content": "    } finally {"
+          },
+          {
+            "line": 55,
+            "type": "added",
+            "content": "        await client.close();"
+          },
+          {
+            "line": 56,
+            "type": "added",
+            "content": "    }"
+          },
+          {
+            "line": 57,
+            "type": "added",
+            "content": "}"
+          },
+          {
+            "line": 58,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 59,
+            "type": "added",
+            "content": "module.exports = { fetchAndStorePRs };"
+          },
+          {
+            "line": 60,
+            "type": "added",
+            "content": ""
+          }
+        ]
+      },
+      {
+        "filename": "package-lock.json",
+        "status": "modified",
+        "additions": 13,
+        "deletions": 0,
+        "changes": 13,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/c07ca76562e329bd94df542f5b7406cc7fd8dc71/package-lock.json",
+        "modifiedLines": [
+          {
+            "line": 13,
+            "type": "added",
+            "content": "        \"dotenv\": \"^17.2.2\","
+          },
+          {
+            "line": 309,
+            "type": "added",
+            "content": "    \"node_modules/dotenv\": {"
+          },
+          {
+            "line": 310,
+            "type": "added",
+            "content": "      \"version\": \"17.2.2\","
+          },
+          {
+            "line": 311,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/dotenv/-/dotenv-17.2.2.tgz\","
+          },
+          {
+            "line": 312,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-Sf2LSQP+bOlhKWWyhFsn0UsfdK/kCWRv1iuA2gXAwt3dyNabr6QSj00I2V10pidqz69soatm9ZwZvpQMTIOd5Q==\","
+          },
+          {
+            "line": 313,
+            "type": "added",
+            "content": "      \"license\": \"BSD-2-Clause\","
+          },
+          {
+            "line": 314,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 315,
+            "type": "added",
+            "content": "        \"node\": \">=12\""
+          },
+          {
+            "line": 316,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 317,
+            "type": "added",
+            "content": "      \"funding\": {"
+          },
+          {
+            "line": 318,
+            "type": "added",
+            "content": "        \"url\": \"https://dotenvx.com\""
+          },
+          {
+            "line": 319,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 320,
+            "type": "added",
+            "content": "    },"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "package.json",
+        "status": "modified",
+        "additions": 1,
+        "deletions": 0,
+        "changes": 1,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/c07ca76562e329bd94df542f5b7406cc7fd8dc71/package.json",
+        "modifiedLines": [
+          {
+            "line": 13,
+            "type": "added",
+            "content": "    \"dotenv\": \"^17.2.2\","
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "public/index.html",
+        "status": "modified",
+        "additions": 34,
+        "deletions": 3,
+        "changes": 37,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/c07ca76562e329bd94df542f5b7406cc7fd8dc71/public%2Findex.html",
+        "modifiedLines": [
+          {
+            "line": 3,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "       <script src=\"http://cdn.jsdelivr.net/npm/axios/dist/axios.min.js\"></script>"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "    <script src=\"http://cdn.jsdelivr.net/npm/axios/dist/axios.min.js\"></script>"
+          },
+          {
+            "line": 10,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "        <h2>Liste des Pull Requests GitHub</h2>"
+          },
+          {
+            "line": 30,
+            "type": "added",
+            "content": "        <ul id=\"prList\"></ul>"
+          },
+          {
+            "line": 31,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        loadUsers();"
+          },
+          {
+            "line": 89,
+            "type": "added",
+            "content": "        "
+          },
+          {
+            "line": 90,
+            "type": "added",
+            "content": "        async function loadPRs() {"
+          },
+          {
+            "line": 91,
+            "type": "added",
+            "content": "            try {"
+          },
+          {
+            "line": 92,
+            "type": "added",
+            "content": "                const res = await axios.get('http://localhost:3000/api/github/prs');"
+          },
+          {
+            "line": 93,
+            "type": "added",
+            "content": "                const message = res.data.message;"
+          },
+          {
+            "line": 94,
+            "type": "added",
+            "content": "                const prList = document.getElementById('prList');"
+          },
+          {
+            "line": 95,
+            "type": "added",
+            "content": "                prList.innerHTML = '';"
+          },
+          {
+            "line": 96,
+            "type": "added",
+            "content": "                "
+          },
+          {
+            "line": 97,
+            "type": "added",
+            "content": "                // Optionnel : tu peux aussi afficher les PR stockées dans MongoDB"
+          },
+          {
+            "line": 98,
+            "type": "added",
+            "content": "                const response = await axios.get('http://localhost:3000/api/github/prs/list'); // à créer si tu veux"
+          },
+          {
+            "line": 99,
+            "type": "added",
+            "content": "                const prs = response.data;"
+          },
+          {
+            "line": 100,
+            "type": "added",
+            "content": "                "
+          },
+          {
+            "line": 101,
+            "type": "added",
+            "content": "                prs.forEach(pr => {"
+          },
+          {
+            "line": 102,
+            "type": "added",
+            "content": "            const li = document.createElement('li');"
+          },
+          {
+            "line": 103,
+            "type": "added",
+            "content": "            li.textContent = `${pr.title} - ${pr.user.login} (${pr.state})`;"
+          },
+          {
+            "line": 104,
+            "type": "added",
+            "content": "            prList.appendChild(li);"
+          },
+          {
+            "line": 105,
+            "type": "added",
+            "content": "        });"
+          },
+          {
+            "line": 106,
+            "type": "added",
+            "content": "        "
+          },
+          {
+            "line": 107,
+            "type": "added",
+            "content": "    } catch (err) {"
+          },
+          {
+            "line": 108,
+            "type": "added",
+            "content": "        console.error('Erreur chargement des PR :', err);"
+          },
+          {
+            "line": 109,
+            "type": "added",
+            "content": "    }"
+          },
+          {
+            "line": 110,
+            "type": "added",
+            "content": "}"
+          },
+          {
+            "line": 111,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 112,
+            "type": "added",
+            "content": "loadUsers();"
+          },
+          {
+            "line": 113,
+            "type": "added",
+            "content": "loadPRs();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "</html>"
+          },
+          {
+            "line": 116,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 117,
+            "type": "added",
+            "content": "</html>"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "route/pr.js",
+        "status": "added",
+        "additions": 33,
+        "deletions": 0,
+        "changes": 33,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/c07ca76562e329bd94df542f5b7406cc7fd8dc71/route%2Fpr.js",
+        "modifiedLines": [
+          {
+            "line": 1,
+            "type": "added",
+            "content": "const express = require('express');"
+          },
+          {
+            "line": 2,
+            "type": "added",
+            "content": "const router = express.Router();"
+          },
+          {
+            "line": 3,
+            "type": "added",
+            "content": "const { fetchAndStorePRs } = require('../fetchPRs'); "
+          },
+          {
+            "line": 4,
+            "type": "added",
+            "content": "const { MongoClient } = require('mongodb');"
+          },
+          {
+            "line": 5,
+            "type": "added",
+            "content": "const { MONGODB_URI } = process.env;"
+          },
+          {
+            "line": 6,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "router.get('/prs', async (req, res) => {"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "    try {"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "        await fetchAndStorePRs();"
+          },
+          {
+            "line": 10,
+            "type": "added",
+            "content": "        res.json({ message: 'PRs récupérées et enregistrées.' });"
+          },
+          {
+            "line": 11,
+            "type": "added",
+            "content": "    } catch (err) {"
+          },
+          {
+            "line": 12,
+            "type": "added",
+            "content": "        res.status(500).json({ error: 'Erreur lors de la récupération des PRs.' });"
+          },
+          {
+            "line": 13,
+            "type": "added",
+            "content": "    }"
+          },
+          {
+            "line": 14,
+            "type": "added",
+            "content": "});"
+          },
+          {
+            "line": 15,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 16,
+            "type": "added",
+            "content": "router.get('/prs/list', async (req, res) => {"
+          },
+          {
+            "line": 17,
+            "type": "added",
+            "content": "    const client = new MongoClient(MONGODB_URI);"
+          },
+          {
+            "line": 18,
+            "type": "added",
+            "content": "    try {"
+          },
+          {
+            "line": 19,
+            "type": "added",
+            "content": "        await client.connect();"
+          },
+          {
+            "line": 20,
+            "type": "added",
+            "content": "        const dbName = new URL(MONGODB_URI).pathname.substring(1);"
+          },
+          {
+            "line": 21,
+            "type": "added",
+            "content": "        const db = client.db(dbName);"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "        const collection = db.collection('pr_merge');"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "        const prs = await collection.find().toArray();"
+          },
+          {
+            "line": 25,
+            "type": "added",
+            "content": "        res.json(prs);"
+          },
+          {
+            "line": 26,
+            "type": "added",
+            "content": "    } catch (err) {"
+          },
+          {
+            "line": 27,
+            "type": "added",
+            "content": "        res.status(500).json({ error: 'Erreur lors de la lecture des PRs.' });"
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "    } finally {"
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "        await client.close();"
+          },
+          {
+            "line": 30,
+            "type": "added",
+            "content": "    }"
+          },
+          {
+            "line": 31,
+            "type": "added",
+            "content": "});"
+          },
+          {
+            "line": 32,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 33,
+            "type": "added",
+            "content": "module.exports = router;"
+          }
+        ]
+      },
+      {
+        "filename": "server.js",
+        "status": "modified",
+        "additions": 38,
+        "deletions": 4,
+        "changes": 42,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/c07ca76562e329bd94df542f5b7406cc7fd8dc71/server.js",
+        "modifiedLines": [
+          {
+            "line": 1,
+            "type": "added",
+            "content": "require('dotenv').config();"
+          },
+          {
+            "line": 2,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const { connecter, bd } = require(\"./bd/connect\");"
+          },
+          {
+            "line": 5,
+            "type": "added",
+            "content": "const { connecter } = require(\"./bd/connect\");"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "const { fetchAndStorePRs } = require('./fetchPRs');"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "const { MongoClient } = require('mongodb');"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 14,
+            "type": "added",
+            "content": "const uri = process.env.MONGODB_URI;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": ""
+          },
+          {
+            "line": 26,
+            "type": "added",
+            "content": "app.get('/api/github/prs', async (req, res) => {"
+          },
+          {
+            "line": 27,
+            "type": "added",
+            "content": "    try {"
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "        const message = await fetchAndStorePRs();"
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "        res.status(200).json({ success: true, message });"
+          },
+          {
+            "line": 30,
+            "type": "added",
+            "content": "    } catch (error) {"
+          },
+          {
+            "line": 31,
+            "type": "added",
+            "content": "        res.status(500).json({ success: false, error: error.message });"
+          },
+          {
+            "line": 32,
+            "type": "added",
+            "content": "    }"
+          },
+          {
+            "line": 33,
+            "type": "added",
+            "content": "});"
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 36,
+            "type": "added",
+            "content": "app.get('/api/github/prs/list', async (req, res) => {"
+          },
+          {
+            "line": 37,
+            "type": "added",
+            "content": "    const client = new MongoClient(uri);"
+          },
+          {
+            "line": 38,
+            "type": "added",
+            "content": "    try {"
+          },
+          {
+            "line": 39,
+            "type": "added",
+            "content": "        await client.connect();"
+          },
+          {
+            "line": 40,
+            "type": "added",
+            "content": "        const dbName = new URL(uri).pathname.substring(1);"
+          },
+          {
+            "line": 41,
+            "type": "added",
+            "content": "        const db = client.db(dbName);"
+          },
+          {
+            "line": 42,
+            "type": "added",
+            "content": "        const collection = db.collection('pr_merge');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "connecter('mongodb+srv://sebastienfournest_db_user:R%40oulsky85@sebastien.xv9iiw3.mongodb.net/sebastienfournest_db_user?retryWrites=true&w=majority&appName=sebastien', (err) => {"
+          },
+          {
+            "line": 44,
+            "type": "added",
+            "content": "        const prs = await collection.find().toArray();"
+          },
+          {
+            "line": 45,
+            "type": "added",
+            "content": "        res.status(200).json(prs);"
+          },
+          {
+            "line": 46,
+            "type": "added",
+            "content": "    } catch (error) {"
+          },
+          {
+            "line": 47,
+            "type": "added",
+            "content": "        res.status(500).json({ error: 'Erreur lors de la lecture des PRs.' });"
+          },
+          {
+            "line": 48,
+            "type": "added",
+            "content": "    } finally {"
+          },
+          {
+            "line": 49,
+            "type": "added",
+            "content": "        await client.close();"
+          },
+          {
+            "line": 50,
+            "type": "added",
+            "content": "    }"
+          },
+          {
+            "line": 51,
+            "type": "added",
+            "content": "});"
+          },
+          {
+            "line": 52,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 53,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 54,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 55,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 56,
+            "type": "added",
+            "content": "connecter(uri, (err) => {"
+          },
+          {
+            "line": 85,
+            "type": "added",
+            "content": ""
+          }
+        ],
+        "diff": []
+      }
+    ],
+    "id": 2862896429,
+    "repo": "projet_1_back",
+    "state": "closed",
+    "title": "essai de recuparation de pr, probleme de connection",
+    "updated_at": "2025-09-26T07:40:25.000Z",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false
+    }
+  }
+]

@@ -1,0 +1,234 @@
+[
+  {
+    "_id": "68dfb95d5b492148af804c0a",
+    "number": 8,
+    "created_at": "2025-09-29T14:12:01.000Z",
+    "date": "2025-10-09T12:49:06.187Z",
+    "files": [
+      {
+        "filename": "public/index.html",
+        "status": "modified",
+        "additions": 21,
+        "deletions": 15,
+        "changes": 36,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/3f348e061000c756c534ae974c3e264dbf745a0e/public%2Findex.html",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        "
+          },
+          {
+            "line": 89,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                "
+          },
+          {
+            "line": 96,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                "
+          },
+          {
+            "line": 100,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 101,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            const li = document.createElement('li');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            li.textContent = `${pr.title} - ${pr.user.login} (${pr.state})`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            prList.appendChild(li);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        });"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    } catch (err) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        console.error('Erreur chargement des PR :', err);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    }"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "}"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "loadUsers();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "loadPRs();"
+          },
+          {
+            "line": 103,
+            "type": "added",
+            "content": "                    const li = document.createElement('li');"
+          },
+          {
+            "line": 104,
+            "type": "added",
+            "content": "                    const link = document.createElement('a');"
+          },
+          {
+            "line": 105,
+            "type": "added",
+            "content": "                    link.href = pr.html_url; // lien vers la PR sur GitHub"
+          },
+          {
+            "line": 106,
+            "type": "added",
+            "content": "                    link.textContent = `${pr.title} - ${pr.user.login} (${pr.state})`;"
+          },
+          {
+            "line": 107,
+            "type": "added",
+            "content": "                    link.target = \"_blank\"; // ouvre dans un nouvel onglet"
+          },
+          {
+            "line": 108,
+            "type": "added",
+            "content": "                    li.appendChild(link);"
+          },
+          {
+            "line": 109,
+            "type": "added",
+            "content": "                    prList.appendChild(li);"
+          },
+          {
+            "line": 110,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 111,
+            "type": "added",
+            "content": "                });"
+          },
+          {
+            "line": 112,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 113,
+            "type": "added",
+            "content": "            } catch (err) {"
+          },
+          {
+            "line": 114,
+            "type": "added",
+            "content": "                console.error('Erreur chargement des PR :', err);"
+          },
+          {
+            "line": 115,
+            "type": "added",
+            "content": "            }"
+          },
+          {
+            "line": 116,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 117,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 118,
+            "type": "added",
+            "content": "        loadUsers();"
+          },
+          {
+            "line": 119,
+            "type": "added",
+            "content": "        loadPRs();"
+          }
+        ],
+        "diff": []
+      }
+    ],
+    "id": 2870824895,
+    "repo": "projet_1_back",
+    "state": "closed",
+    "title": "Test branche",
+    "updated_at": "2025-09-29T14:13:29.000Z",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false
+    }
+  },
+  {
+    "_id": "68dfb95d5b492148af804c0b",
+    "number": 7,
+    "created_at": "2025-09-29T14:06:16.000Z",
+    "date": "2025-10-09T12:49:06.862Z",
+    "files": [],
+    "id": 2870803323,
+    "repo": "projet_1_back",
+    "state": "closed",
+    "title": "mettre à jour la version master",
+    "updated_at": "2025-09-29T14:06:27.000Z",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false
+    }
+  }
+]

@@ -1,0 +1,4232 @@
+[
+  {
+    "_id": "68eded4bc833581caeac7408",
+    "number": 23,
+    "created_at": "2025-10-13T14:59:50.000Z",
+    "date": "2025-10-14T08:38:42.473Z",
+    "files": [
+      {
+        "filename": "bd/connect.js",
+        "status": "modified",
+        "additions": 0,
+        "deletions": 1,
+        "changes": 1,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/bd%2Fconnect.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "require('dotenv').config();"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "controller/pr.js",
+        "status": "modified",
+        "additions": 0,
+        "deletions": 1,
+        "changes": 1,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/controller%2Fpr.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "require('dotenv').config();"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "controller/user.js",
+        "status": "modified",
+        "additions": 3,
+        "deletions": 3,
+        "changes": 6,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/controller%2Fuser.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                console.log(`🔧 Tentative reconstruction login depuis githubUrl : ${githubUser.githubUrl}`);"
+          },
+          {
+            "line": 183,
+            "type": "added",
+            "content": "                // console.log(`🔧 Tentative reconstruction login depuis githubUrl : ${githubUser.githubUrl}`);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                console.log(`🔍 Résultat regex :`, match);"
+          },
+          {
+            "line": 185,
+            "type": "added",
+            "content": "                // console.log(`🔍 Résultat regex :`, match);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "                console.log(`🔍 PR sans login détectée :`, pr);"
+          },
+          {
+            "line": 191,
+            "type": "added",
+            "content": "                // console.log(`🔍 PR sans login détectée :`, pr);"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "jobs/githubCron.js",
+        "status": "modified",
+        "additions": 32,
+        "deletions": 6,
+        "changes": 38,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/jobs%2FgithubCron.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    // 🕐 Tâche hebdomadaire : chaque lundi à 01h00"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    schedule.scheduleJob('0 1 * * 1', () => {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        console.log('📅 Tâche cron : génération du rapport hebdomadaire');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        generateWeeklyReport();"
+          },
+          {
+            "line": 46,
+            "type": "added",
+            "content": "    // 📅 Tâche spéciale lundi : export des PRs du week-end"
+          },
+          {
+            "line": 47,
+            "type": "added",
+            "content": "    schedule.scheduleJob('0 1 * * 1', async () => {"
+          },
+          {
+            "line": 48,
+            "type": "added",
+            "content": "        console.log('📅 Tâche cron spéciale lundi : export des PRs du week-end');"
+          },
+          {
+            "line": 49,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 50,
+            "type": "added",
+            "content": "        const friday = dayjs().subtract(3, 'day').startOf('day'); // Vendredi"
+          },
+          {
+            "line": 51,
+            "type": "added",
+            "content": "        const sunday = dayjs().subtract(1, 'day').endOf('day');   // Dimanche"
+          },
+          {
+            "line": 52,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 53,
+            "type": "added",
+            "content": "        const allPRs = await fetchAndStorePRsRaw() "
+          },
+          {
+            "line": 54,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 55,
+            "type": "added",
+            "content": "        const weekendPRs = allPRs.filter(pr => {"
+          },
+          {
+            "line": 56,
+            "type": "added",
+            "content": "            const created = dayjs(pr.created_at);"
+          },
+          {
+            "line": 57,
+            "type": "added",
+            "content": "            const updated = dayjs(pr.updated_at || pr.created_at);"
+          },
+          {
+            "line": 58,
+            "type": "added",
+            "content": "            return ("
+          },
+          {
+            "line": 59,
+            "type": "added",
+            "content": "                (created.isAfter(friday.subtract(1, 'second')) && created.isBefore(sunday.add(1, 'second'))) ||"
+          },
+          {
+            "line": 60,
+            "type": "added",
+            "content": "                (updated.isAfter(friday.subtract(1, 'second')) && updated.isBefore(sunday.add(1, 'second')))"
+          },
+          {
+            "line": 61,
+            "type": "added",
+            "content": "            );"
+          },
+          {
+            "line": 62,
+            "type": "added",
+            "content": "        });"
+          },
+          {
+            "line": 63,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 64,
+            "type": "added",
+            "content": "        const exportDateStr = friday.format('YYYY-MM-DD');"
+          },
+          {
+            "line": 65,
+            "type": "added",
+            "content": "        const exportPath = path.join(__dirname, '../exports', `export_prs_${exportDateStr}.json`);"
+          },
+          {
+            "line": 66,
+            "type": "added",
+            "content": "        fs.writeFileSync(exportPath, JSON.stringify(weekendPRs, null, 2), 'utf-8');"
+          },
+          {
+            "line": 67,
+            "type": "added",
+            "content": "        console.log(`✅ Export des PRs du week-end terminé : ${weekendPRs.length} PRs`);"
+          },
+          {
+            "line": 68,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 69,
+            "type": "added",
+            "content": "        // 📄 Rapport Markdown du week-end avec le même nom"
+          },
+          {
+            "line": 70,
+            "type": "added",
+            "content": "        await generateRapportMarkdown(exportDateStr);"
+          },
+          {
+            "line": 71,
+            "type": "added",
+            "content": "        console.log(`📄 Rapport Markdown du week-end généré : rapport_${exportDateStr}.md`);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    schedule.scheduleJob('0 1 * * 1', () => {"
+          },
+          {
+            "line": 74,
+            "type": "added",
+            "content": "    // 🕐 Tâche hebdomadaire : chaque lundi à 01h00"
+          },
+          {
+            "line": 75,
+            "type": "added",
+            "content": "    schedule.scheduleJob('0 1 * * 1', async () => {"
+          },
+          {
+            "line": 76,
+            "type": "added",
+            "content": "        console.log('📅 Tâche cron : génération du rapport hebdomadaire enrichi');"
+          },
+          {
+            "line": 77,
+            "type": "added",
+            "content": "        await generateWeeklyReport({ enrichWithUsers: true });"
+          },
+          {
+            "line": 78,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        generateWeeklyMarkdownReport();"
+          },
+          {
+            "line": 80,
+            "type": "added",
+            "content": "        await generateWeeklyMarkdownReport();"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "package-lock.json",
+        "status": "modified",
+        "additions": 48,
+        "deletions": 0,
+        "changes": 48,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/package-lock.json",
+        "modifiedLines": [
+          {
+            "line": 20,
+            "type": "added",
+            "content": "        \"node-schedule\": \"^2.1.1\","
+          },
+          {
+            "line": 318,
+            "type": "added",
+            "content": "    \"node_modules/cron-parser\": {"
+          },
+          {
+            "line": 319,
+            "type": "added",
+            "content": "      \"version\": \"4.9.0\","
+          },
+          {
+            "line": 320,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/cron-parser/-/cron-parser-4.9.0.tgz\","
+          },
+          {
+            "line": 321,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-p0SaNjrHOnQeR8/VnfGbmg9te2kfyYSQ7Sc/j/6DtPL3JQvKxmjO9TSjNFpujqV3vEYYBvNNvXSxzyksBWAx1Q==\","
+          },
+          {
+            "line": 322,
+            "type": "added",
+            "content": "      \"license\": \"MIT\","
+          },
+          {
+            "line": 323,
+            "type": "added",
+            "content": "      \"dependencies\": {"
+          },
+          {
+            "line": 324,
+            "type": "added",
+            "content": "        \"luxon\": \"^3.2.1\""
+          },
+          {
+            "line": 325,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 326,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 327,
+            "type": "added",
+            "content": "        \"node\": \">=12.0.0\""
+          },
+          {
+            "line": 328,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 329,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 993,
+            "type": "added",
+            "content": "    \"node_modules/long-timeout\": {"
+          },
+          {
+            "line": 994,
+            "type": "added",
+            "content": "      \"version\": \"0.1.1\","
+          },
+          {
+            "line": 995,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/long-timeout/-/long-timeout-0.1.1.tgz\","
+          },
+          {
+            "line": 996,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-BFRuQUqc7x2NWxfJBCyUrN8iYUYznzL9JROmRz1gZ6KlOIgmoD+njPVbb+VNn2nGMKggMsK79iUNErillsrx7w==\","
+          },
+          {
+            "line": 997,
+            "type": "added",
+            "content": "      \"license\": \"MIT\""
+          },
+          {
+            "line": 998,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 999,
+            "type": "added",
+            "content": "    \"node_modules/luxon\": {"
+          },
+          {
+            "line": 1000,
+            "type": "added",
+            "content": "      \"version\": \"3.7.2\","
+          },
+          {
+            "line": 1001,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/luxon/-/luxon-3.7.2.tgz\","
+          },
+          {
+            "line": 1002,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-vtEhXh/gNjI9Yg1u4jX/0YVPMvxzHuGgCm6tC5kZyb08yjGWGnqAjGJvcXbqQR2P3MyMEFnRbpcdFS6PBcLqew==\","
+          },
+          {
+            "line": 1003,
+            "type": "added",
+            "content": "      \"license\": \"MIT\","
+          },
+          {
+            "line": 1004,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 1005,
+            "type": "added",
+            "content": "        \"node\": \">=12\""
+          },
+          {
+            "line": 1006,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 1007,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 1157,
+            "type": "added",
+            "content": "    \"node_modules/node-schedule\": {"
+          },
+          {
+            "line": 1158,
+            "type": "added",
+            "content": "      \"version\": \"2.1.1\","
+          },
+          {
+            "line": 1159,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/node-schedule/-/node-schedule-2.1.1.tgz\","
+          },
+          {
+            "line": 1160,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-OXdegQq03OmXEjt2hZP33W2YPs/E5BcFQks46+G2gAxs4gHOIVD1u7EqlYLYSKsaIpyKCK9Gbk0ta1/gjRSMRQ==\","
+          },
+          {
+            "line": 1161,
+            "type": "added",
+            "content": "      \"license\": \"MIT\","
+          },
+          {
+            "line": 1162,
+            "type": "added",
+            "content": "      \"dependencies\": {"
+          },
+          {
+            "line": 1163,
+            "type": "added",
+            "content": "        \"cron-parser\": \"^4.2.0\","
+          },
+          {
+            "line": 1164,
+            "type": "added",
+            "content": "        \"long-timeout\": \"0.1.1\","
+          },
+          {
+            "line": 1165,
+            "type": "added",
+            "content": "        \"sorted-array-functions\": \"^1.3.0\""
+          },
+          {
+            "line": 1166,
+            "type": "added",
+            "content": "      },"
+          },
+          {
+            "line": 1167,
+            "type": "added",
+            "content": "      \"engines\": {"
+          },
+          {
+            "line": 1168,
+            "type": "added",
+            "content": "        \"node\": \">=6\""
+          },
+          {
+            "line": 1169,
+            "type": "added",
+            "content": "      }"
+          },
+          {
+            "line": 1170,
+            "type": "added",
+            "content": "    },"
+          },
+          {
+            "line": 1626,
+            "type": "added",
+            "content": "    \"node_modules/sorted-array-functions\": {"
+          },
+          {
+            "line": 1627,
+            "type": "added",
+            "content": "      \"version\": \"1.3.0\","
+          },
+          {
+            "line": 1628,
+            "type": "added",
+            "content": "      \"resolved\": \"https://registry.npmjs.org/sorted-array-functions/-/sorted-array-functions-1.3.0.tgz\","
+          },
+          {
+            "line": 1629,
+            "type": "added",
+            "content": "      \"integrity\": \"sha512-2sqgzeFlid6N4Z2fUQ1cvFmTOLRi/sEDzSQ0OKYchqgoPmQBVyM3959qYx3fpS6Esef80KjmpgPeEr028dP3OA==\","
+          },
+          {
+            "line": 1630,
+            "type": "added",
+            "content": "      \"license\": \"MIT\""
+          },
+          {
+            "line": 1631,
+            "type": "added",
+            "content": "    },"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "package.json",
+        "status": "modified",
+        "additions": 1,
+        "deletions": 0,
+        "changes": 1,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/package.json",
+        "modifiedLines": [
+          {
+            "line": 20,
+            "type": "added",
+            "content": "    \"node-schedule\": \"^2.1.1\","
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "route/pr.js",
+        "status": "modified",
+        "additions": 0,
+        "deletions": 2,
+        "changes": 2,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/route%2Fpr.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "require('dotenv').config();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": ""
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "route/user.js",
+        "status": "modified",
+        "additions": 0,
+        "deletions": 1,
+        "changes": 1,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/route%2Fuser.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "require('dotenv').config();"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/export-prs.js",
+        "status": "modified",
+        "additions": 65,
+        "deletions": 21,
+        "changes": 86,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexport-prs.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "require('dotenv').config();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const dayOfWeek = today.getDay(); // 0 = dimanche, 1 = lundi, ..."
+          },
+          {
+            "line": 70,
+            "type": "added",
+            "content": "    const dayOfWeek = today.getDay(); // 0 = dimanche, 1 = lundi, ..., 6 = samedi"
+          },
+          {
+            "line": 71,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 72,
+            "type": "added",
+            "content": "    // Trouver le lundi de la semaine précédente"
+          },
+          {
+            "line": 73,
+            "type": "added",
+            "content": "    const daysSinceMonday = (dayOfWeek + 6) % 7; // transforme dimanche (0) en 6, lundi (1) en 0, etc."
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    lastMonday.setDate(today.getDate() - dayOfWeek - 6);"
+          },
+          {
+            "line": 75,
+            "type": "added",
+            "content": "    lastMonday.setDate(today.getDate() - daysSinceMonday - 7); // lundi précédent"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    lastSunday.setDate(lastMonday.getDate() + 6);"
+          },
+          {
+            "line": 79,
+            "type": "added",
+            "content": "    lastSunday.setDate(lastMonday.getDate() + 6); // dimanche suivant"
+          },
+          {
+            "line": 85,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    return files.filter(file => {"
+          },
+          {
+            "line": 89,
+            "type": "added",
+            "content": "    const filtered = files.filter(file => {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const fileDate = new Date(dateStr);"
+          },
+          {
+            "line": 92,
+            "type": "added",
+            "content": "        const [year, month, day] = dateStr.split('-');"
+          },
+          {
+            "line": 93,
+            "type": "added",
+            "content": "        const fileDate = new Date(`${dateStr}T00:00:00`);"
+          },
+          {
+            "line": 96,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 97,
+            "type": "added",
+            "content": "    if (filtered.length === 0) {"
+          },
+          {
+            "line": 98,
+            "type": "added",
+            "content": "        console.warn('⚠️ Aucun fichier export trouvé pour la semaine précédente. Rapport hebdo ignoré.');"
+          },
+          {
+            "line": 99,
+            "type": "added",
+            "content": "    }"
+          },
+          {
+            "line": 100,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 101,
+            "type": "added",
+            "content": "    return filtered;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "function mergePRs(files) {"
+          },
+          {
+            "line": 105,
+            "type": "added",
+            "content": "function mergePRs(files, startDate, endDate) {"
+          },
+          {
+            "line": 107,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const content = JSON.parse(fs.readFileSync(file, 'utf-8'));"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        content.forEach(pr => {"
+          },
+          {
+            "line": 109,
+            "type": "added",
+            "content": "        const fullPath = path.join(exportFolder, file);"
+          },
+          {
+            "line": 110,
+            "type": "added",
+            "content": "        if (!fs.existsSync(fullPath)) return;"
+          },
+          {
+            "line": 111,
+            "type": "added",
+            "content": "        "
+          },
+          {
+            "line": 112,
+            "type": "added",
+            "content": "        const content = JSON.parse(fs.readFileSync(fullPath, 'utf-8'));"
+          },
+          {
+            "line": 113,
+            "type": "added",
+            "content": "        "
+          },
+          {
+            "line": 114,
+            "type": "added",
+            "content": "        const filteredPRs = content.filter(pr => {"
+          },
+          {
+            "line": 115,
+            "type": "added",
+            "content": "            const createdAt = new Date(pr.created_at);"
+          },
+          {
+            "line": 116,
+            "type": "added",
+            "content": "            return createdAt >= startDate && createdAt <= endDate;"
+          },
+          {
+            "line": 117,
+            "type": "added",
+            "content": "        });"
+          },
+          {
+            "line": 118,
+            "type": "added",
+            "content": "        "
+          },
+          {
+            "line": 119,
+            "type": "added",
+            "content": "        console.log(`📦 PRs filtrées dans ${file}: ${filteredPRs.length}`);"
+          },
+          {
+            "line": 120,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 121,
+            "type": "added",
+            "content": "        filteredPRs.forEach(pr => {"
+          },
+          {
+            "line": 125,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "function generateWeeklyReport() {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const { start, end } = getPreviousWeekRange();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const files = getWeeklyExportFiles(start, end);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const mergedPRs = mergePRs(files);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const startStr = start.toISOString().slice(0, 10);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const endStr = end.toISOString().slice(0, 10);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const outputName = `export_prs_hebdo_${startStr}_au_${endStr}.json`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const outputPath = path.join(exportFolder, outputName);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    fs.writeFileSync(outputPath, JSON.stringify(mergedPRs, null, 2), 'utf-8');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    console.log(`✅ Rapport hebdomadaire généré : ${outputName}`);"
+          },
+          {
+            "line": 130,
+            "type": "added",
+            "content": "async function generateWeeklyReport({ enrichWithUsers = false } = {}) {"
+          },
+          {
+            "line": 131,
+            "type": "added",
+            "content": "    const client = new MongoClient(uri);"
+          },
+          {
+            "line": 132,
+            "type": "added",
+            "content": "    try {"
+          },
+          {
+            "line": 133,
+            "type": "added",
+            "content": "        await client.connect();"
+          },
+          {
+            "line": 134,
+            "type": "added",
+            "content": "        const db = client.db(dbName);"
+          },
+          {
+            "line": 135,
+            "type": "added",
+            "content": "        const userCollection = db.collection('users');"
+          },
+          {
+            "line": 136,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 137,
+            "type": "added",
+            "content": "        const { start, end } = getPreviousWeekRange();"
+          },
+          {
+            "line": 138,
+            "type": "added",
+            "content": "        const files = getWeeklyExportFiles(start, end);"
+          },
+          {
+            "line": 139,
+            "type": "added",
+            "content": "        const mergedPRs = mergePRs(files, start, end);"
+          },
+          {
+            "line": 140,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 141,
+            "type": "added",
+            "content": "        let finalPRs = mergedPRs;"
+          },
+          {
+            "line": 142,
+            "type": "added",
+            "content": "        console.log(`📅 Plage hebdo : ${start.toISOString()} → ${end.toISOString()}`);"
+          },
+          {
+            "line": 143,
+            "type": "added",
+            "content": "        console.log(`📦 PRs finales dans le rapport : ${finalPRs.length}`);"
+          },
+          {
+            "line": 144,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 145,
+            "type": "added",
+            "content": "        if (enrichWithUsers) {"
+          },
+          {
+            "line": 146,
+            "type": "added",
+            "content": "            const users = await userCollection.find({}).toArray();"
+          },
+          {
+            "line": 147,
+            "type": "added",
+            "content": "            const usersByGithubId = mapUsersByGithubId(users);"
+          },
+          {
+            "line": 148,
+            "type": "added",
+            "content": "            finalPRs = enrichPRsWithUsers(mergedPRs, usersByGithubId);"
+          },
+          {
+            "line": 149,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 150,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 151,
+            "type": "added",
+            "content": "        const startStr = start.toISOString().slice(0, 10);"
+          },
+          {
+            "line": 152,
+            "type": "added",
+            "content": "        const endStr = end.toISOString().slice(0, 10);"
+          },
+          {
+            "line": 153,
+            "type": "added",
+            "content": "        const outputName = `export_prs_hebdo_${startStr}_au_${endStr}.json`;"
+          },
+          {
+            "line": 154,
+            "type": "added",
+            "content": "        const outputPath = path.join(exportFolder, outputName);"
+          },
+          {
+            "line": 155,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 156,
+            "type": "added",
+            "content": "        fs.writeFileSync(outputPath, JSON.stringify(finalPRs, null, 2), 'utf-8');"
+          },
+          {
+            "line": 157,
+            "type": "added",
+            "content": "        console.log(`✅ Export hebdomadaire ${enrichWithUsers ? 'enrichi ' : ''}généré : ${outputName}`);"
+          },
+          {
+            "line": 158,
+            "type": "added",
+            "content": "    } catch (err) {"
+          },
+          {
+            "line": 159,
+            "type": "added",
+            "content": "        console.error('❌ Erreur lors de l’export hebdo :', err.message);"
+          },
+          {
+            "line": 160,
+            "type": "added",
+            "content": "    } finally {"
+          },
+          {
+            "line": 161,
+            "type": "added",
+            "content": "        await client.close();"
+          },
+          {
+            "line": 162,
+            "type": "added",
+            "content": "    }"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/exports/export_prs_2025-09-30.json",
+        "status": "modified",
+        "additions": 3,
+        "deletions": 3,
+        "changes": 6,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Fexport_prs_2025-09-30.json",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    \"date\": \"2025-10-09T12:50:56.081Z\","
+          },
+          {
+            "line": 6,
+            "type": "added",
+            "content": "    \"date\": \"2025-10-13T08:46:52.338Z\","
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    \"date\": \"2025-10-09T12:51:00.920Z\","
+          },
+          {
+            "line": 2203,
+            "type": "added",
+            "content": "    \"date\": \"2025-10-13T08:46:57.740Z\","
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    \"date\": \"2025-10-09T12:50:52.520Z\","
+          },
+          {
+            "line": 3503,
+            "type": "added",
+            "content": "    \"date\": \"2025-10-13T08:46:48.245Z\","
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/exports/export_prs_2025-10-10.json",
+        "status": "added",
+        "additions": 1,
+        "deletions": 0,
+        "changes": 1,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Fexport_prs_2025-10-10.json",
+        "modifiedLines": [
+          {
+            "line": 1,
+            "type": "added",
+            "content": "[]"
+          }
+        ]
+      },
+      {
+        "filename": "scripts/exports/export_prs_hebdo_2025-10-05_au_2025-10-12.json",
+        "status": "added",
+        "additions": 72783,
+        "deletions": 0,
+        "changes": 72783,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Fexport_prs_hebdo_2025-10-05_au_2025-10-12.json",
+        "modifiedLines": []
+      },
+      {
+        "filename": "scripts/exports/rapport_2025-09-25.md",
+        "status": "modified",
+        "additions": 8,
+        "deletions": 8,
+        "changes": 16,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Frapport_2025-09-25.md",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Lignes ajoutées (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➖ Lignes supprimées (total) : 0"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés (total) : 4"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "- ➕ Lignes ajoutées (total) : 22"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "- ➖ Lignes supprimées (total) : 10"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Fichiers modifiés : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes ajoutées : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes supprimées : 0"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "- Fichiers modifiés : 4"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": "- Lignes ajoutées : 22"
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "- Lignes supprimées : 10"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 4 "
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "- ➕ Additions: 22, ➖ Deletions: 10 "
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/exports/rapport_2025-09-26.md",
+        "status": "modified",
+        "additions": 16,
+        "deletions": 16,
+        "changes": 32,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Frapport_2025-09-26.md",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Lignes ajoutées (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➖ Lignes supprimées (total) : 0"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés (total) : 16"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "- ➕ Lignes ajoutées (total) : 395"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "- ➖ Lignes supprimées (total) : 54"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Fichiers modifiés : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes ajoutées : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes supprimées : 0"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "- Fichiers modifiés : 16"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": "- Lignes ajoutées : 395"
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "- Lignes supprimées : 54"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 1 "
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "- ➕ Additions: 21, ➖ Deletions: 15 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 7 "
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": "- ➕ Additions: 180, ➖ Deletions: 22 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 40,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": 41,
+            "type": "added",
+            "content": "- ➕ Additions: 0, ➖ Deletions: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 46,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": 47,
+            "type": "added",
+            "content": "- ➕ Additions: 0, ➖ Deletions: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 52,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 8 "
+          },
+          {
+            "line": 53,
+            "type": "added",
+            "content": "- ➕ Additions: 194, ➖ Deletions: 17 "
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/exports/rapport_2025-09-29.md",
+        "status": "modified",
+        "additions": 10,
+        "deletions": 10,
+        "changes": 20,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Frapport_2025-09-29.md",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Lignes ajoutées (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➖ Lignes supprimées (total) : 0"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés (total) : 1"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "- ➕ Lignes ajoutées (total) : 21"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "- ➖ Lignes supprimées (total) : 15"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Fichiers modifiés : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes ajoutées : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes supprimées : 0"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "- Fichiers modifiés : 1"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": "- Lignes ajoutées : 21"
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "- Lignes supprimées : 15"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 1 "
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "- ➕ Additions: 21, ➖ Deletions: 15 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": "- ➕ Additions: 0, ➖ Deletions: 0 "
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/exports/rapport_2025-09-30.md",
+        "status": "modified",
+        "additions": 12,
+        "deletions": 12,
+        "changes": 24,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Frapport_2025-09-30.md",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Lignes ajoutées (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➖ Lignes supprimées (total) : 0"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés (total) : 17"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "- ➕ Lignes ajoutées (total) : 538"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "- ➖ Lignes supprimées (total) : 116"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Fichiers modifiés : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes ajoutées : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes supprimées : 0"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "- Fichiers modifiés : 17"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": "- Lignes ajoutées : 538"
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "- Lignes supprimées : 116"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 8 "
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "- ➕ Additions: 363, ➖ Deletions: 55 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 9 "
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": "- ➕ Additions: 175, ➖ Deletions: 61 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 40,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": 41,
+            "type": "added",
+            "content": "- ➕ Additions: 0, ➖ Deletions: 0 "
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/exports/rapport_2025-10-02.md",
+        "status": "modified",
+        "additions": 8,
+        "deletions": 8,
+        "changes": 16,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Frapport_2025-10-02.md",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Lignes ajoutées (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➖ Lignes supprimées (total) : 0"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés (total) : 15"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "- ➕ Lignes ajoutées (total) : 2390"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "- ➖ Lignes supprimées (total) : 271"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Fichiers modifiés : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes ajoutées : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes supprimées : 0"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "- Fichiers modifiés : 15"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": "- Lignes ajoutées : 2390"
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "- Lignes supprimées : 271"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 15 "
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "- ➕ Additions: 2390, ➖ Deletions: 271 "
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/exports/rapport_2025-10-03.md",
+        "status": "modified",
+        "additions": 10,
+        "deletions": 10,
+        "changes": 20,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Frapport_2025-10-03.md",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Lignes ajoutées (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➖ Lignes supprimées (total) : 0"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés (total) : 16"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "- ➕ Lignes ajoutées (total) : 2808"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "- ➖ Lignes supprimées (total) : 209"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Fichiers modifiés : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes ajoutées : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes supprimées : 0"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "- Fichiers modifiés : 16"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": "- Lignes ajoutées : 2808"
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "- Lignes supprimées : 209"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 10 "
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "- ➕ Additions: 2714, ➖ Deletions: 85 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 6 "
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": "- ➕ Additions: 94, ➖ Deletions: 124 "
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/exports/rapport_2025-10-06.md",
+        "status": "modified",
+        "additions": 8,
+        "deletions": 8,
+        "changes": 16,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Frapport_2025-10-06.md",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Lignes ajoutées (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➖ Lignes supprimées (total) : 0"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés (total) : 16"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "- ➕ Lignes ajoutées (total) : 26258"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "- ➖ Lignes supprimées (total) : 507"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Fichiers modifiés : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes ajoutées : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes supprimées : 0"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "- Fichiers modifiés : 16"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": "- Lignes ajoutées : 26258"
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "- Lignes supprimées : 507"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 16 "
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "- ➕ Additions: 26258, ➖ Deletions: 507 "
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/exports/rapport_2025-10-07.md",
+        "status": "modified",
+        "additions": 8,
+        "deletions": 8,
+        "changes": 16,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Frapport_2025-10-07.md",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Lignes ajoutées (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➖ Lignes supprimées (total) : 0"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés (total) : 11"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "- ➕ Lignes ajoutées (total) : 240"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "- ➖ Lignes supprimées (total) : 83"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Fichiers modifiés : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes ajoutées : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes supprimées : 0"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "- Fichiers modifiés : 11"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": "- Lignes ajoutées : 240"
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "- Lignes supprimées : 83"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 11 "
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "- ➕ Additions: 240, ➖ Deletions: 83 "
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/exports/rapport_2025-10-08.md",
+        "status": "modified",
+        "additions": 56,
+        "deletions": 56,
+        "changes": 112,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Frapport_2025-10-08.md",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Lignes ajoutées (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➖ Lignes supprimées (total) : 0"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés (total) : 112"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "- ➕ Lignes ajoutées (total) : 64670"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "- ➖ Lignes supprimées (total) : 1853"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 40,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 46,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 52,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 58,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 64,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 70,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 76,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 82,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 88,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 94,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 100,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 106,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 112,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 118,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Fichiers modifiés : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes ajoutées : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes supprimées : 0"
+          },
+          {
+            "line": 128,
+            "type": "added",
+            "content": "- Fichiers modifiés : 112"
+          },
+          {
+            "line": 129,
+            "type": "added",
+            "content": "- Lignes ajoutées : 64670"
+          },
+          {
+            "line": 130,
+            "type": "added",
+            "content": "- Lignes supprimées : 1853"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 134,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 8 "
+          },
+          {
+            "line": 135,
+            "type": "added",
+            "content": "- ➕ Additions: 363, ➖ Deletions: 55 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 140,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 9 "
+          },
+          {
+            "line": 141,
+            "type": "added",
+            "content": "- ➕ Additions: 175, ➖ Deletions: 61 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 146,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 1 "
+          },
+          {
+            "line": 147,
+            "type": "added",
+            "content": "- ➕ Additions: 21, ➖ Deletions: 15 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 152,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": 153,
+            "type": "added",
+            "content": "- ➕ Additions: 0, ➖ Deletions: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 158,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 1 "
+          },
+          {
+            "line": 159,
+            "type": "added",
+            "content": "- ➕ Additions: 21, ➖ Deletions: 15 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 164,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 7 "
+          },
+          {
+            "line": 165,
+            "type": "added",
+            "content": "- ➕ Additions: 180, ➖ Deletions: 22 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 170,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": 171,
+            "type": "added",
+            "content": "- ➕ Additions: 0, ➖ Deletions: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 176,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": 177,
+            "type": "added",
+            "content": "- ➕ Additions: 0, ➖ Deletions: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 182,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 8 "
+          },
+          {
+            "line": 183,
+            "type": "added",
+            "content": "- ➕ Additions: 194, ➖ Deletions: 17 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 188,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 4 "
+          },
+          {
+            "line": 189,
+            "type": "added",
+            "content": "- ➕ Additions: 22, ➖ Deletions: 10 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 194,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 10 "
+          },
+          {
+            "line": 195,
+            "type": "added",
+            "content": "- ➕ Additions: 2714, ➖ Deletions: 85 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 200,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 6 "
+          },
+          {
+            "line": 201,
+            "type": "added",
+            "content": "- ➕ Additions: 94, ➖ Deletions: 124 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 206,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 16 "
+          },
+          {
+            "line": 207,
+            "type": "added",
+            "content": "- ➕ Additions: 26258, ➖ Deletions: 507 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 212,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 15 "
+          },
+          {
+            "line": 213,
+            "type": "added",
+            "content": "- ➕ Additions: 2390, ➖ Deletions: 271 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 218,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 0 "
+          },
+          {
+            "line": 219,
+            "type": "added",
+            "content": "- ➕ Additions: 0, ➖ Deletions: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 224,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 11 "
+          },
+          {
+            "line": 225,
+            "type": "added",
+            "content": "- ➕ Additions: 240, ➖ Deletions: 83 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 230,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 16 "
+          },
+          {
+            "line": 231,
+            "type": "added",
+            "content": "- ➕ Additions: 31998, ➖ Deletions: 588 "
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/exports/rapport_2025-10-09.md",
+        "status": "modified",
+        "additions": 14,
+        "deletions": 14,
+        "changes": 28,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Frapport_2025-10-09.md",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Lignes ajoutées (total) : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➖ Lignes supprimées (total) : 0"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés (total) : 74"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "- ➕ Lignes ajoutées (total) : 123121"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "- ➖ Lignes supprimées (total) : 165078"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Fichiers modifiés : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes ajoutées : 0"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- Lignes supprimées : 0"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "- Fichiers modifiés : 74"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": "- Lignes ajoutées : 123121"
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "- Lignes supprimées : 165078"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 2 "
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "- ➕ Additions: 37004, ➖ Deletions: 0 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 24 "
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": "- ➕ Additions: 25245, ➖ Deletions: 55026 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 40,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 24 "
+          },
+          {
+            "line": 41,
+            "type": "added",
+            "content": "- ➕ Additions: 30436, ➖ Deletions: 55026 "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 46,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: 24 "
+          },
+          {
+            "line": 47,
+            "type": "added",
+            "content": "- ➕ Additions: 30436, ➖ Deletions: 55026 "
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/exports/rapport_2025-10-10.md",
+        "status": "added",
+        "additions": 22,
+        "deletions": 0,
+        "changes": 22,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Frapport_2025-10-10.md",
+        "modifiedLines": [
+          {
+            "line": 1,
+            "type": "added",
+            "content": "# Rapport des PRs - 2025-10-10"
+          },
+          {
+            "line": 2,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 3,
+            "type": "added",
+            "content": "Nombre total de PRs : 0"
+          },
+          {
+            "line": 4,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 5,
+            "type": "added",
+            "content": "## 📊 Résumé global"
+          },
+          {
+            "line": 6,
+            "type": "added",
+            "content": "- 👥 Contributeurs uniques : 0"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés (total) : 0"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "- ➕ Lignes ajoutées (total) : 0"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "- ➖ Lignes supprimées (total) : 0"
+          },
+          {
+            "line": 10,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 11,
+            "type": "added",
+            "content": "## ✅ Points forts"
+          },
+          {
+            "line": 12,
+            "type": "added",
+            "content": "- Bonne répartition des contributions."
+          },
+          {
+            "line": 13,
+            "type": "added",
+            "content": "- Plusieurs PRs fusionnées avec succès."
+          },
+          {
+            "line": 14,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 15,
+            "type": "added",
+            "content": "## 👥 Analyse par utilisateur"
+          },
+          {
+            "line": 16,
+            "type": "added",
+            "content": "## 🛠️ Améliorations recommandées"
+          },
+          {
+            "line": 17,
+            "type": "added",
+            "content": "- Vérifier les PRs avec peu ou pas de description."
+          },
+          {
+            "line": 18,
+            "type": "added",
+            "content": "- Encourager des commits plus atomiques."
+          },
+          {
+            "line": 19,
+            "type": "added",
+            "content": "- Ajouter des reviewers pour les PRs critiques."
+          },
+          {
+            "line": 20,
+            "type": "added",
+            "content": "## 🧹 Nettoyage de code"
+          },
+          {
+            "line": 21,
+            "type": "added",
+            "content": "- Suppression de variables inutilisées : `today`, `dateStr`"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "- Suppression d’un import non utilisé : `const os = require('os')`"
+          }
+        ]
+      },
+      {
+        "filename": "scripts/exports/rapport_hebdo_2025-10-06_au_2025-10-12.md",
+        "status": "added",
+        "additions": 82,
+        "deletions": 0,
+        "changes": 82,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2Fexports%2Frapport_hebdo_2025-10-06_au_2025-10-12.md",
+        "modifiedLines": [
+          {
+            "line": 1,
+            "type": "added",
+            "content": "# Rapport hebdomadaire des PRs"
+          },
+          {
+            "line": 2,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 3,
+            "type": "added",
+            "content": "📅 Semaine du **2025-10-06** au **2025-10-12**"
+          },
+          {
+            "line": 4,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 5,
+            "type": "added",
+            "content": "## 📊 Résumé global"
+          },
+          {
+            "line": 6,
+            "type": "added",
+            "content": "- Nombre total de PRs : 8"
+          },
+          {
+            "line": 7,
+            "type": "added",
+            "content": "- 👥 Contributeurs uniques : 1"
+          },
+          {
+            "line": 8,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés (total) : 0"
+          },
+          {
+            "line": 9,
+            "type": "added",
+            "content": "- ➕ Lignes ajoutées (total) : 0"
+          },
+          {
+            "line": 10,
+            "type": "added",
+            "content": "- ➖ Lignes supprimées (total) : 0"
+          },
+          {
+            "line": 11,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 12,
+            "type": "added",
+            "content": "## ✅ Points forts"
+          },
+          {
+            "line": 13,
+            "type": "added",
+            "content": "- Bonne répartition des contributions."
+          },
+          {
+            "line": 14,
+            "type": "added",
+            "content": "- Plusieurs PRs fusionnées avec succès."
+          },
+          {
+            "line": 15,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 16,
+            "type": "added",
+            "content": "## 👥 Analyse par utilisateur"
+          },
+          {
+            "line": 17,
+            "type": "added",
+            "content": "### 🔹 fournest85"
+          },
+          {
+            "line": 18,
+            "type": "added",
+            "content": "- 👤 Profil GitHub : fournest85"
+          },
+          {
+            "line": 19,
+            "type": "added",
+            "content": "- 🖼️ Avatar : !"
+          },
+          {
+            "line": 20,
+            "type": "added",
+            "content": "- 🧬 Type : User"
+          },
+          {
+            "line": 21,
+            "type": "added",
+            "content": "- 🔐 Admin GitHub : Non"
+          },
+          {
+            "line": 22,
+            "type": "added",
+            "content": "- Nombre de PRs : 8"
+          },
+          {
+            "line": 23,
+            "type": "added",
+            "content": "- Fichiers modifiés : 0"
+          },
+          {
+            "line": 24,
+            "type": "added",
+            "content": "- Lignes ajoutées : 0"
+          },
+          {
+            "line": 25,
+            "type": "added",
+            "content": "- Lignes supprimées : 0"
+          },
+          {
+            "line": 26,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 27,
+            "type": "added",
+            "content": "#### PR #15 - mise à jour du programme pour un code plus clair"
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "- 🔗 Lien vers la PR  - 🕒 Créée le: 2025-10-06 17:57 "
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 30,
+            "type": "added",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 31,
+            "type": "added",
+            "content": "- 📌 Statut: closed "
+          },
+          {
+            "line": 32,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 33,
+            "type": "added",
+            "content": "#### PR #16 - mise en place du rapport markdown "
+          },
+          {
+            "line": 34,
+            "type": "added",
+            "content": "- 🔗 Lien vers la PR  - 🕒 Créée le: 2025-10-07 17:36 "
+          },
+          {
+            "line": 35,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 36,
+            "type": "added",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 37,
+            "type": "added",
+            "content": "- 📌 Statut: closed "
+          },
+          {
+            "line": 38,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 39,
+            "type": "added",
+            "content": "#### PR #17 - split en 2 projets (front et back)"
+          },
+          {
+            "line": 40,
+            "type": "added",
+            "content": "- 🔗 Lien vers la PR  - 🕒 Créée le: 2025-10-08 17:24 "
+          },
+          {
+            "line": 41,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 42,
+            "type": "added",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 43,
+            "type": "added",
+            "content": "- 📌 Statut: closed "
+          },
+          {
+            "line": 44,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 45,
+            "type": "added",
+            "content": "#### PR #18 - resolutions de certains bugs et mise en place du split front/back"
+          },
+          {
+            "line": 46,
+            "type": "added",
+            "content": "- 🔗 Lien vers la PR  - 🕒 Créée le: 2025-10-09 17:19 "
+          },
+          {
+            "line": 47,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 48,
+            "type": "added",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 49,
+            "type": "added",
+            "content": "- 📌 Statut: closed "
+          },
+          {
+            "line": 50,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 51,
+            "type": "added",
+            "content": "#### PR #19 - resolutions de certains bugs et mise en place du split front/back"
+          },
+          {
+            "line": 52,
+            "type": "added",
+            "content": "- 🔗 Lien vers la PR  - 🕒 Créée le: 2025-10-09 17:21 "
+          },
+          {
+            "line": 53,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 54,
+            "type": "added",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 55,
+            "type": "added",
+            "content": "- 📌 Statut: closed "
+          },
+          {
+            "line": 56,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 57,
+            "type": "added",
+            "content": "#### PR #20 - mise à jour de la branche"
+          },
+          {
+            "line": 58,
+            "type": "added",
+            "content": "- 🔗 Lien vers la PR  - 🕒 Créée le: 2025-10-09 17:23 "
+          },
+          {
+            "line": 59,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 60,
+            "type": "added",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 61,
+            "type": "added",
+            "content": "- 📌 Statut: closed "
+          },
+          {
+            "line": 62,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 63,
+            "type": "added",
+            "content": "#### PR #21 - Test branche mise à jour"
+          },
+          {
+            "line": 64,
+            "type": "added",
+            "content": "- 🔗 Lien vers la PR  - 🕒 Créée le: 2025-10-09 17:35 "
+          },
+          {
+            "line": 65,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 66,
+            "type": "added",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 67,
+            "type": "added",
+            "content": "- 📌 Statut: closed "
+          },
+          {
+            "line": 68,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 69,
+            "type": "added",
+            "content": "#### PR #22 - Mise à jour des scripts et ajout des exports du 09/10"
+          },
+          {
+            "line": 70,
+            "type": "added",
+            "content": "- 🔗 Lien vers la PR  - 🕒 Créée le: 2025-10-10 17:25 "
+          },
+          {
+            "line": 71,
+            "type": "added",
+            "content": "- 📂 Fichiers modifiés: undefined "
+          },
+          {
+            "line": 72,
+            "type": "added",
+            "content": "- ➕ Additions: undefined, ➖ Deletions: undefined "
+          },
+          {
+            "line": 73,
+            "type": "added",
+            "content": "- 📌 Statut: closed "
+          },
+          {
+            "line": 74,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 75,
+            "type": "added",
+            "content": "## 🛠️ Améliorations recommandées"
+          },
+          {
+            "line": 76,
+            "type": "added",
+            "content": "- Vérifier les PRs avec peu ou pas de description."
+          },
+          {
+            "line": 77,
+            "type": "added",
+            "content": "- Encourager des commits plus atomiques."
+          },
+          {
+            "line": 78,
+            "type": "added",
+            "content": "- Ajouter des reviewers pour les PRs critiques."
+          },
+          {
+            "line": 79,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 80,
+            "type": "added",
+            "content": "## 🧹 Nettoyage de code"
+          },
+          {
+            "line": 81,
+            "type": "added",
+            "content": "- Suppression de variables inutilisées : `today`, `dateStr`"
+          },
+          {
+            "line": 82,
+            "type": "added",
+            "content": "- Suppression d’un import non utilisé : `const os = require('os')`"
+          }
+        ]
+      },
+      {
+        "filename": "scripts/generateRapport.js",
+        "status": "modified",
+        "additions": 113,
+        "deletions": 37,
+        "changes": 150,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2FgenerateRapport.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const exportFolder = path.join(__dirname, 'exports'); // adapte si besoin"
+          },
+          {
+            "line": 5,
+            "type": "added",
+            "content": "const exportFolder = path.join(__dirname, 'exports');"
+          },
+          {
+            "line": 25,
+            "type": "added",
+            "content": "    // 🔧 Calcul automatique si les champs sont absents"
+          },
+          {
+            "line": 26,
+            "type": "added",
+            "content": "    prs.forEach(pr => {"
+          },
+          {
+            "line": 27,
+            "type": "added",
+            "content": "        if (!pr.additions || !pr.deletions || !pr.changed_files) {"
+          },
+          {
+            "line": 28,
+            "type": "added",
+            "content": "            pr.additions = pr.files?.reduce((sum, f) => sum + (f.additions || 0), 0);"
+          },
+          {
+            "line": 29,
+            "type": "added",
+            "content": "            pr.deletions = pr.files?.reduce((sum, f) => sum + (f.deletions || 0), 0);"
+          },
+          {
+            "line": 30,
+            "type": "added",
+            "content": "            pr.changed_files = pr.files?.length || 0;"
+          },
+          {
+            "line": 31,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 32,
+            "type": "added",
+            "content": "    });"
+          },
+          {
+            "line": 33,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const fileDate = new Date(dateStr);"
+          },
+          {
+            "line": 134,
+            "type": "added",
+            "content": "        const [year, month, day] = dateStr.split('-');"
+          },
+          {
+            "line": 135,
+            "type": "added",
+            "content": "        const fileDate = new Date(`${year}-${month}-${day}T00:00:00`);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "function mergePRs(files) {"
+          },
+          {
+            "line": 140,
+            "type": "added",
+            "content": "function mergePRs(files, startDate, endDate) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            if (pr.number) merged[pr.number] = pr;"
+          },
+          {
+            "line": 145,
+            "type": "added",
+            "content": "            const created = new Date(pr.created_at);"
+          },
+          {
+            "line": 146,
+            "type": "added",
+            "content": "            const updated = new Date(pr.updated_at || pr.created_at); // fallback si updated_at absent"
+          },
+          {
+            "line": 147,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 148,
+            "type": "added",
+            "content": "            const isInRange ="
+          },
+          {
+            "line": 149,
+            "type": "added",
+            "content": "                (created >= startDate && created <= endDate) ||"
+          },
+          {
+            "line": 150,
+            "type": "added",
+            "content": "                (updated >= startDate && updated <= endDate);"
+          },
+          {
+            "line": 151,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 152,
+            "type": "added",
+            "content": "            if (isInRange && pr.number) {"
+          },
+          {
+            "line": 153,
+            "type": "added",
+            "content": "                merged[pr.number] = pr;"
+          },
+          {
+            "line": 154,
+            "type": "added",
+            "content": "            }"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "function generateMarkdown(prs, startStr, endStr) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const totalPRs = prs.length;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const users = {};"
+          },
+          {
+            "line": 160,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 161,
+            "type": "added",
+            "content": "async function generateWeeklyMarkdownReport() {"
+          },
+          {
+            "line": 162,
+            "type": "added",
+            "content": "    const { start, end } = getPreviousWeekRange();"
+          },
+          {
+            "line": 163,
+            "type": "added",
+            "content": "    const startStr = dayjs(start).format('YYYY-MM-DD');"
+          },
+          {
+            "line": 164,
+            "type": "added",
+            "content": "    const endStr = dayjs(end).format('YYYY-MM-DD');"
+          },
+          {
+            "line": 165,
+            "type": "added",
+            "content": "    const hebdoJsonPath = path.join(__dirname, `../exports/export_prs_hebdo_${startStr}_au_${endStr}.json`);"
+          },
+          {
+            "line": 166,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 167,
+            "type": "added",
+            "content": "    let prs = [];"
+          },
+          {
+            "line": 168,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 169,
+            "type": "added",
+            "content": "    if (fs.existsSync(hebdoJsonPath)) {"
+          },
+          {
+            "line": 170,
+            "type": "added",
+            "content": "        const content = JSON.parse(fs.readFileSync(hebdoJsonPath, 'utf-8'));"
+          },
+          {
+            "line": 171,
+            "type": "added",
+            "content": "        if (Array.isArray(content) && content.length > 0) {"
+          },
+          {
+            "line": 172,
+            "type": "added",
+            "content": "            console.log(`✅ Fichier enrichi hebdo utilisé : ${hebdoJsonPath}`);"
+          },
+          {
+            "line": 173,
+            "type": "added",
+            "content": "            prs = content;"
+          },
+          {
+            "line": 174,
+            "type": "added",
+            "content": "        } else {"
+          },
+          {
+            "line": 175,
+            "type": "added",
+            "content": "            console.warn(`⚠️ Fichier enrichi vide, fallback sur les exports journaliers.`);"
+          },
+          {
+            "line": 176,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 177,
+            "type": "added",
+            "content": "    }"
+          },
+          {
+            "line": 178,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 179,
+            "type": "added",
+            "content": "    if (prs.length === 0) {"
+          },
+          {
+            "line": 180,
+            "type": "added",
+            "content": "        const files = getWeeklyExportFiles(start, end);"
+          },
+          {
+            "line": 181,
+            "type": "added",
+            "content": "        if (files.length === 0) {"
+          },
+          {
+            "line": 182,
+            "type": "added",
+            "content": "            console.warn('⚠️ Aucun fichier export trouvé pour la semaine précédente. Rapport hebdo ignoré.');"
+          },
+          {
+            "line": 183,
+            "type": "added",
+            "content": "            return;"
+          },
+          {
+            "line": 184,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 185,
+            "type": "added",
+            "content": "        prs = mergePRs(files, start, end);"
+          },
+          {
+            "line": 186,
+            "type": "added",
+            "content": "    }"
+          },
+          {
+            "line": 187,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 188,
+            "type": "added",
+            "content": "    const prsByUserId = {};"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        const login = pr.user?.login || 'inconnu';"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        if (!users[login]) users[login] = [];"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        users[login].push(pr);"
+          },
+          {
+            "line": 190,
+            "type": "added",
+            "content": "        const githubId = pr.user?.githubId || 'inconnu';"
+          },
+          {
+            "line": 191,
+            "type": "added",
+            "content": "        if (!prsByUserId[githubId]) prsByUserId[githubId] = [];"
+          },
+          {
+            "line": 192,
+            "type": "added",
+            "content": "        prsByUserId[githubId].push(pr);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    let md = `# Rapport hebdomadaire des PRs\\n\\n`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    md += `📅 Semaine du **${startStr}** au **${endStr}**\\n\\n`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    md += `## 📊 Résumé global\\n`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    md += `- Nombre total de PRs : ${totalPRs}\\n`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    md += `- Contributeurs uniques : ${Object.keys(users).length}\\n\\n`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    md += `## 👤 Analyse par utilisateur\\n`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    for (const [login, prList] of Object.entries(users)) {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        md += `### 🔹 ${login}\\n`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        md += `- Nombre de PRs : ${prList.length}\\n`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        prList.forEach(pr => {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "            md += `  - #${pr.number} : ${pr.title} (${pr.state})\\n`;"
+          },
+          {
+            "line": 195,
+            "type": "added",
+            "content": "    const totalAdditions = prs.reduce((sum, pr) => sum + (pr.additions || 0), 0);"
+          },
+          {
+            "line": 196,
+            "type": "added",
+            "content": "    const totalDeletions = prs.reduce((sum, pr) => sum + (pr.deletions || 0), 0);"
+          },
+          {
+            "line": 197,
+            "type": "added",
+            "content": "    const totalFilesChanged = prs.reduce((sum, pr) => sum + (pr.changed_files || 0), 0);"
+          },
+          {
+            "line": 198,
+            "type": "added",
+            "content": "    const contributors = [...new Set(prs.map(pr => pr.user?.login || 'inconnu'))];"
+          },
+          {
+            "line": 199,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 200,
+            "type": "added",
+            "content": "    let markdown = `# Rapport hebdomadaire des PRs\\n\\n`;"
+          },
+          {
+            "line": 201,
+            "type": "added",
+            "content": "    markdown += `📅 Semaine du **${startStr}** au **${endStr}**\\n\\n`;"
+          },
+          {
+            "line": 202,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 203,
+            "type": "added",
+            "content": "    markdown += `## 📊 Résumé global\\n`;"
+          },
+          {
+            "line": 204,
+            "type": "added",
+            "content": "    markdown += `- Nombre total de PRs : ${prs.length}\\n`;"
+          },
+          {
+            "line": 205,
+            "type": "added",
+            "content": "    markdown += `- 👥 Contributeurs uniques : ${contributors.length}\\n`;"
+          },
+          {
+            "line": 206,
+            "type": "added",
+            "content": "    markdown += `- 📂 Fichiers modifiés (total) : ${totalFilesChanged}\\n`;"
+          },
+          {
+            "line": 207,
+            "type": "added",
+            "content": "    markdown += `- ➕ Lignes ajoutées (total) : ${totalAdditions}\\n`;"
+          },
+          {
+            "line": 208,
+            "type": "added",
+            "content": "    markdown += `- ➖ Lignes supprimées (total) : ${totalDeletions}\\n\\n`;"
+          },
+          {
+            "line": 209,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 210,
+            "type": "added",
+            "content": "    markdown += `## ✅ Points forts\\n`;"
+          },
+          {
+            "line": 211,
+            "type": "added",
+            "content": "    markdown += `- Bonne répartition des contributions.\\n`;"
+          },
+          {
+            "line": 212,
+            "type": "added",
+            "content": "    markdown += `- Plusieurs PRs fusionnées avec succès.\\n\\n`;"
+          },
+          {
+            "line": 213,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 214,
+            "type": "added",
+            "content": "    markdown += `## 👥 Analyse par utilisateur\\n`;"
+          },
+          {
+            "line": 215,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 216,
+            "type": "added",
+            "content": "    for (const [githubId, userPRs] of Object.entries(prsByUserId)) {"
+          },
+          {
+            "line": 217,
+            "type": "added",
+            "content": "        const userMeta = userPRs[0]?.user || {};"
+          },
+          {
+            "line": 218,
+            "type": "added",
+            "content": "        const { login, html_url: userUrl, avatar_url, type, site_admin } = userMeta;"
+          },
+          {
+            "line": 219,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 220,
+            "type": "added",
+            "content": "        const totalFiles = userPRs.reduce((sum, pr) => sum + (pr.changed_files || 0), 0);"
+          },
+          {
+            "line": 221,
+            "type": "added",
+            "content": "        const totalAdditions = userPRs.reduce((sum, pr) => sum + (pr.additions || 0), 0);"
+          },
+          {
+            "line": 222,
+            "type": "added",
+            "content": "        const totalDeletions = userPRs.reduce((sum, pr) => sum + (pr.deletions || 0), 0);"
+          },
+          {
+            "line": 223,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 224,
+            "type": "added",
+            "content": "        markdown += `### 🔹 ${login || 'inconnu'}\\n`;"
+          },
+          {
+            "line": 225,
+            "type": "added",
+            "content": "        if (userUrl) markdown += `- 👤 Profil GitHub : ${login}\\n`;"
+          },
+          {
+            "line": 226,
+            "type": "added",
+            "content": "        if (avatar_url) markdown += `- 🖼️ Avatar : !\\n`;"
+          },
+          {
+            "line": 227,
+            "type": "added",
+            "content": "        if (type) markdown += `- 🧬 Type : ${type}\\n`;"
+          },
+          {
+            "line": 228,
+            "type": "added",
+            "content": "        if (site_admin !== undefined) markdown += `- 🔐 Admin GitHub : ${site_admin ? 'Oui' : 'Non'}\\n`;"
+          },
+          {
+            "line": 229,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 230,
+            "type": "added",
+            "content": "        markdown += `- Nombre de PRs : ${userPRs.length}\\n`;"
+          },
+          {
+            "line": 231,
+            "type": "added",
+            "content": "        markdown += `- Fichiers modifiés : ${totalFiles}\\n`;"
+          },
+          {
+            "line": 232,
+            "type": "added",
+            "content": "        markdown += `- Lignes ajoutées : ${totalAdditions}\\n`;"
+          },
+          {
+            "line": 233,
+            "type": "added",
+            "content": "        markdown += `- Lignes supprimées : ${totalDeletions}\\n\\n`;"
+          },
+          {
+            "line": 234,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 235,
+            "type": "added",
+            "content": "        userPRs.forEach(pr => {"
+          },
+          {
+            "line": 236,
+            "type": "added",
+            "content": "            markdown += `#### PR #${pr.number} - ${pr.title}\\n`;"
+          },
+          {
+            "line": 237,
+            "type": "added",
+            "content": "            markdown += `- 🔗 Lien vers la PR  - 🕒 Créée le: ${dayjs(pr.created_at).format('YYYY-MM-DD HH:mm')} \\n`;"
+          },
+          {
+            "line": 238,
+            "type": "added",
+            "content": "            markdown += `- 📂 Fichiers modifiés: ${pr.changed_files} \\n`;"
+          },
+          {
+            "line": 239,
+            "type": "added",
+            "content": "            markdown += `- ➕ Additions: ${pr.additions}, ➖ Deletions: ${pr.deletions} \\n`;"
+          },
+          {
+            "line": 240,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 241,
+            "type": "added",
+            "content": "            markdown += `- 📌 Statut: ${pr.state} \\n\\n`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "        md += `\\n`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    return md;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "}"
+          },
+          {
+            "line": 245,
+            "type": "added",
+            "content": "    markdown += `## 🛠️ Améliorations recommandées\\n`;"
+          },
+          {
+            "line": 246,
+            "type": "added",
+            "content": "    markdown += `- Vérifier les PRs avec peu ou pas de description.\\n`;"
+          },
+          {
+            "line": 247,
+            "type": "added",
+            "content": "    markdown += `- Encourager des commits plus atomiques.\\n`;"
+          },
+          {
+            "line": 248,
+            "type": "added",
+            "content": "    markdown += `- Ajouter des reviewers pour les PRs critiques.\\n\\n`;"
+          },
+          {
+            "line": 249,
+            "type": "added",
+            "content": "    markdown += `## 🧹 Nettoyage de code\\n`;"
+          },
+          {
+            "line": 250,
+            "type": "added",
+            "content": "    markdown += `- Suppression de variables inutilisées : \\`today\\`, \\`dateStr\\`\\n`;"
+          },
+          {
+            "line": 251,
+            "type": "added",
+            "content": "    markdown += `- Suppression d’un import non utilisé : \\`const os = require('os')\\`\\n`;"
+          },
+          {
+            "line": 252,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 253,
+            "type": "added",
+            "content": "    const hebdoMdPath = path.join(exportFolder, `rapport_hebdo_${startStr}_au_${endStr}.md`);"
+          },
+          {
+            "line": 254,
+            "type": "added",
+            "content": "    fs.writeFileSync(hebdoMdPath, markdown, 'utf-8');"
+          },
+          {
+            "line": 255,
+            "type": "added",
+            "content": "    console.log(`✅ Rapport Markdown hebdomadaire généré : ${hebdoMdPath}`);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "function generateWeeklyMarkdownReport() {"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const { start, end } = getPreviousWeekRange();"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const startStr = dayjs(start).format('YYYY-MM-DD');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const endStr = dayjs(end).format('YYYY-MM-DD');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const files = getWeeklyExportFiles(start, end);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const mergedPRs = mergePRs(files);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": ""
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const markdown = generateMarkdown(mergedPRs, startStr, endStr);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const outputName = `rapport_hebdo_${startStr}_au_${endStr}.md`;"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    const outputPath = path.join(exportFolder, outputName);"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    fs.writeFileSync(outputPath, markdown, 'utf-8');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    console.log(`✅ Rapport Markdown hebdomadaire généré : ${outputName}`);"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/githubService.js",
+        "status": "modified",
+        "additions": 0,
+        "deletions": 1,
+        "changes": 1,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2FgithubService.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "require('dotenv').config();"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/prService.js",
+        "status": "modified",
+        "additions": 0,
+        "deletions": 1,
+        "changes": 1,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2FprService.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "require('dotenv').config();"
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "scripts/startupTasks.js",
+        "status": "modified",
+        "additions": 21,
+        "deletions": 2,
+        "changes": 23,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/scripts%2FstartupTasks.js",
+        "modifiedLines": [
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const { generateRapportMarkdown } = require(\"./generateRapport\");"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "const { exportPRsToJson } = require(\"./export-prs\");"
+          },
+          {
+            "line": 12,
+            "type": "added",
+            "content": "const { generateRapportMarkdown, generateWeeklyMarkdownReport } = require(\"./generateRapport\");"
+          },
+          {
+            "line": 13,
+            "type": "added",
+            "content": "const { exportPRsToJson, generateWeeklyReport } = require(\"./export-prs\");"
+          },
+          {
+            "line": 19,
+            "type": "added",
+            "content": "        const dayjs = require('dayjs');"
+          },
+          {
+            "line": 20,
+            "type": "added",
+            "content": "        inputDate = dayjs(inputDate).format('YYYY-MM-DD');"
+          },
+          {
+            "line": 87,
+            "type": "added",
+            "content": "        const startOfWeek = dayjs(inputDate).subtract(dayjs(inputDate).day() - 1, 'day').format('YYYY-MM-DD');"
+          },
+          {
+            "line": 88,
+            "type": "added",
+            "content": "        const endOfWeek = dayjs(startOfWeek).add(6, 'day').format('YYYY-MM-DD');"
+          },
+          {
+            "line": 89,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 90,
+            "type": "added",
+            "content": "        const hebdoJsonPath = path.join(__dirname, `../exports/export_prs_hebdo_${startOfWeek}_au_${endOfWeek}.json`);"
+          },
+          {
+            "line": 91,
+            "type": "added",
+            "content": "        const hebdoMdPath = path.join(__dirname, `../exports/rapport_hebdo_${startOfWeek}_au_${endOfWeek}.md`);"
+          },
+          {
+            "line": 92,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 93,
+            "type": "added",
+            "content": "        if (!fs.existsSync(hebdoJsonPath) || !fs.existsSync(hebdoMdPath)) {"
+          },
+          {
+            "line": 94,
+            "type": "added",
+            "content": "            console.log('📅 Lundi détecté ou fichiers manquants: génération des rapports hebdomadaires...');"
+          },
+          {
+            "line": 95,
+            "type": "added",
+            "content": "            await generateWeeklyReport({ enrichWithUsers: true});"
+          },
+          {
+            "line": 96,
+            "type": "added",
+            "content": "            await generateWeeklyMarkdownReport();"
+          },
+          {
+            "line": 97,
+            "type": "added",
+            "content": "            console.log('✅ Rapports hebdomadaires générés.');"
+          },
+          {
+            "line": 98,
+            "type": "added",
+            "content": "        } else {"
+          },
+          {
+            "line": 99,
+            "type": "added",
+            "content": "            console.log('📁 Rapports hebdomadaires déjà présents. Génération ignorée.');"
+          },
+          {
+            "line": 100,
+            "type": "added",
+            "content": "        }"
+          },
+          {
+            "line": 105,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 106,
+            "type": "added",
+            "content": ""
+          },
+          {
+            "line": 107,
+            "type": "added",
+            "content": ""
+          }
+        ],
+        "diff": []
+      },
+      {
+        "filename": "server.js",
+        "status": "modified",
+        "additions": 8,
+        "deletions": 1,
+        "changes": 9,
+        "raw_url": "https://github.com/fournest85/projet_1_back/raw/de249b31a9c3403f2202eae3c7f37d5b7780de49/server.js",
+        "modifiedLines": [
+          {
+            "line": 16,
+            "type": "added",
+            "content": "const dayjs = require('dayjs');"
+          },
+          {
+            "line": null,
+            "type": "removed",
+            "content": "    callback(input.trim());"
+          },
+          {
+            "line": 73,
+            "type": "added",
+            "content": "    "
+          },
+          {
+            "line": 74,
+            "type": "added",
+            "content": "const rawDate = input.trim();"
+          },
+          {
+            "line": 75,
+            "type": "added",
+            "content": "    const dateToUse = rawDate"
+          },
+          {
+            "line": 76,
+            "type": "added",
+            "content": "      ? dayjs(rawDate).format('YYYY-MM-DD')"
+          },
+          {
+            "line": 77,
+            "type": "added",
+            "content": "      : dayjs().subtract(1, 'day').format('YYYY-MM-DD');"
+          },
+          {
+            "line": 78,
+            "type": "added",
+            "content": "    callback(dateToUse);"
+          },
+          {
+            "line": 79,
+            "type": "added",
+            "content": ""
+          }
+        ],
+        "diff": []
+      }
+    ],
+    "id": 2910544078,
+    "repo": "projet_1_back",
+    "state": "closed",
+    "title": "mise à jour pour fichiers hebdos",
+    "updated_at": "2025-10-13T15:00:08.000Z",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false
+    }
+  }
+]

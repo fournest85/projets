@@ -1,0 +1,23 @@
+# 📦 Dépendances Node.js
+node_modules/
+
+# 🔐 Fichiers sensibles
+.env
+
+# 🧪 Fichiers de test temporaires
+test.js
+
+# 🗑️ Fichiers système inutiles
+.DS_Store
+
+# 📝 Logs
+*.log
+
+# 🛠️ Fichiers de build (si tu en as)
+dist/
+build/
+
+# 📄 Sauvegardes ou fichiers temporaires
+*.tmp
+*.bak
+

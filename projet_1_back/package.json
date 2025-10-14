@@ -1,0 +1,27 @@
+{
+  "name": "projet_1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.12.2",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.18",
+    "diff": "^8.0.2",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "mongodb": "^6.20.0",
+    "node-cron": "^4.2.1",
+    "node-schedule": "^2.1.1",
+    "nodemon": "^3.1.10",
+    "open": "^10.2.0"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0"
+  }
+}
