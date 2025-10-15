@@ -78,6 +78,11 @@ Ajoutez son identifiant GitHub dans le fichier ou la collection MongoDB dédiée
 Oui, les scripts peuvent être exécutés manuellement via la ligne de commande en lançant les fichiers correspondants dans le dossier backend.
 
 ### Où trouver les rapports Markdown générés ?
-Les rapports sont enregistrés dans le dossier `scripts/exports/` du projet. Ils sont nommés selon la date et le type de rapport (quotidien, hebdomadaire).
+L📁 Rapports Markdown
+Les rapports sont enregistrés dans le dossier scripts/exports/ du projet. Ils sont nommés selon la date et le type de rapport :
+
+Rapports quotidiens : générés chaque matin, ils regroupent les PRs modifiées ou fusionnées la veille.
+Rapports hebdomadaires : générés chaque lundi, ils regroupent les PRs de toute la semaine précédente.
+Rapports du week-end : les fichiers datés du vendredi incluent automatiquement les PRs du vendredi, samedi et dimanche précédents, afin de ne rien manquer dans le rapport hebdomadaire.
 ## Auteur
 Sébastien FOURNEST
