@@ -31,8 +31,12 @@ async function exportPRsToJson({ enrichWithUsers = false, dateToUse } = {}) {
 
 
         const prs = await collection.find({
-            created_at: { $gte: selectedDate, $lt: nextDay }
+            $or: [
+                { updated_at: { $gte: selectedDate, $lt: nextDay } },
+                { created_at: { $gte: selectedDate, $lt: nextDay } }
+            ]
         }).toArray();
+        
 
 
         let finalPRs = prs;
@@ -108,14 +112,14 @@ function mergePRs(files, startDate, endDate) {
     files.forEach(file => {
         const fullPath = path.join(exportFolder, file);
         if (!fs.existsSync(fullPath)) return;
-        
+
         const content = JSON.parse(fs.readFileSync(fullPath, 'utf-8'));
-        
+
         const filteredPRs = content.filter(pr => {
             const createdAt = new Date(pr.created_at);
             return createdAt >= startDate && createdAt <= endDate;
         });
-        
+
         filteredPRs.forEach(pr => {
             if (pr.number) merged[pr.number] = pr;
         });

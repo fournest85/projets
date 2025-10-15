@@ -11,6 +11,7 @@ const { runStartupTasks } = require('./scripts/startupTasks');
 const { exportPRsToJson } = require('./scripts/export-prs');
 const { generateRapportMarkdown } = require('./scripts/generateRapport');
 const { getExportFilePath } = require('./scripts/githubService');
+const { getReposForUser } = require('./scripts/prService');
 const fs = require('fs');
 const cors = require('cors');
 const dayjs = require('dayjs');
@@ -28,18 +29,31 @@ app.use(cors());
 app.use('/api', routesUser);
 app.use('/api/github/prs', prRoutes);
 
-app.get('/api/config', (req, res) => {
+app.get('/api/config', async (req, res) => {
   console.log('✅ Route /api/config appelée');
   const backendPort = process.env.PORT || 3000;
 
-  res.json({
-    apiUrl: `http://localhost:${backendPort}/api/users`,
-    backendPort,
-    dbName: process.env.DB_NAME,
-    githubRepo: process.env.GITHUB_REPO,
-    githubOwner: process.env.GITHUB_OWNER
-  });
+  try {
+    const apiUrl = `http://localhost:${backendPort}/api/users`;
+
+    const owner = req.query.owner;
+    let repos = [];
+    if (owner) {
+      repos = await getReposForUser(owner);
+    }
+
+    res.json({
+      apiUrl,
+      backendPort,
+      dbName: process.env.DB_NAME,
+      githubOwner: owner,
+      githubRepos: repos
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des repos GitHub.' });
+  }
 });
+
 app.get('/api/generate/:date', async (req, res) => {
   const dateStr = req.params.date; // format YYYY-MM-DD
   const force = req.query.force === 'true';

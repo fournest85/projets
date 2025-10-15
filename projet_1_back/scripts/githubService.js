@@ -1,18 +1,19 @@
 const axios = require('axios');
 const dbUser = require('../bd/connect');
-
 const path = require('path');
 const exportDir = path.join(__dirname, 'exports');
+const { getReposForUser } = require('./utils/githubUtils')
 
-const { GITHUB_TOKEN, GITHUB_OWNER, GITHUB_REPO } = process.env;
+
+const { GITHUB_TOKEN } = process.env;
 const headers = {
     Authorization: `Bearer ${GITHUB_TOKEN}`,
     Accept: 'application/vnd.github.v3+json'
 };
 
 // Récupère les fichiers modifiés pour une PR donnée
-async function fetchFilesForPR(prNumber) {
-    const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/pulls/${prNumber}/files`;
+async function fetchFilesForPR(owner, repo, prNumber) {
+    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}/files`;
     const response = await axios.get(url, { headers });
 
     return response.data.map(file => {
@@ -64,7 +65,7 @@ async function getFileAtCommit(owner, repo, filePath, commitSha, token) {
 
 // Récupère le SHA du commit de base d'une PR
 async function getBaseCommitSha(prNumber) {
-    const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/pulls/${prNumber}`;
+    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`;
     const response = await axios.get(url, { headers });
     return response.data.base.sha;
 }
@@ -72,52 +73,57 @@ async function getBaseCommitSha(prNumber) {
 // Récupère les PR modifiées hier avec des fichiers modifiés
 async function fetchModifiedPRsFromYesterday() {
     const usersCollection = dbUser.bd().collection('users');
-    const githubApiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/pulls`;
-    const headers = {
-        Authorization: `Bearer ${GITHUB_TOKEN}`,
-        Accept: 'application/vnd.github.v3+json'
-    };
-
-    const response = await axios.get(githubApiUrl, { headers });
-    const prs = response.data;
-
+    const allUsers = await usersCollection.find().toArray();
+    const modifiedPRs = [];
 
     const yesterdayStart = new Date();
     yesterdayStart.setDate(yesterdayStart.getDate() - 1);
     yesterdayStart.setHours(0, 0, 0, 0);
-
     const yesterdayEnd = new Date(yesterdayStart);
     yesterdayEnd.setHours(23, 59, 59, 999);
 
+    for (const user of allUsers) {
+        const repos = await getReposForUser(user.login); // retourne des full_name
+        for (const repoFullName of repos) {
+            try {
+                const response = await axios.get(`https://api.github.com/repos/${repoFullName}/pulls`, { headers });
+                const prs = response.data;
 
-    const modifiedPRs = [];
+                for (const pr of prs) {
+                    const updatedDate = new Date(pr.updated_at);
+                    if (updatedDate >= yesterdayStart && updatedDate <= yesterdayEnd) {
+                        const filesResponse = await axios.get(pr.url + '/files', { headers });
 
-    for (const pr of prs) {
+                        const relevantFiles = filesResponse.data.filter(file =>
+                            ['modified', 'added', 'removed'].includes(file.status)
+                        );
 
-        const updatedDate = new Date(pr.updated_at);
-        if (updatedDate >= yesterdayStart && updatedDate <= yesterdayEnd) {
-            const filesResponse = await axios.get(pr.url + '/files', { headers });
-            const modifiedFiles = filesResponse.data.filter(file => file.status === 'modified');
 
-            if (modifiedFiles.length > 0) {
+                        if (relevantFiles.length > 0) {
+                            const userFromDB = await usersCollection.findOne({ githubId: pr.user.id });
+                            const enrichedUser = {
+                                name: userFromDB?.name || '',
+                                email: userFromDB?.email || '',
+                                phone: userFromDB?.phone || '',
+                                githubId: pr.user.id,
+                                githubUrl: pr.user.html_url
+                            };
 
-                const userFromDB = await usersCollection.findOne({ githubId: pr.user.id });
-                const enrichedUser = {
-                    name: userFromDB?.name || '',
-                    email: userFromDB?.email || '',
-                    phone: userFromDB?.phone || '',
-                    githubId: pr.user.id,
-                    githubUrl: pr.user.html_url
-                };
-
-                modifiedPRs.push({
-                    number: pr.number,
-                    title: pr.title,
-                    baseSha: pr.base.sha,
-                    files: modifiedFiles,
-                    updated_at: pr.updated_at,
-                    user: enrichedUser
-                });
+                            modifiedPRs.push({
+                                number: pr.number,
+                                title: pr.title,
+                                baseSha: pr.base.sha,
+                                files: modifiedFiles,
+                                updated_at: pr.updated_at,
+                                state: pr.state,
+                                user: enrichedUser,
+                                repo: { name: repoFullName }
+                            });
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error(`❌ Erreur pour le repo ${repoFullName} : ${err.message}`);
             }
         }
     }

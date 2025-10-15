@@ -2,137 +2,73 @@ const axios = require('axios');
 const dbUser = require('../bd/connect');
 const { PR } = require('../model/pr');
 const { updatePRsWithUser } = require('./utils/update');
+const { diffLines } = require('./diffUtils');
 
 const {
-    fetchFilesForPR,
-    getBaseCommitSha,
     getFileAtCommit, fetchModifiedPRsFromYesterday
 } = require('./githubService');
+const { getReposForUser, getPRsForRepo } = require('./utils/githubUtils');
 
-const { GITHUB_TOKEN, GITHUB_OWNER, GITHUB_REPO } = process.env;
+const { GITHUB_TOKEN } = process.env;
 
 const headers = {
     Authorization: `Bearer ${GITHUB_TOKEN}`,
     Accept: 'application/vnd.github.v3+json'
 };
 
-const githubApiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/pulls?state=all`;
-
-const { diffLines } = require('./diffUtils');
 
 async function fetchAndStorePRsRaw(date) {
-    const response = await axios.get(githubApiUrl, { headers });
-    const prs = response.data;
     const collection = dbUser.bd().collection('pr_merge');
+    const usersCollection = dbUser.bd().collection('users');
+    const allUsers = await usersCollection.find().toArray();
 
-    if (!prs || prs.length === 0) {
-        return 'Aucune PR trouvée.';
-    }
-
-    let count = 0;
-
-    // Définir les bornes de la veille
-    let targetDate;
-    if (date) {
-        targetDate = new Date(date);
-        console.log(`📅 Date de filtrage définie : ${targetDate.toDateString()}`);
-    } else {
-        targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() - 1);
-        console.log(`📅 Date de filtrage automatique (hier) : ${targetDate.toDateString()}`);
-    }
-
-
+    const targetDate = date ? new Date(date) : new Date(Date.now() - 86400000);
     targetDate.setHours(0, 0, 0, 0);
     const targetStart = new Date(targetDate);
     const targetEnd = new Date(targetDate);
     targetEnd.setHours(23, 59, 59, 999);
 
+    let count = 0;
+    for (const user of allUsers) {
+        const repos = await getReposForUser(user.login);
+        for (const repoFullName of repos) {
+            try {
+                const prs = await getPRsForRepo(repoFullName);
 
-    for (const pr of prs) {
-        const files = await fetchFilesForPR(pr.number);
-        const baseSha = await getBaseCommitSha(pr.number);
+                for (const pr of prs) {
+                    const createdAt = new Date(pr.created_at);
+                    const updatedAt = new Date(pr.updated_at);
 
-        for (const file of files) {
-            if (file.status === 'modified') {
-                try {
-                    const newContentResponse = await axios.get(file.raw_url, {
-                        headers: {
-                            Authorization: `Bearer ${GITHUB_TOKEN}`,
-                            Accept: 'application/vnd.github.v3.raw'
-                        }
-                    });
+                    if (createdAt >= targetStart && createdAt <= targetEnd || updatedAt >= targetStart && updatedAt <= targetEnd) {
+                        const prRecord = {
+                            number: pr.number,
+                            title: pr.title,
+                            user: pr.user,
+                            repo: { name: repoFullName },
+                            created_at: createdAt,
+                            updated_at: updatedAt,
+                            url: pr.html_url
+                        };
 
-                    const newText = typeof newContentResponse.data === 'string'
-                        ? newContentResponse.data
-                        : JSON.stringify(newContentResponse.data, null, 2);
+                        await collection.updateOne(
+                            { number: pr.number, 'repo.name': repoFullName },
+                            { $set: prRecord },
+                            { upsert: true }
+                        );
 
-                    const oldTextRaw = await getFileAtCommit(
-                        GITHUB_OWNER,
-                        GITHUB_REPO,
-                        file.filename,
-                        baseSha,
-                        GITHUB_TOKEN
-                    );
-
-                    const oldText = typeof oldTextRaw === 'string'
-                        ? oldTextRaw
-                        : JSON.stringify(oldTextRaw, null, 2);
-
-
-                    const changes = diffLines(oldText, newText);
-
-                    file.diff = changes
-                        .filter(part => part.added || part.removed)
-                        .map(part => ({
-                            type: part.added ? 'added' : 'removed',
-                            content: part.value
-                        }));
-                } catch (err) {
-                    console.error(`❌ Erreur sur ${file.filename} :`, err.message);
+                        count++;
+                    }
                 }
+            } catch (err) {
+                console.error(`❌ Erreur pour le repo ${repoFullName} : ${err.message}`);
             }
         }
 
-        const prInstance = new PR({
-            id: pr.id,
-            number: pr.number,
-            title: pr.title,
-            user: {
-                name: pr.user.name,
-                email: pr.user.email,
-                phone: pr.user.phone,
-                githubId: pr.user.id,
-                githubUrl: pr.user.html_url
-            },
-
-            state: pr.state,
-            created_at: pr.created_at,
-            updated_at: pr.updated_at,
-            repo: GITHUB_REPO,
-            files
-        });
-
-
-        await collection.updateOne(
-            { number: pr.number },
-            { $set: prInstance },
-            { upsert: true }
-        );
-
-        count++;
-
-        const updatedDate = new Date(pr.updated_at);
-        const isModifiedOnTargetDate = updatedDate >= targetStart && updatedDate <= targetEnd;
-
-        if (isModifiedOnTargetDate) {
-            console.log(`🔍 Analyse de la PR #${pr.number} - ${pr.title}`);
-            console.log(`🧪 updated_at: ${pr.updated_at}`);
-        }
     }
-
-    return `${count} PRs enregistrées et analysées.`;
+    console.log(`✅ Récupération des PRs terminée. Total : ${count}`);
+    return count;
 }
+
 
 async function fetchModifiedPRsFromYesterdayFromDB() {
     const collection = dbUser.bd().collection('pr_merge');
@@ -199,8 +135,8 @@ async function showDiffsForModifiedPRsFromYesterday() {
                     const newText = newContentResponse.data;
 
                     const oldText = await getFileAtCommit(
-                        GITHUB_OWNER,
-                        GITHUB_REPO,
+                        pr.owner,
+                        pr.repo.name,
                         file.filename,
                         pr.baseSha,
                         GITHUB_TOKEN
@@ -244,7 +180,7 @@ async function showDiffsForModifiedPRsFromYesterday() {
                         updated_at: pr.updated_at,
                         user: enrichedUser,
                         state: pr.state,
-                        repo: GITHUB_REPO,
+                        repo: pr.repo,
                         files: pr.files
 
                     }

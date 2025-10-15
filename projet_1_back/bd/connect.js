@@ -10,7 +10,6 @@ function connecter(uri, callback) {
             .then(async () => {
                 const dbName = process.env.DB_NAME || "sebastienfournest_db_user";
                 db = client.db(dbName);
-
                 const collection = db.collection('pr_merge');
 
                 try {
@@ -31,13 +30,21 @@ function connecter(uri, callback) {
                         console.log(`🧹 Doublons supprimés pour number ${dup._id}`);
                     }
 
-                    await collection.createIndex({ number: 1 }, { unique: true });
-                    console.log('✅ Index unique sur "number" créé dans pr_merge');
+                    // 🧱 Suppression de l'ancien index
+                    try {
+                        await collection.dropIndex("number_1");
+                        console.log("✅ Index 'number_1' supprimé.");
+                    } catch (indexErr) {
+                        console.warn("⚠️ Index 'number_1' introuvable ou déjà supprimé.");
+                    }
+
+                    await collection.createIndex({ number: 1, 'repo.name': 1 }, { unique: true });
+                    console.log('✅ Index unique sur { number, repo.name } créé dans pr_merge');
                 } catch (indexErr) {
                     console.warn('⚠️ Erreur lors du nettoyage ou de la création de l’index :', indexErr.message);
                 }
 
-                callback(); 
+                callback();
             })
             .catch(err => {
                 client = null;

@@ -181,37 +181,43 @@ function displayPRs(page) {
         console.warn('⚠️ Impossible d’afficher les PRs : allPRs est invalide', allPRs);
         return;
     }
+
+    // Pagination : extraire les PRs de la page en cours
+    const startIndex = (page - 1) * PRS_PER_PAGE;
+    const endIndex = startIndex + PRS_PER_PAGE;
+    const prsToDisplay = allPRs.slice(startIndex, endIndex);
+
     // Regrouper les PRs par titre
     const groupedPRs = {};
-    allPRs.forEach(pr => {
+    prsToDisplay.forEach(pr => {
         if (!groupedPRs[pr.title]) {
             groupedPRs[pr.title] = [];
         }
         groupedPRs[pr.title].push(pr);
     });
 
-
     // Trier les titres alphabétiquement
     const sortedTitles = Object.keys(groupedPRs).sort();
 
     sortedTitles.forEach(title => {
-        const group = groupedPRs[title].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at)); // tri par date décroissante
+        const group = groupedPRs[title].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
 
         const li = document.createElement('li');
         li.innerHTML = `<strong>${title}</strong> (${group.length} PR${group.length > 1 ? 's' : ''})`;
 
         const subList = document.createElement('ul');
         group.forEach(pr => {
-            console.log('PR affichée :', pr);
-            const dateText = pr.updated_at ? new Date(pr.updated_at).toLocaleDateString('fr-FR', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            }) : 'Date inconnue';
+            const dateText = pr.updated_at
+                ? new Date(pr.updated_at).toLocaleDateString('fr-FR', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                })
+                : 'Date inconnue';
 
-            const subLi = document.createElement('li');
             const login = pr.user?.login || (pr.user?.githubUrl ? pr.user.githubUrl.split('/').pop() : 'Utilisateur inconnu');
+            const subLi = document.createElement('li');
             subLi.innerHTML = `#${pr.number} - ${login} (${pr.state})<br><em>Enregistrée le : ${dateText}</em>`;
             subLi.style.cursor = 'pointer';
             subLi.onclick = () => {
