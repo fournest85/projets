@@ -119,7 +119,6 @@ function mergePRs(files, startDate, endDate) {
             const createdAt = new Date(pr.created_at);
             return createdAt >= startDate && createdAt <= endDate;
         });
-
         filteredPRs.forEach(pr => {
             if (pr.number) merged[pr.number] = pr;
         });

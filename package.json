@@ -5,7 +5,11 @@
   "scripts": {
     "start": "cross-env FROM_CONCURRENTLY=true concurrently -n \"BACK,FRONT\" -c \"blue,green\" \"npm run start-back\" \"npm run start-front\"",
     "start-back": "cd projet_1_back && node server.js",
+<<<<<<< HEAD
     "start-front": "cd projet_1_front && http-server --port=8080 --cors"
+=======
+    "start-front": "cd projet_1_front && http-server --port=8080"
+>>>>>>> c91053f04eff7080a9f1382897efa935056f7eb1
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
