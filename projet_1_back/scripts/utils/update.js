@@ -1,10 +1,38 @@
 const e = require('express');
-const dbUser = require('../../bd/connect');
 const { MongoClient } = require('mongodb');
 
 
 const MONGO_URI = process.env.MONGODB_URI;
 const DB_NAME = process.env.DB_NAME;
+
+
+// 🔍 Extraire owner/repo/number depuis une PR
+function extractRepoInfo(pr) {
+    const repoUrl = pr.base?.repo?.html_url || pr.head?.repo?.html_url;
+    let owner, repo;
+
+    if (repoUrl) {
+        const parts = repoUrl.split('/');
+        owner = parts[3];
+        repo = parts[4];
+        console.log("DEBUG repo:", pr.repo);
+    } else if (pr.repo?.name) {
+        const parts = pr.repo.name.split('/');
+        console.log("repo.name:", pr.repo.name, "parts:", parts);
+        if (parts.length === 2) {
+            owner = parts[0];
+            repo = parts[1];
+        }
+    }
+
+    const info = {
+        owner,
+        repo,
+        number: pr.number
+    };
+    console.log("Extracted info:", info);
+    return info;
+}
 
 
 const updatePRsWithUser = async () => {
@@ -62,4 +90,4 @@ const updatePRsWithUser = async () => {
 
 
 
-module.exports = { updatePRsWithUser };
+module.exports = { updatePRsWithUser, extractRepoInfo };

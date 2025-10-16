@@ -17,7 +17,6 @@ const cors = require('cors');
 const dayjs = require('dayjs');
 
 const app = express();
-
 const API_URL = process.env.API_URL;
 const port = process.env.PORT || 3000;
 const uri = process.env.MONGODB_URI;
@@ -103,8 +102,7 @@ connecter(uri, async (err) => {
     console.log('✅ Connected to the database');
     // Démarrage du serveur
     server = app.listen(port, async () => {
-      const backendPort = port;
-      console.log(`✅ Server is running on http://localhost:${backendPort}`);
+      console.log(`✅ Server is running on http://localhost:${port}`);
 
       // Ouvre le navigateur sur le frontend (live-server)
       if (process.env.FROM_CONCURRENTLY === 'true') {
