@@ -217,11 +217,17 @@ function displayPRs(page) {
                 : 'Date inconnue';
 
             const login = pr.user?.login || (pr.user?.githubUrl ? pr.user.githubUrl.split('/').pop() : 'Utilisateur inconnu');
+            console.log(pr.user);
+            
             const subLi = document.createElement('li');
             subLi.innerHTML = `#${pr.number} - ${login} (${pr.state})<br><em>Enregistrée le : ${dateText}</em>`;
             subLi.style.cursor = 'pointer';
             subLi.onclick = () => {
-                window.location.href = `/pr-details.html?number=${pr.number}`;
+
+                const encodedRepo = encodeURIComponent(
+                    typeof pr.repo === 'string' ? pr.repo : pr.repo?.name ?? 'inconnu'
+                );
+                window.location.href = `/pr-details.html?repo=${encodedRepo}&number=${pr.number}`;
             };
             subList.appendChild(subLi);
         });

@@ -1,7 +1,9 @@
 const fs = require('fs');
 const path = require('path');
+const axios = require('axios');
 const { MongoClient } = require('mongodb');
 const { mapUsersByGithubId, enrichPRsWithUsers, getExportFilePath } = require('./githubService');
+const { extractRepoInfo } = require('./utils/update');
 
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.DB_NAME;
@@ -15,6 +17,38 @@ if (!fs.existsSync(exportFolder)) {
 
 
 
+
+
+// 📂 Récupérer les fichiers modifiés via l'API GitHub
+async function getModifiedFilesForPR(pr) {
+    const { owner, repo, number } = extractRepoInfo(pr);
+    if (!owner || !repo || !number) return [];
+
+    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${number}/files`;
+
+    try {
+        const response = await axios.get(url, {
+            headers: {
+                Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+                'User-Agent': 'Sebastien-PR-Exporter'
+            }
+        });
+
+        return response.data.map(file => ({
+            filename: file.filename,
+            status: file.status,
+            additions: file.additions,
+            deletions: file.deletions,
+            changes: file.changes,
+            raw_url: file.raw_url,
+            patch: file.patch
+        }));
+    } catch (error) {
+        console.error(`❌ Erreur API GitHub pour PR #${number} :`, error.message);
+        return [];
+    }
+}
+
 async function exportPRsToJson({ enrichWithUsers = false, dateToUse } = {}) {
     const client = new MongoClient(uri);
 
@@ -26,7 +60,6 @@ async function exportPRsToJson({ enrichWithUsers = false, dateToUse } = {}) {
         const selectedDate = dateToUse
             ? new Date(dateToUse)
             : dayjs().subtract(1, 'day').startOf('day').toDate();
-
         const nextDay = dayjs(selectedDate).add(1, 'day').startOf('day').toDate();
 
 
@@ -36,8 +69,6 @@ async function exportPRsToJson({ enrichWithUsers = false, dateToUse } = {}) {
                 { created_at: { $gte: selectedDate, $lt: nextDay } }
             ]
         }).toArray();
-        
-
 
         let finalPRs = prs;
 
@@ -46,6 +77,26 @@ async function exportPRsToJson({ enrichWithUsers = false, dateToUse } = {}) {
             const users = await userCollection.find({}).toArray();
             const usersByGithubId = mapUsersByGithubId(users);
             finalPRs = enrichPRsWithUsers(prs, usersByGithubId);
+        }
+
+        // 🔄 Enrichir chaque PR avec les fichiers modifiés
+        for (const pr of finalPRs) {
+            pr.files = await getModifiedFilesForPR(pr);
+
+            // 🔄 Mettre à jour la PR dans MongoDB
+
+            const { owner, repo } = extractRepoInfo(pr);
+            pr.owner = owner;
+            pr.repoName = repo;
+
+            await collection.updateOne(
+                { _id: pr._id },
+                { $set: { files: pr.iles,
+                    owner: pr.owner,
+                    repoName: pr.repoName
+                 }}
+            );
+
         }
 
         const dateStr = dayjs(selectedDate).format('YYYY-MM-DD');
@@ -163,4 +214,4 @@ async function generateWeeklyReport({ enrichWithUsers = false } = {}) {
     }
 }
 
-module.exports = { exportPRsToJson, generateWeeklyReport };
+module.exports = { exportPRsToJson, generateWeeklyReport, getModifiedFilesForPR };

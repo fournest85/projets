@@ -30,6 +30,7 @@ function connecter(uri, callback) {
                         console.log(`🧹 Doublons supprimés pour number ${dup._id}`);
                     }
 
+
                     // 🧱 Suppression de l'ancien index
                     try {
                         await collection.dropIndex("number_1");
@@ -38,11 +39,25 @@ function connecter(uri, callback) {
                         console.warn("⚠️ Index 'number_1' introuvable ou déjà supprimé.");
                     }
 
-                    await collection.createIndex({ number: 1, 'repo.name': 1 }, { unique: true });
-                    console.log('✅ Index unique sur { number, repo.name } créé dans pr_merge');
+                    // 🔍 Vérification de l'existence de l'index combiné
+                    const indexes = await collection.indexes();
+                    const indexExists = indexes.some(index =>
+                        JSON.stringify(index.key) === JSON.stringify({ number: 1, repo: 1 })
+                    );
+
+
+
+                    if (!indexExists) {
+                        await collection.createIndex({ number: 1, repo: 1 }, { unique: true });
+                        console.log('✅ Index unique sur { number, repo } créé dans pr_merge');
+                    } else {
+                        console.log('ℹ️ Index { number, repo } déjà présent.');
+                    }
+
                 } catch (indexErr) {
                     console.warn('⚠️ Erreur lors du nettoyage ou de la création de l’index :', indexErr.message);
                 }
+
 
                 callback();
             })
