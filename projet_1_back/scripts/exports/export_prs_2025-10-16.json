@@ -1,0 +1,139 @@
+[
+  {
+    "_id": "68f236a74042fb273884d780",
+    "number": 6,
+    "repo": "fournest85/projets",
+    "created_at": "2025-10-16T15:05:58.000Z",
+    "title": "Merge pull request #5 from fournest85/developement",
+    "updated_at": "2025-10-16T15:06:20.000Z",
+    "url": "https://github.com/fournest85/projets/pull/6",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false,
+      "state": "closed"
+    },
+    "files": [],
+    "state": "closed",
+    "id": 2921070889,
+    "owner": "fournest85",
+    "repoName": "projets"
+  },
+  {
+    "_id": "68f236a74042fb273884d781",
+    "repo": "fournest85/projets",
+    "number": 5,
+    "created_at": "2025-10-16T15:05:11.000Z",
+    "title": "mise a jour branche",
+    "updated_at": "2025-10-16T15:05:30.000Z",
+    "url": "https://github.com/fournest85/projets/pull/5",
+    "user": {
+      "githubId": 233725179,
+      "login": "fournest85",
+      "html_url": "https://github.com/fournest85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233725179?v=4",
+      "type": "User",
+      "site_admin": false,
+      "state": "closed"
+    },
+    "files": [
+      {
+        "filename": "package.json",
+        "status": "modified",
+        "additions": 0,
+        "deletions": 4,
+        "changes": 4,
+        "raw_url": "https://github.com/fournest85/projets/raw/eb56bc1ed6d7ef1c06fbb5a78d33d35a16a4a671/package.json",
+        "patch": "@@ -5,11 +5,7 @@\n   \"scripts\": {\n     \"start\": \"cross-env FROM_CONCURRENTLY=true concurrently -n \\\"BACK,FRONT\\\" -c \\\"blue,green\\\" \\\"npm run start-back\\\" \\\"npm run start-front\\\"\",\n     \"start-back\": \"cd projet_1_back && node server.js\",\n-<<<<<<< HEAD\n     \"start-front\": \"cd projet_1_front && http-server --port=8080 --cors\"\n-=======\n-    \"start-front\": \"cd projet_1_front && http-server --port=8080\"\n->>>>>>> c91053f04eff7080a9f1382897efa935056f7eb1\n   },\n   \"devDependencies\": {\n     \"concurrently\": \"^8.2.2\","
+      },
+      {
+        "filename": "projet_1_back/bd/connect.js",
+        "status": "modified",
+        "additions": 17,
+        "deletions": 2,
+        "changes": 19,
+        "raw_url": "https://github.com/fournest85/projets/raw/eb56bc1ed6d7ef1c06fbb5a78d33d35a16a4a671/projet_1_back%2Fbd%2Fconnect.js",
+        "patch": "@@ -30,6 +30,7 @@ function connecter(uri, callback) {\n                         console.log(`🧹 Doublons supprimés pour number ${dup._id}`);\n                     }\n \n+\n                     // 🧱 Suppression de l'ancien index\n                     try {\n                         await collection.dropIndex(\"number_1\");\n@@ -38,12 +39,26 @@ function connecter(uri, callback) {\n                         console.warn(\"⚠️ Index 'number_1' introuvable ou déjà supprimé.\");\n                     }\n \n-                    await collection.createIndex({ number: 1, 'repo.name': 1 }, { unique: true });\n-                    console.log('✅ Index unique sur { number, repo.name } créé dans pr_merge');\n+                    // 🔍 Vérification de l'existence de l'index combiné\n+                    const indexes = await collection.indexes();\n+                    const indexExists = indexes.some(index =>\n+                        JSON.stringify(index.key) === JSON.stringify({ number: 1, repo: 1 })\n+                    );\n+\n+\n+\n+                    if (!indexExists) {\n+                        await collection.createIndex({ number: 1, repo: 1 }, { unique: true });\n+                        console.log('✅ Index unique sur { number, repo } créé dans pr_merge');\n+                    } else {\n+                        console.log('ℹ️ Index { number, repo } déjà présent.');\n+                    }\n+\n                 } catch (indexErr) {\n                     console.warn('⚠️ Erreur lors du nettoyage ou de la création de l’index :', indexErr.message);\n                 }\n \n+\n                 callback();\n             })\n             .catch(err => {"
+      },
+      {
+        "filename": "projet_1_back/route/pr.js",
+        "status": "modified",
+        "additions": 3,
+        "deletions": 3,
+        "changes": 6,
+        "raw_url": "https://github.com/fournest85/projets/raw/eb56bc1ed6d7ef1c06fbb5a78d33d35a16a4a671/projet_1_back%2Froute%2Fpr.js",
+        "patch": "@@ -8,12 +8,12 @@ router.get('/list', getPRs);\n \n router.put('/update', updatePRs);\n \n-router.get('/:number', async (req, res) => {\n-    const number = parseInt(req.params.number);\n+router.get('/api/github/prs/:repo/:number', async (req, res) => {\n+    const { repo, number } = req.params;\n     const collection = require('../bd/connect').bd().collection('pr_merge');\n \n     try {\n-        const pr = await collection.findOne({ number });\n+        const pr = await collection.findOne({ repo, number: parseInt(number) });\n         if (pr) {\n             res.status(200).json(pr);\n         } else {"
+      },
+      {
+        "filename": "projet_1_back/scripts/export-prs.js",
+        "status": "modified",
+        "additions": 55,
+        "deletions": 4,
+        "changes": 59,
+        "raw_url": "https://github.com/fournest85/projets/raw/eb56bc1ed6d7ef1c06fbb5a78d33d35a16a4a671/projet_1_back%2Fscripts%2Fexport-prs.js",
+        "patch": "@@ -1,7 +1,9 @@\n const fs = require('fs');\n const path = require('path');\n+const axios = require('axios');\n const { MongoClient } = require('mongodb');\n const { mapUsersByGithubId, enrichPRsWithUsers, getExportFilePath } = require('./githubService');\n+const { extractRepoInfo } = require('./utils/update');\n \n const uri = process.env.MONGODB_URI;\n const dbName = process.env.DB_NAME;\n@@ -15,6 +17,38 @@ if (!fs.existsSync(exportFolder)) {\n \n \n \n+\n+\n+// 📂 Récupérer les fichiers modifiés via l'API GitHub\n+async function getModifiedFilesForPR(pr) {\n+    const { owner, repo, number } = extractRepoInfo(pr);\n+    if (!owner || !repo || !number) return [];\n+\n+    const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${number}/files`;\n+\n+    try {\n+        const response = await axios.get(url, {\n+            headers: {\n+                Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,\n+                'User-Agent': 'Sebastien-PR-Exporter'\n+            }\n+        });\n+\n+        return response.data.map(file => ({\n+            filename: file.filename,\n+            status: file.status,\n+            additions: file.additions,\n+            deletions: file.deletions,\n+            changes: file.changes,\n+            raw_url: file.raw_url,\n+            patch: file.patch\n+        }));\n+    } catch (error) {\n+        console.error(`❌ Erreur API GitHub pour PR #${number} :`, error.message);\n+        return [];\n+    }\n+}\n+\n async function exportPRsToJson({ enrichWithUsers = false, dateToUse } = {}) {\n     const client = new MongoClient(uri);\n \n@@ -26,7 +60,6 @@ async function exportPRsToJson({ enrichWithUsers = false, dateToUse } = {}) {\n         const selectedDate = dateToUse\n             ? new Date(dateToUse)\n             : dayjs().subtract(1, 'day').startOf('day').toDate();\n-\n         const nextDay = dayjs(selectedDate).add(1, 'day').startOf('day').toDate();\n \n \n@@ -36,8 +69,6 @@ async function exportPRsToJson({ enrichWithUsers = false, dateToUse } = {}) {\n                 { created_at: { $gte: selectedDate, $lt: nextDay } }\n             ]\n         }).toArray();\n-        \n-\n \n         let finalPRs = prs;\n \n@@ -48,6 +79,26 @@ async function exportPRsToJson({ enrichWithUsers = false, dateToUse } = {}) {\n             finalPRs = enrichPRsWithUsers(prs, usersByGithubId);\n         }\n \n+        // 🔄 Enrichir chaque PR avec les fichiers modifiés\n+        for (const pr of finalPRs) {\n+            pr.files = await getModifiedFilesForPR(pr);\n+\n+            // 🔄 Mettre à jour la PR dans MongoDB\n+\n+            const { owner, repo } = extractRepoInfo(pr);\n+            pr.owner = owner;\n+            pr.repoName = repo;\n+\n+            await collection.updateOne(\n+                { _id: pr._id },\n+                { $set: { files: pr.iles,\n+                    owner: pr.owner,\n+                    repoName: pr.repoName\n+                 }}\n+            );\n+\n+        }\n+\n         const dateStr = dayjs(selectedDate).format('YYYY-MM-DD');\n         const filePath = getExportFilePath('export_prs', dateStr);\n         console.log(`🔍 Vérification de l'existence du fichier : ${filePath}`);\n@@ -163,4 +214,4 @@ async function generateWeeklyReport({ enrichWithUsers = false } = {}) {\n     }\n }\n \n-module.exports = { exportPRsToJson, generateWeeklyReport };\n\\ No newline at end of file\n+module.exports = { exportPRsToJson, generateWeeklyReport, getModifiedFilesForPR };\n\\ No newline at end of file"
+      },
+      {
+        "filename": "projet_1_back/scripts/exports/export_prs_2025-10-15.json",
+        "status": "added",
+        "additions": 56,
+        "deletions": 0,
+        "changes": 56,
+        "raw_url": "https://github.com/fournest85/projets/raw/eb56bc1ed6d7ef1c06fbb5a78d33d35a16a4a671/projet_1_back%2Fscripts%2Fexports%2Fexport_prs_2025-10-15.json",
+        "patch": "@@ -0,0 +1,56 @@\n+[\n+  {\n+    \"_id\": \"68f0dbae4042fb273884d735\",\n+    \"repo\": {\n+      \"name\": \"fournest85/projets\"\n+    },\n+    \"number\": 4,\n+    \"created_at\": \"2025-10-15T15:42:48.000Z\",\n+    \"title\": \"Merge pull request #3 from fournest85/developement\",\n+    \"updated_at\": \"2025-10-15T15:43:13.000Z\",\n+    \"url\": \"https://github.com/fournest85/projets/pull/4\",\n+    \"user\": {\n+      \"githubId\": 233725179,\n+      \"login\": \"fournest85\",\n+      \"html_url\": \"https://github.com/fournest85\",\n+      \"avatar_url\": \"https://avatars.githubusercontent.com/u/233725179?v=4\",\n+      \"type\": \"User\",\n+      \"site_admin\": false\n+    },\n+    \"files\": [],\n+    \"owner\": \"fournest85\",\n+    \"repoName\": \"projets\"\n+  },\n+  {\n+    \"_id\": \"68f0dbae4042fb273884d736\",\n+    \"repo\": {\n+      \"name\": \"fournest85/projets\"\n+    },\n+    \"number\": 3,\n+    \"created_at\": \"2025-10-15T15:42:16.000Z\",\n+    \"title\": \"modification du README.md et test pr\",\n+    \"updated_at\": \"2025-10-15T15:42:25.000Z\",\n+    \"url\": \"https://github.com/fournest85/projets/pull/3\",\n+    \"user\": {\n+      \"githubId\": 233725179,\n+      \"login\": \"fournest85\",\n+      \"html_url\": \"https://github.com/fournest85\",\n+      \"avatar_url\": \"https://avatars.githubusercontent.com/u/233725179?v=4\",\n+      \"type\": \"User\",\n+      \"site_admin\": false\n+    },\n+    \"files\": [\n+      {\n+        \"filename\": \"README.md\",\n+        \"status\": \"modified\",\n+        \"additions\": 6,\n+        \"deletions\": 1,\n+        \"changes\": 7,\n+        \"raw_url\": \"https://github.com/fournest85/projets/raw/cdd45009afddaacb55f548e04a1a388a0eb3778a/README.md\",\n+        \"patch\": \"@@ -78,6 +78,11 @@ Ajoutez son identifiant GitHub dans le fichier ou la collection MongoDB dédiée\\n Oui, les scripts peuvent être exécutés manuellement via la ligne de commande en lançant les fichiers correspondants dans le dossier backend.\\n \\n ### Où trouver les rapports Markdown générés ?\\n-Les rapports sont enregistrés dans le dossier `scripts/exports/` du projet. Ils sont nommés selon la date et le type de rapport (quotidien, hebdomadaire).\\n+L📁 Rapports Markdown\\n+Les rapports sont enregistrés dans le dossier scripts/exports/ du projet. Ils sont nommés selon la date et le type de rapport :\\n+\\n+Rapports quotidiens : générés chaque matin, ils regroupent les PRs modifiées ou fusionnées la veille.\\n+Rapports hebdomadaires : générés chaque lundi, ils regroupent les PRs de toute la semaine précédente.\\n+Rapports du week-end : les fichiers datés du vendredi incluent automatiquement les PRs du vendredi, samedi et dimanche précédents, afin de ne rien manquer dans le rapport hebdomadaire.\\n ## Auteur\\n Sébastien FOURNEST\\n\\\\ No newline at end of file\"\n+      }\n+    ],\n+    \"owner\": \"fournest85\",\n+    \"repoName\": \"projets\"\n+  }\n+]\n\\ No newline at end of file"
+      },
+      {
+        "filename": "projet_1_back/scripts/exports/rapport_2025-10-15.md",
+        "status": "added",
+        "additions": 44,
+        "deletions": 0,
+        "changes": 44,
+        "raw_url": "https://github.com/fournest85/projets/raw/eb56bc1ed6d7ef1c06fbb5a78d33d35a16a4a671/projet_1_back%2Fscripts%2Fexports%2Frapport_2025-10-15.md",
+        "patch": "@@ -0,0 +1,44 @@\n+# Rapport des PRs - 2025-10-15\n+\n+Nombre total de PRs : 2\n+\n+## 📊 Résumé global\n+- 👥 Contributeurs uniques : 1\n+- 📂 Fichiers modifiés (total) : 1\n+- ➕ Lignes ajoutées (total) : 6\n+- ➖ Lignes supprimées (total) : 1\n+\n+## ✅ Points forts\n+- Bonne répartition des contributions.\n+- Plusieurs PRs fusionnées avec succès.\n+\n+## 👥 Analyse par utilisateur\n+### 🔹 fournest85\n+- 👤 Profil GitHub : fournest85\n+- 🖼️ Avatar : !\n+- 🧬 Type : User\n+- 🔐 Admin GitHub : Non\n+- Nombre de PRs : 2\n+- Fichiers modifiés : 1\n+- Lignes ajoutées : 6\n+- Lignes supprimées : 1\n+\n+#### PR #4 - Merge pull request #3 from fournest85/developement\n+- 🔗 [Lien vers la PR](undefined)  - 🕒 Créée le: 2025-10-15 17:42 \n+- 📂 Fichiers modifiés: 0 \n+- ➕ Additions: 0, ➖ Deletions: 0 \n+- 📌 Statut: undefined \n+\n+#### PR #3 - modification du README.md et test pr\n+- 🔗 [Lien vers la PR](undefined)  - 🕒 Créée le: 2025-10-15 17:42 \n+- 📂 Fichiers modifiés: 1 \n+- ➕ Additions: 6, ➖ Deletions: 1 \n+- 📌 Statut: undefined \n+\n+## 🛠️ Améliorations recommandées\n+- Vérifier les PRs avec peu ou pas de description.\n+- Encourager des commits plus atomiques.\n+- Ajouter des reviewers pour les PRs critiques.\n+## 🧹 Nettoyage de code\n+- Suppression de variables inutilisées : `today`, `dateStr`\n+- Suppression d’un import non utilisé : `const os = require('os')`"
+      },
+      {
+        "filename": "projet_1_back/scripts/utils/update.js",
+        "status": "modified",
+        "additions": 30,
+        "deletions": 2,
+        "changes": 32,
+        "raw_url": "https://github.com/fournest85/projets/raw/eb56bc1ed6d7ef1c06fbb5a78d33d35a16a4a671/projet_1_back%2Fscripts%2Futils%2Fupdate.js",
+        "patch": "@@ -1,12 +1,40 @@\n const e = require('express');\n-const dbUser = require('../../bd/connect');\n const { MongoClient } = require('mongodb');\n \n \n const MONGO_URI = process.env.MONGODB_URI;\n const DB_NAME = process.env.DB_NAME;\n \n \n+// 🔍 Extraire owner/repo/number depuis une PR\n+function extractRepoInfo(pr) {\n+    const repoUrl = pr.base?.repo?.html_url || pr.head?.repo?.html_url;\n+    let owner, repo;\n+\n+    if (repoUrl) {\n+        const parts = repoUrl.split('/');\n+        owner = parts[3];\n+        repo = parts[4];\n+        console.log(\"DEBUG repo:\", pr.repo);\n+    } else if (pr.repo?.name) {\n+        const parts = pr.repo.name.split('/');\n+        console.log(\"repo.name:\", pr.repo.name, \"parts:\", parts);\n+        if (parts.length === 2) {\n+            owner = parts[0];\n+            repo = parts[1];\n+        }\n+    }\n+\n+    const info = {\n+        owner,\n+        repo,\n+        number: pr.number\n+    };\n+    console.log(\"Extracted info:\", info);\n+    return info;\n+}\n+\n+\n const updatePRsWithUser = async () => {\n \n     const client = new MongoClient(MONGO_URI);\n@@ -62,4 +90,4 @@ const updatePRsWithUser = async () => {\n \n \n \n-module.exports = { updatePRsWithUser };\n\\ No newline at end of file\n+module.exports = { updatePRsWithUser, extractRepoInfo };\n\\ No newline at end of file"
+      },
+      {
+        "filename": "projet_1_back/server.js",
+        "status": "modified",
+        "additions": 1,
+        "deletions": 3,
+        "changes": 4,
+        "raw_url": "https://github.com/fournest85/projets/raw/eb56bc1ed6d7ef1c06fbb5a78d33d35a16a4a671/projet_1_back%2Fserver.js",
+        "patch": "@@ -17,7 +17,6 @@ const cors = require('cors');\n const dayjs = require('dayjs');\n \n const app = express();\n-\n const API_URL = process.env.API_URL;\n const port = process.env.PORT || 3000;\n const uri = process.env.MONGODB_URI;\n@@ -103,8 +102,7 @@ connecter(uri, async (err) => {\n     console.log('✅ Connected to the database');\n     // Démarrage du serveur\n     server = app.listen(port, async () => {\n-      const backendPort = port;\n-      console.log(`✅ Server is running on http://localhost:${backendPort}`);\n+      console.log(`✅ Server is running on http://localhost:${port}`);\n \n       // Ouvre le navigateur sur le frontend (live-server)\n       if (process.env.FROM_CONCURRENTLY === 'true') {"
+      },
+      {
+        "filename": "projet_1_front/js/main.js",
+        "status": "modified",
+        "additions": 7,
+        "deletions": 1,
+        "changes": 8,
+        "raw_url": "https://github.com/fournest85/projets/raw/eb56bc1ed6d7ef1c06fbb5a78d33d35a16a4a671/projet_1_front%2Fjs%2Fmain.js",
+        "patch": "@@ -217,11 +217,17 @@ function displayPRs(page) {\n                 : 'Date inconnue';\n \n             const login = pr.user?.login || (pr.user?.githubUrl ? pr.user.githubUrl.split('/').pop() : 'Utilisateur inconnu');\n+            console.log(pr.user);\n+            \n             const subLi = document.createElement('li');\n             subLi.innerHTML = `#${pr.number} - ${login} (${pr.state})<br><em>Enregistrée le : ${dateText}</em>`;\n             subLi.style.cursor = 'pointer';\n             subLi.onclick = () => {\n-                window.location.href = `/pr-details.html?number=${pr.number}`;\n+\n+                const encodedRepo = encodeURIComponent(\n+                    typeof pr.repo === 'string' ? pr.repo : pr.repo?.name ?? 'inconnu'\n+                );\n+                window.location.href = `/pr-details.html?repo=${encodedRepo}&number=${pr.number}`;\n             };\n             subList.appendChild(subLi);\n         });"
+      },
+      {
+        "filename": "projet_1_front/js/pr-details.js",
+        "status": "modified",
+        "additions": 36,
+        "deletions": 17,
+        "changes": 53,
+        "raw_url": "https://github.com/fournest85/projets/raw/eb56bc1ed6d7ef1c06fbb5a78d33d35a16a4a671/projet_1_front%2Fjs%2Fpr-details.js",
+        "patch": "@@ -7,17 +7,24 @@ function getPRNumberFromURL() {\n     return params.get('number');\n }\n \n+function getRepoFromURL() {\n+    const params = new URLSearchParams(window.location.search);\n+    return params.get('repo');\n+}\n+\n+\n async function loadPRDetails() {\n     try {\n         const prNumber = getPRNumberFromURL();\n         if (!prNumber) return;\n \n-        const res = await axios.get(`http://localhost:3000/api/github/prs/${prNumber}`);\n+        const repo = getRepoFromURL();\n+        const res = await axios.get(`http://localhost:3000/api/github/prs/${repo}/${prNumber}`);\n+\n         const pr = res.data;\n         console.log(\"🔍 PR reçue :\", pr);\n         console.log(\"👤 Auteur brut :\", pr.user);\n \n-\n         const list = document.getElementById('prDetailsList');\n         list.innerHTML = '';\n \n@@ -34,20 +41,24 @@ async function loadPRDetails() {\n         li.appendChild(title);\n \n         const user = document.createElement('p');\n-\n         let login = pr.user?.login;\n-        if (!login && pr.user?.githubUrl) {\n+\n+        if (!login && typeof pr.user?.githubUrl === 'string') {\n             const match = pr.user.githubUrl.match(/github\\.com\\/([^\\/]+)/);\n             if (match) {\n                 login = match[1];\n             }\n         }\n+\n+        if (!login) {\n+            login = 'inconnu';\n+        }\n+\n         user.textContent = `Auteur : ${login ?? 'inconnu'} | État : ${pr.state}`;\n         li.appendChild(user);\n \n         const date = document.createElement('p');\n         date.textContent = `Créée le : ${new Date(pr.created_at).toLocaleString()}`;\n-\n         li.appendChild(date);\n \n         const toggleBtn = document.createElement('button');\n@@ -59,16 +70,24 @@ async function loadPRDetails() {\n                 fileList.style.display = fileList.style.display === 'none' ? 'block' : 'none';\n             } else {\n                 fileList = document.createElement('ul');\n-                (pr.files || []).forEach(file => {\n-                    const fileItem = document.createElement('li');\n-                    const link = document.createElement('a');\n-                    const login = pr.user?.login || (pr.user?.githubUrl ? pr.user.githubUrl.split('/').pop() : 'inconnu');\n-                    link.href = `https://github.com/${login}/${pr.repo}/pull/${pr.number}/files`;\n-                    link.textContent = `${file.filename} (${file.status}) [+${file.additions} / -${file.deletions}]`;\n-                    link.target = '_blank';\n-                    fileItem.appendChild(link);\n-                    fileList.appendChild(fileItem)\n-                });\n+\n+                if (pr.files && pr.files.length > 0) {\n+                    pr.files.forEach(file => {\n+                        const fileItem = document.createElement('li');\n+                        const link = document.createElement('a');\n+                        link.href = file.raw_url || '#';\n+                        link.textContent = `${file.filename} (${file.status}) [+${file.additions} / -${file.deletions}]`;\n+\n+                        link.target = '_blank';\n+                        fileItem.appendChild(link);\n+                        fileList.appendChild(fileItem);\n+                    });\n+                } else {\n+                    const noFiles = document.createElement('li');\n+                    noFiles.textContent = 'Aucun fichier modifié.';\n+                    fileList.appendChild(noFiles);\n+                }\n+\n                 li.appendChild(fileList);\n             }\n         };\n@@ -77,8 +96,8 @@ async function loadPRDetails() {\n         list.appendChild(li);\n \n     } catch (error) {\n-        console.error('Erreur lors du chargement des détails des PRs :', error);\n+        console.error('❌ Erreur lors du chargement des détails des PRs :', error);\n     }\n }\n \n-loadPRDetails();\n\\ No newline at end of file\n+loadPRDetails();"
+      }
+    ],
+    "state": "closed",
+    "id": 2921068603,
+    "owner": "fournest85",
+    "repoName": "projets"
+  }
+]

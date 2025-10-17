@@ -8,8 +8,8 @@ router.get('/list', getPRs);
 
 router.put('/update', updatePRs);
 
-router.get('/api/github/prs/:repo/:number', async (req, res) => {
-    const { repo, number } = req.params;
+router.get('/', async (req, res) => {
+    const { repo, number } = req.query;
     const collection = require('../bd/connect').bd().collection('pr_merge');
 
     try {

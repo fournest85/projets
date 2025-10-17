@@ -4,6 +4,7 @@ const axios = require('axios');
 const { MongoClient } = require('mongodb');
 const { mapUsersByGithubId, enrichPRsWithUsers, getExportFilePath } = require('./githubService');
 const { extractRepoInfo } = require('./utils/update');
+const { getPRDetailsFromGitHub } = require('./utils/githubUtils');
 
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.DB_NAME;
@@ -86,15 +87,29 @@ async function exportPRsToJson({ enrichWithUsers = false, dateToUse } = {}) {
             // 🔄 Mettre à jour la PR dans MongoDB
 
             const { owner, repo } = extractRepoInfo(pr);
+            const githubPR = await getPRDetailsFromGitHub(owner, repo, pr.number);
+
+            if (githubPR?.state) {
+                pr.state = githubPR.state;
+                if (!pr.user) pr.user = {};
+                pr.user.state = githubPR.state;
+            }
+
+            if (githubPR?.id) {
+                pr.id = githubPR.id;
+            }
+
+            pr.repo = `${owner}/${repo}`;
             pr.owner = owner;
             pr.repoName = repo;
 
+            if (pr.repo && typeof pr.repo === 'object' && pr.repo.name) {
+                delete pr.repo.name;
+            }
+
             await collection.updateOne(
                 { _id: pr._id },
-                { $set: { files: pr.iles,
-                    owner: pr.owner,
-                    repoName: pr.repoName
-                 }}
+                { $set: pr }
             );
 
         }

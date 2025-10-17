@@ -33,10 +33,10 @@ function connecter(uri, callback) {
 
                     // 🧱 Suppression de l'ancien index
                     try {
-                        await collection.dropIndex("number_1");
-                        console.log("✅ Index 'number_1' supprimé.");
-                    } catch (indexErr) {
-                        console.warn("⚠️ Index 'number_1' introuvable ou déjà supprimé.");
+                        await collection.dropIndex("number_1_repo.name_1");
+                        console.log("✅ Index 'number_1_repo.name_1' supprimé.");
+                    } catch (err) {
+                        console.warn("⚠️ Index 'number_1_repo.name_1' introuvable ou déjà supprimé.");
                     }
 
                     // 🔍 Vérification de l'existence de l'index combiné
@@ -53,6 +53,17 @@ function connecter(uri, callback) {
                     } else {
                         console.log('ℹ️ Index { number, repo } déjà présent.');
                     }
+
+                    // 🧹 Nettoyage des anciens champs repo.name (optionnel)
+                    const prsWithRepoName = await collection.find({ "repo.name": { $exists: true } }).toArray();
+                    for (const pr of prsWithRepoName) {
+                        await collection.updateOne(
+                            { _id: pr._id },
+                            { $unset: { "repo.name": "" } }
+                        );
+                        console.log(`🧹 Champ repo.name supprimé pour PR #${pr.number}`);
+                    }
+
 
                 } catch (indexErr) {
                     console.warn('⚠️ Erreur lors du nettoyage ou de la création de l’index :', indexErr.message);

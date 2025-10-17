@@ -148,17 +148,36 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        let id = new ObjectId(req.params.id);
-        let result = await dbUser.bd().collection('users').deleteOne({ _id: id });
-        if (result.deletedCount == 1) {
-            res.status(200).json(result);
-            console.log("User deleted");
+        const id = new ObjectId(req.params.id);
+        const usersCollection = dbUser.bd().collection('users');
+        const prCollection = dbUser.bd().collection('pr_merge');
+
+        // Marquer l'utilisateur comme supprimé
+        const result = await usersCollection.updateOne(
+            { _id: id },
+            { $set: { deleted: true } }
+        );
+
+        if (result.modifiedCount === 1) {
+            // Récupérer le githubId de l'utilisateur
+            const user = await usersCollection.findOne({ _id: id });
+            const githubId = user?.githubId;
+
+            if (githubId) {
+                // Supprimer les PRs liées à ce githubId
+                const prResult = await prCollection.deleteMany({ 'user.id': githubId });
+                console.log(`🗑️ ${prResult.deletedCount} PRs supprimées pour githubId: ${githubId}`);
+            } else {
+                console.log("⚠️ Aucun githubId trouvé pour cet utilisateur.");
+            }
+
+            res.status(200).json({ message: 'Utilisateur marqué comme supprimé.' });
         } else {
-            res.status(404).json({ message: 'User doesn\'t exist' });
+            res.status(404).json({ message: 'Utilisateur introuvable.' });
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Erreur serveur.' });
     }
 };
 
@@ -233,7 +252,12 @@ const migrateUsersFromPRsInternal = async () => {
                 site_admin: fullUserData.site_admin ?? false
             };
 
-            const existing = await userCollection.findOne({ githubId });
+
+            const existing = await userCollection.findOne({
+                githubId,
+                deleted: { $ne: true }
+            });
+
 
             if (existing) {
                 const hasChanged = JSON.stringify(existing) !== JSON.stringify(userDoc);

@@ -216,17 +216,22 @@ function displayPRs(page) {
                 })
                 : 'Date inconnue';
 
-            const login = pr.user?.login || (pr.user?.githubUrl ? pr.user.githubUrl.split('/').pop() : 'Utilisateur inconnu');
-            console.log(pr.user);
-            
+            const login = pr.user?.login ||
+                (typeof pr.user?.githubUrl === 'string'
+                    ? pr.user.githubUrl.split('/').pop()
+                    : 'Utilisateur inconnu');
+
             const subLi = document.createElement('li');
             subLi.innerHTML = `#${pr.number} - ${login} (${pr.state})<br><em>Enregistrée le : ${dateText}</em>`;
             subLi.style.cursor = 'pointer';
-            subLi.onclick = () => {
 
-                const encodedRepo = encodeURIComponent(
-                    typeof pr.repo === 'string' ? pr.repo : pr.repo?.name ?? 'inconnu'
-                );
+            const encodedRepo = encodeURIComponent(
+                typeof pr.repo === 'string'
+                    ? pr.repo
+                    : (pr.repo?.name || 'inconnu')
+            );
+
+            subLi.onclick = () => {
                 window.location.href = `/pr-details.html?repo=${encodedRepo}&number=${pr.number}`;
             };
             subList.appendChild(subLi);

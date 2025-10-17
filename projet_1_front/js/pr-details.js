@@ -17,16 +17,17 @@ async function loadPRDetails() {
     try {
         const prNumber = getPRNumberFromURL();
         if (!prNumber) return;
-
+        
         const repo = getRepoFromURL();
-        const res = await axios.get(`http://localhost:3000/api/github/prs/${repo}/${prNumber}`);
+        const list = document.getElementById('prDetailsList');
+        list.innerHTML = '';
+
+        const res = await axios.get(`http://localhost:3000/api/github/prs?repo=${repo}&number=${prNumber}`); 
 
         const pr = res.data;
         console.log("🔍 PR reçue :", pr);
         console.log("👤 Auteur brut :", pr.user);
 
-        const list = document.getElementById('prDetailsList');
-        list.innerHTML = '';
 
         if (!pr || !pr.number) {
             list.innerHTML = '<li>PR non trouvée.</li>';
@@ -54,7 +55,8 @@ async function loadPRDetails() {
             login = 'inconnu';
         }
 
-        user.textContent = `Auteur : ${login ?? 'inconnu'} | État : ${pr.state}`;
+        const state = pr.state ?? 'inconnu';
+        user.textContent = `Auteur : ${login ?? 'inconnu'} | État : ${state}`;
         li.appendChild(user);
 
         const date = document.createElement('p');

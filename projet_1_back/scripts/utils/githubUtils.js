@@ -1,5 +1,7 @@
 const axios = require('axios');
 const { GITHUB_TOKEN } = process.env;
+const { Octokit } = require('octokit');
+const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
 const headers = {
   Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -29,4 +31,15 @@ async function getPRsForRepo(repoFullName) {
   return response.data;
 }
 
-module.exports = { getReposForUser,getAllPRsForAllUsers, getPRsForRepo };
+
+async function getPRDetailsFromGitHub(owner, repo, number) {
+  try {
+    const { data } = await octokit.request('GET /repos/{owner}/{repo}/pulls/{pull_number}', { owner, repo, pull_number: number });
+    return data;
+  } catch (err) {
+    console.error(`❌ Erreur GitHub PR #${number} :`, err.message);
+    return null;
+  }
+}
+
+module.exports = { getReposForUser, getAllPRsForAllUsers, getPRsForRepo, getPRDetailsFromGitHub };
